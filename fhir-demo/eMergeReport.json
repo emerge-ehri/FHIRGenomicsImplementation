@@ -1,0 +1,31 @@
+{
+  "emergeReports": [
+    {
+      "patientID" : "123456",
+      "familyName": "Yan",
+      "givenName": "Fei",
+      "sex": "Male",
+      "dateOfBirth": "2011-01-11",
+      "status": "FINAL",
+      "code": {
+        "system": "http://aaaaa.info/sct",
+        "code": "1111111111",
+        "display": "Negative"
+      }
+    },
+
+    {
+      "patientID" : "7654321",
+      "familyName": "Aaa",
+      "givenName": "Bbb",
+      "sex": "Female",
+      "dateOfBirth": "2010-06-24",
+      "status": "FINAL",
+      "code": {
+        "system": "http://bbbbb.info/sct",
+        "code": "22222222",
+        "display": "Positive"
+      }
+    }
+  ]
+}

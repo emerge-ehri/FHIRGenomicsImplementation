@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+      http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    <mapping>
+        <class-a>demo2.User</class-a>
+        <class-b>demo2.UserDto1</class-b>
+        <field>
+            <a>id</a>
+            <b>id</b>
+        </field>
+        <field custom-converter="demo2.Converter">
+            <a>name</a>
+            <b>username</b>
+        </field>
+    </mapping>
+
+    <mapping>
+        <class-a>demo2.User</class-a>
+        <class-b>demo2.UserDto2</class-b>
+        <field>
+            <a>id</a>
+            <b>id</b>
+        </field>
+        <field>
+            <a>email</a>
+            <b>emailaddress</b>
+        </field>
+    </mapping>
+
+</mappings>
