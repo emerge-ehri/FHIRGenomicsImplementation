@@ -54,9 +54,18 @@ public class FileUploadServiceImpl {
 
       Specimen specimen = (Specimen)fhirResources.get("Specimen");
       specimen.setId(IdDt.newRandomUuid());
+      specimen.setSubject(new Reference(patient.getId()));
+
+      ServiceRequest serviceRequest = (ServiceRequest) fhirResources.get("ServiceRequest");
+      serviceRequest.setId(IdDt.newRandomUuid());
+      serviceRequest.setSubject(new Reference(patient.getId()));
+
+      specimen.addRequest(new Reference(serviceRequest.getId()));
+      serviceRequest.addSpecimen(new Reference(specimen.getId()));
 
       DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
       // The diagnosticReport refers to the patient/specimen using the ID, which is already set to a temporary UUID
+      diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
       diagnosticReport.addSpecimen(new Reference(specimen.getId()));
       diagnosticReport.setSubject(new Reference(patient.getId()));
 
@@ -77,6 +86,13 @@ public class FileUploadServiceImpl {
               .setResource(specimen)
               .getRequest()
               .setUrl("Specimen")
+              .setMethod(Bundle.HTTPVerb.POST);
+
+      bundle.addEntry()
+              .setFullUrl(serviceRequest.getId())
+              .setResource(serviceRequest)
+              .getRequest()
+              .setUrl("ServiceRequest")
               .setMethod(Bundle.HTTPVerb.POST);
 
       bundle.addEntry()
