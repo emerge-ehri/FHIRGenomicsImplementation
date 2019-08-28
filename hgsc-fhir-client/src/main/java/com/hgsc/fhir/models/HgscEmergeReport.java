@@ -22,6 +22,7 @@ import java.util.*;
         "caseType",
         "labStatus",
         "patientSampleID",
+        "sampleCollectionSource",
         "localID",
         "vipFile",
         "clinicalSite",
@@ -89,7 +90,7 @@ public class HgscEmergeReport {
             add("diseaseStatus");
             add("deidentified");
             add("testName");
-            add("patientSampleID");
+            add("sampleCollectionSource");
             add("specimenType");
             add("diseases");
             add("sampleCollectedDate");
@@ -745,6 +746,8 @@ public class HgscEmergeReport {
     private String labStatus;
     @JsonProperty("patientSampleID")
     private String patientSampleID;
+    @JsonProperty("sampleCollectionSource")
+    private String sampleCollectionSource;
     @JsonProperty("localID")
     private String localID;
     @JsonProperty("vipFile")
@@ -939,6 +942,16 @@ public class HgscEmergeReport {
     @JsonProperty("patientSampleID")
     public void setPatientSampleID(String patientSampleID) {
         this.patientSampleID = patientSampleID;
+    }
+
+    @JsonProperty("sampleCollectionSource")
+    public String getSampleCollectionSource() {
+        return sampleCollectionSource;
+    }
+
+    @JsonProperty("sampleCollectionSource")
+    public void setSampleCollectionSource(String sampleCollectionSource) {
+        this.sampleCollectionSource = sampleCollectionSource;
     }
 
     @JsonProperty("localID")

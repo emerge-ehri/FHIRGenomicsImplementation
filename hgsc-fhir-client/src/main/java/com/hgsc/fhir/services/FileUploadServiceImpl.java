@@ -60,14 +60,21 @@ public class FileUploadServiceImpl {
       serviceRequest.setId(IdDt.newRandomUuid());
       serviceRequest.setSubject(new Reference(patient.getId()));
 
+      Observation obsOverall = (Observation) fhirResources.get("ObsOverall");
+      obsOverall.setId(IdDt.newRandomUuid());
+
       specimen.addRequest(new Reference(serviceRequest.getId()));
       serviceRequest.addSpecimen(new Reference(specimen.getId()));
+      obsOverall.addBasedOn(new Reference(serviceRequest.getId()));
+      obsOverall.setSubject(new Reference(patient.getId()));
+      obsOverall.setSpecimen(new Reference(specimen.getId()));
 
       DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
       // The diagnosticReport refers to the patient/specimen using the ID, which is already set to a temporary UUID
       diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
       diagnosticReport.addSpecimen(new Reference(specimen.getId()));
       diagnosticReport.setSubject(new Reference(patient.getId()));
+      diagnosticReport.addResult(new Reference(obsOverall.getId()));
 
       // Create a bundle that will be used as a transaction
       Bundle bundle = new Bundle();
@@ -93,6 +100,13 @@ public class FileUploadServiceImpl {
               .setResource(serviceRequest)
               .getRequest()
               .setUrl("ServiceRequest")
+              .setMethod(Bundle.HTTPVerb.POST);
+
+      bundle.addEntry()
+              .setFullUrl(obsOverall.getId())
+              .setResource(obsOverall)
+              .getRequest()
+              .setUrl("Observation")
               .setMethod(Bundle.HTTPVerb.POST);
 
       bundle.addEntry()
