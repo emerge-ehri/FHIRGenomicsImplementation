@@ -17,8 +17,11 @@ public class SpecimenValueMapper {
         specimen.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/specimen");
         //Identifier
         if (mappingConfig.containsKey("HgscEmergeReport.patientSampleID")) {
-            specimen.addIdentifier(new Identifier().setSystem("https://emerge.mc.vanderbilt.edu/").setValue(hgscEmergeReport.getPatientSampleID()));
+            specimen.addIdentifier(new Identifier().setSystem("https://emerge.mc.vanderbilt.edu/").setValue(hgscEmergeReport.getPatientSampleID())
+                    .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                            .setCode("SID").setDisplay("Specimen ID"))));
         }
+        //AccessionIdentifier
         if (mappingConfig.containsKey("HgscEmergeReport.accessionNumber")) {
             specimen.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscEmergeReport.getAccessionNumber())
                     .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
@@ -37,15 +40,6 @@ public class SpecimenValueMapper {
                     .setBodySite(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
                             .setCode("119297000").setDisplay("Blood specimen (specimen)"))));
         }
-
-//        HgscEmergeReport.genomicSource:Specimen.bodySite.coding.display
-//        ??HgscEmergeReport.labStatus:Specimen.status
-//        HgscEmergeReport.totalDNA:Specimen.collection.quantity
-//        HgscEmergeReport.barcode:Specimen.type.coding.code
-
-//        if (mappingConfig.containsKey("HgscEmergeReport.labStatus")) {
-//            specimen.setStatus(Specimen.SpecimenStatus.fromCode(hgscEmergeReport.getLabStatus().toLowerCase()));
-//        }
 
         return specimen;
     }

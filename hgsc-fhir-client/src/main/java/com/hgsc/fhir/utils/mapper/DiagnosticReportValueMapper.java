@@ -18,7 +18,9 @@ public class DiagnosticReportValueMapper {
         diagnosticReport.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/diagnosticreport");
         //Identifier
         if (mappingConfig.containsKey("HgscEmergeReport.reportIdentifier")) {
-            diagnosticReport.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscEmergeReport.getReportIdentifier()));
+            diagnosticReport.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscEmergeReport.getReportIdentifier())
+                    .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                            .setCode("FILL").setDisplay("Filler Identifier"))));
         }
 
         //extensions
@@ -40,14 +42,14 @@ public class DiagnosticReportValueMapper {
             ext4.setValue(new StringType(""));
         }
 
-        Extension ext5 = new Extension("http://hl7.org/fhir/StructureDefinition/workflow-instantiatesCanonicalPlanDefinition",
-                new StringType("PlanDefinition/emerge-chop-pnl"));
+//        Extension ext5 = new Extension("http://hl7.org/fhir/StructureDefinition/workflow-instantiatesCanonicalPlanDefinition",
+//                new StringType("PlanDefinition/emerge-chop-pnl"));
 
         diagnosticReport.addExtension(ext1);
         diagnosticReport.addExtension(ext2);
         diagnosticReport.addExtension(ext3);
         diagnosticReport.addExtension(ext4);
-        diagnosticReport.addExtension(ext5);
+        //diagnosticReport.addExtension(ext5);
 
         //Status
         if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {

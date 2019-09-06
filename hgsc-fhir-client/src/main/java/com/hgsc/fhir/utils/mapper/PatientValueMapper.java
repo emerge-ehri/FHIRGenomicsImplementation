@@ -6,6 +6,9 @@ import org.hl7.fhir.r4.model.codesystems.V3AdministrativeGender;
 import org.hl7.fhir.r4.model.codesystems.V3Ethnicity;
 import org.hl7.fhir.r4.model.codesystems.V3Race;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.stream.Stream;
@@ -18,7 +21,7 @@ public class PatientValueMapper {
         if (mappingConfig.containsKey("HgscEmergeReport.patientID")) {
             patient.addIdentifier(new Identifier().setSystem("https://emerge.mc.vanderbilt.edu/").setValue(hgscEmergeReport.getPatientID())
                     .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
-                            .setCode("TAX").setDisplay("Patient external identifier"))));
+                            .setCode("PI").setDisplay("Patient internal identifier"))));
         }
         //Name
         if (mappingConfig.containsKey("HgscEmergeReport.patientLastName")) {
@@ -35,7 +38,7 @@ public class PatientValueMapper {
                     + " " + hgscEmergeReport.getPatientMiddleInitial() + " " + hgscEmergeReport.getPatientLastName());
         }
         //Language
-        patient.setLanguageElement(new CodeType("en-US"));
+        //patient.setLanguageElement(new CodeType("en-US"));
         //Gender
         if (mappingConfig.containsKey("HgscEmergeReport.sex")) {
             patient.setGender(Enumerations.AdministrativeGender.fromCode(hgscEmergeReport.getSex().toLowerCase()));
@@ -83,7 +86,7 @@ public class PatientValueMapper {
         Extension ext3child2 = new Extension("text", new StringType(hgscEmergeReport.getRace()));
         ext3.addExtension(ext3child2);
 
-        Extension ext4 = new Extension("Age", new IntegerType(83));
+        Extension ext4 = new Extension("http://hl7.org/fhir/StructureDefinition/patient-age", new IntegerType(calAge(hgscEmergeReport.getDateOfBirth())));
 
         patient.addExtension(ext1);
         patient.addExtension(ext2);
@@ -91,5 +94,16 @@ public class PatientValueMapper {
         patient.addExtension(ext4);
 
         return patient;
+    }
+
+    public int calAge(String patientDOB) {
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date(patientDOB));
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH) + 1;
+        int date = c.get(Calendar.DATE);
+        LocalDate birthDate = LocalDate.of(year, month, date);
+        return Period.between(birthDate, LocalDate.now()).getYears();
     }
 }

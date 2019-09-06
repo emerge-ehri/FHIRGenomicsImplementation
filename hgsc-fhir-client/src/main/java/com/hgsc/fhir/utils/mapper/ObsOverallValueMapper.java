@@ -44,10 +44,17 @@ public class ObsOverallValueMapper {
             obsOverall.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.orgvs/LL541-4")
                     .setCode("LA6576-8").setDisplay(hgscEmergeReport.getOverallInterpretation())));
         }
+
+        //extensions
+        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
+                new StringType("Summary text for the overall interpretation if available"));
+        obsOverall.addExtension(ext);
+
         //BodySite
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectionSource")) {
             obsOverall.setBodySite(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
-                    .setCode("119297000").setDisplay(hgscEmergeReport.getSampleCollectionSource())).setText(hgscEmergeReport.getSampleCollectionSource()));
+                    .setCode("119297000").setDisplay(hgscEmergeReport.getSampleCollectionSource()))
+                    .setText(hgscEmergeReport.getSampleCollectionSource()));
         }
 
         return obsOverall;
