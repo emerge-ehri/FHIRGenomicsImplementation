@@ -21,7 +21,7 @@ public class FileUploadServiceImpl {
    private static Logger logger = Logger.getLogger(FileUploadServiceImpl.class);
 
    static FhirContext ctx = FhirContext.forR4();
-   static IGenericClient client = ctx.newRestfulGenericClient("http://localhost:8080/hapi-fhir-jpaserver/fhir/");
+   static IGenericClient client = ctx.newRestfulGenericClient("https://dev.hl7fhir.hgsc.bcm.edu/hapi-fhir-jpaserver/fhir/");
    FileUtils fileUtils = new FileUtils();
 
    public void createFhirResources(File file) {
