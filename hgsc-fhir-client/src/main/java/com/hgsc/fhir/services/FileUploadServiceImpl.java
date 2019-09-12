@@ -31,19 +31,13 @@ public class FileUploadServiceImpl {
 
       Map<String, Object> fhirResources = this.createIndividualFhirResources(report);
       this.createBundle(fhirResources);
-//      this.searchDiagnosticReportById("61");
    }
 
    public Map<String, Object> createIndividualFhirResources(HgscEmergeReport hgscEmergeReport) {
+
       HashMap<String, String> mappingConfig = fileUtils.readMapperConfig(FileUtils.PROJECT_DIRECTORY + "/src/main/resources/mapping.conf");
       Map<String, Object> newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscEmergeReport);
       return newResources;
-
-//      for (String resourceName : newResources.keySet()) {
-//         MethodOutcome outcome = client.create().resource((IBaseResource)newResources.get(resourceName)).execute();
-//         IIdType id = outcome.getId();
-//         System.out.println("created resource, got ID: " + id);
-//      }
    }
 
    public void createBundle(Map<String, Object> fhirResources) {
@@ -66,6 +60,9 @@ public class FileUploadServiceImpl {
       Observation obsOverall = (Observation) fhirResources.get("ObsOverall");
       obsOverall.setId(IdDt.newRandomUuid());
 
+      Practitioner geneticist = (Practitioner) fhirResources.get("Geneticist");
+      geneticist.setId(IdDt.newRandomUuid());
+
       specimen.addRequest(new Reference(serviceRequest.getId()));
       serviceRequest.addSpecimen(new Reference(specimen.getId()));
       obsOverall.addBasedOn(new Reference(serviceRequest.getId()));
@@ -77,6 +74,7 @@ public class FileUploadServiceImpl {
       // The diagnosticReport refers to the patient/specimen using the ID, which is already set to a temporary UUID
       diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
       diagnosticReport.addPerformer(new Reference(organization.getId()));
+      diagnosticReport.addResultsInterpreter(new Reference(geneticist.getId()));
       diagnosticReport.addSpecimen(new Reference(specimen.getId()));
       diagnosticReport.setSubject(new Reference(patient.getId()));
       diagnosticReport.addResult(new Reference(obsOverall.getId()));
@@ -86,12 +84,12 @@ public class FileUploadServiceImpl {
       bundle.setType(Bundle.BundleType.TRANSACTION);
 
       bundle.addEntry()
-         .setFullUrl(patient.getId())
-         .setResource(patient)
-         .getRequest()
-         .setUrl("Patient")
-         //.setIfNoneExist("name=Yan&identifier=1234567")
-         .setMethod(Bundle.HTTPVerb.POST);
+              .setFullUrl(patient.getId())
+              .setResource(patient)
+              .getRequest()
+              .setUrl("Patient")
+              //.setIfNoneExist("name=Yan&identifier=1234567")
+              .setMethod(Bundle.HTTPVerb.POST);
 
       bundle.addEntry()
               .setFullUrl(specimen.getId())
@@ -122,10 +120,17 @@ public class FileUploadServiceImpl {
               .setMethod(Bundle.HTTPVerb.POST);
 
       bundle.addEntry()
-         .setResource(diagnosticReport)
-         .getRequest()
-         .setUrl("DiagnosticReport")
-         .setMethod(Bundle.HTTPVerb.POST);
+              .setFullUrl(geneticist.getId())
+              .setResource(geneticist)
+              .getRequest()
+              .setUrl("Practitioner")
+              .setMethod(Bundle.HTTPVerb.POST);
+
+      bundle.addEntry()
+              .setResource(diagnosticReport)
+              .getRequest()
+              .setUrl("DiagnosticReport")
+              .setMethod(Bundle.HTTPVerb.POST);
 
       Bundle resp = client.transaction().withBundle(bundle).execute();
       logger.info("Create Bundle:" + resp);

@@ -30,6 +30,8 @@ public class FhirResourcesMappingUtils {
         Organization organization = null;
         // ObsOverall
         Observation obsOverall = null;
+        // Geneticist
+        Practitioner geneticist = null;
         DiagnosticReport diagnosticReport = null;
 
         // create all available resources
@@ -50,6 +52,9 @@ public class FhirResourcesMappingUtils {
                         break;
                     case "ObsOverall":
                         obsOverall = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
+                    case "Geneticist":
+                        geneticist = (Practitioner) Class.forName("org.hl7.fhir.r4.model.Practitioner").newInstance();
                         break;
                     case "DiagnosticReport":
                         diagnosticReport = (DiagnosticReport) Class.forName("org.hl7.fhir.r4.model.DiagnosticReport").newInstance();
@@ -80,6 +85,10 @@ public class FhirResourcesMappingUtils {
         if (obsOverall != null) {
             obsOverall = new ObsOverallValueMapper().obsOverallValueMapping(obsOverall, mappingConfig, hgscEmergeReport);
             results.put("ObsOverall", obsOverall);
+        }
+        if (geneticist != null) {
+            geneticist = new GeneticistValueMapper().geneticistValueMapping(geneticist, mappingConfig, hgscEmergeReport);
+            results.put("Geneticist", geneticist);
         }
         if (diagnosticReport != null) {
             diagnosticReport = new DiagnosticReportValueMapper().diagnosticReportValueMapping(diagnosticReport, mappingConfig, hgscEmergeReport, fileUtils);
