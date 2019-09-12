@@ -60,6 +60,9 @@ public class FileUploadServiceImpl {
       serviceRequest.setId(IdDt.newRandomUuid());
       serviceRequest.setSubject(new Reference(patient.getId()));
 
+      Organization organization = (Organization) fhirResources.get("Organization");
+      organization.setId(IdDt.newRandomUuid());
+
       Observation obsOverall = (Observation) fhirResources.get("ObsOverall");
       obsOverall.setId(IdDt.newRandomUuid());
 
@@ -68,10 +71,12 @@ public class FileUploadServiceImpl {
       obsOverall.addBasedOn(new Reference(serviceRequest.getId()));
       obsOverall.setSubject(new Reference(patient.getId()));
       obsOverall.setSpecimen(new Reference(specimen.getId()));
+      obsOverall.addPerformer(new Reference(organization.getId()));
 
       DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
       // The diagnosticReport refers to the patient/specimen using the ID, which is already set to a temporary UUID
       diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
+      diagnosticReport.addPerformer(new Reference(organization.getId()));
       diagnosticReport.addSpecimen(new Reference(specimen.getId()));
       diagnosticReport.setSubject(new Reference(patient.getId()));
       diagnosticReport.addResult(new Reference(obsOverall.getId()));
@@ -100,6 +105,13 @@ public class FileUploadServiceImpl {
               .setResource(serviceRequest)
               .getRequest()
               .setUrl("ServiceRequest")
+              .setMethod(Bundle.HTTPVerb.POST);
+
+      bundle.addEntry()
+              .setFullUrl(organization.getId())
+              .setResource(organization)
+              .getRequest()
+              .setUrl("Organization")
               .setMethod(Bundle.HTTPVerb.POST);
 
       bundle.addEntry()

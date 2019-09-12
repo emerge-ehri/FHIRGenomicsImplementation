@@ -27,6 +27,7 @@ public class FhirResourcesMappingUtils {
         Patient patient = null;
         Specimen specimen = null;
         ServiceRequest serviceRequest = null;
+        Organization organization = null;
         // ObsOverall
         Observation obsOverall = null;
         DiagnosticReport diagnosticReport = null;
@@ -43,6 +44,9 @@ public class FhirResourcesMappingUtils {
                         break;
                     case "ServiceRequest":
                         serviceRequest = (ServiceRequest) Class.forName("org.hl7.fhir.r4.model.ServiceRequest").newInstance();
+                        break;
+                    case "Organization":
+                        organization = (Organization) Class.forName("org.hl7.fhir.r4.model.Organization").newInstance();
                         break;
                     case "ObsOverall":
                         obsOverall = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
@@ -68,6 +72,10 @@ public class FhirResourcesMappingUtils {
         if (serviceRequest != null) {
             serviceRequest = new ServiceRequestValueMapper().serviceRequestValueMapping(serviceRequest, mappingConfig, hgscEmergeReport);
             results.put("ServiceRequest", serviceRequest);
+        }
+        if (organization != null) {
+            organization = new OrganizationValueMapper().organizationValueMapping(organization, mappingConfig, hgscEmergeReport);
+            results.put("Organization", organization);
         }
         if (obsOverall != null) {
             obsOverall = new ObsOverallValueMapper().obsOverallValueMapping(obsOverall, mappingConfig, hgscEmergeReport);
