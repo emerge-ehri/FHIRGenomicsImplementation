@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -49,7 +50,8 @@ public class FileUploadServlet extends HttpServlet {
             }
 
             FileUploadServiceImpl fileUploadServiceImpl = new FileUploadServiceImpl();
-            fileUploadServiceImpl.createFhirResources(file);
+            ArrayList<String> resp = fileUploadServiceImpl.createFhirResources(file);
+            request.setAttribute("resultURLArr", resp);
         }
         request.getRequestDispatcher("/success.jsp").forward(request, response);
     }

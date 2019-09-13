@@ -9,10 +9,15 @@ import com.hgsc.fhir.utils.FileUtils;
 import com.hgsc.fhir.utils.JsonMappingUtil;
 import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,13 +29,13 @@ public class FileUploadServiceImpl {
    static IGenericClient client = ctx.newRestfulGenericClient("https://dev.hl7fhir.hgsc.bcm.edu/hapi-fhir-jpaserver/fhir/");
    FileUtils fileUtils = new FileUtils();
 
-   public void createFhirResources(File file) {
+   public ArrayList<String> createFhirResources(File file) {
 
       JsonMappingUtil util = new JsonMappingUtil();
       HgscEmergeReport report = util.readFromEmergeReportJsonFile(file);
 
       Map<String, Object> fhirResources = this.createIndividualFhirResources(report);
-      this.createBundle(fhirResources);
+      return this.createBundle(fhirResources);
    }
 
    public Map<String, Object> createIndividualFhirResources(HgscEmergeReport hgscEmergeReport) {
@@ -40,7 +45,7 @@ public class FileUploadServiceImpl {
       return newResources;
    }
 
-   public void createBundle(Map<String, Object> fhirResources) {
+   public ArrayList<String> createBundle(Map<String, Object> fhirResources) {
 
       Patient patient = (Patient)fhirResources.get("Patient");
       // Give the patient a temporary UUID so that other resources in the transaction can refer to it
@@ -133,8 +138,29 @@ public class FileUploadServiceImpl {
               .setMethod(Bundle.HTTPVerb.POST);
 
       Bundle resp = client.transaction().withBundle(bundle).execute();
-      logger.info("Create Bundle:" + resp);
-      System.out.println(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(resp));
+
+      //Convert bundle resp to actual resource URL and send as htmlResponse
+      JSONObject response = null;
+      try {
+         response = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(resp));
+         logger.info("Create Bundle:" + response);
+      } catch (ParseException e) {
+         logger.error("Failed to convert bundle result to JSON response.", e);
+      }
+
+      JSONArray urlArr = (JSONArray) response.get("link");
+      JSONObject jsonUrl = (JSONObject) urlArr.get(0);
+      String serverURL = jsonUrl.get("url").toString();
+
+      ArrayList<String> resultURLArr = new ArrayList<String>();
+      JSONArray resourcesURLArr = (JSONArray) response.get("entry");
+      for (Object o : resourcesURLArr) {
+         JSONObject jso = (JSONObject) o;
+         JSONObject jso2 = (JSONObject) jso.get("response");
+         resultURLArr.add(serverURL + "/" + jso2.get("location"));
+      }
+
+      return resultURLArr;
    }
 
    public DiagnosticReport searchDiagnosticReportById(String diagnosticReportId) {

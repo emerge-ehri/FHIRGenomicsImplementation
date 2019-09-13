@@ -18,6 +18,7 @@ public class PatientValueMapper {
     public Patient patientValueMapping(Patient patient, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
 
         //Identifier
+        //The code PI creates warnings during validation but until the HL7 Vocabulary group resolves this, we will be ignoring the warnings.
         if (mappingConfig.containsKey("HgscEmergeReport.patientID")) {
             patient.addIdentifier(new Identifier().setSystem("https://emerge.mc.vanderbilt.edu/").setValue(hgscEmergeReport.getPatientID())
                     .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")

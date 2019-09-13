@@ -16,6 +16,7 @@ public class SpecimenValueMapper {
         //Profile
         specimen.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/specimen");
         //Identifier
+        //The code SID creates warnings during validation but until the HL7 Vocabulary group resolves this, we will be ignoring the warnings.
         if (mappingConfig.containsKey("HgscEmergeReport.patientSampleID")) {
             specimen.addIdentifier(new Identifier().setSystem("https://emerge.mc.vanderbilt.edu/").setValue(hgscEmergeReport.getPatientSampleID())
                     .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
