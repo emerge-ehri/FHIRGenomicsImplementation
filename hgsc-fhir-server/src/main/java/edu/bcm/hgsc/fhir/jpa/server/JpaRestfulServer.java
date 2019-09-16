@@ -184,7 +184,7 @@ public class JpaRestfulServer extends RestfulServer {
          * so it is a potential security vulnerability. Consider using an AuthorizationInterceptor
          * with this feature.
          */
-        if (true) { // <-- DISABLED RIGHT NOW
+        if (HapiProperties.getTerminologyUploaderEnabled()) { // <-- DISABLED RIGHT NOW
             registerProvider(appCtx.getBean(TerminologyUploaderProvider.class));
         }
 
