@@ -53,6 +53,7 @@ public class HapiProperties {
     static final String ALLOW_CONTAINS_SEARCHES = "allow_contains_searches";
     static final String ALLOW_OVERRIDE_DEFAULT_SEARCH_PARAMS = "allow_override_default_search_params";
     static final String EMAIL_FROM = "email.from";
+    static final String TERMINOLOGY_UPLOADER_ENABLED = "terminology.uploader.enabled";
     private static final String VALIDATE_REQUESTS_ENABLED = "validation.requests.enabled";
     private static final String VALIDATE_RESPONSES_ENABLED = "validation.responses.enabled";
     private static final String FILTER_SEARCH_ENABLED = "filter_search.enabled";
@@ -79,10 +80,20 @@ public class HapiProperties {
     public static Properties getProperties() {
         if (properties == null) {
             // Load the configurable properties file
-            try (InputStream in = HapiProperties.class.getClassLoader().getResourceAsStream(HAPI_PROPERTIES)) {
+            try {
+                String propertyHome = System.getenv("CATALINA_HOME");
+
+                if(propertyHome == null) {
+                    propertyHome = System.getProperty(HAPI_PROPERTIES);
+                }
+
+                String filePath = propertyHome+"/webapps/properties/hapi.properties";
+                
+                InputStream input = new FileInputStream(filePath);
                 HapiProperties.properties = new Properties();
-                HapiProperties.properties.load(in);
-            } catch (Exception e) {
+                HapiProperties.properties.load(input);
+            }
+            catch (Exception e) {
                 throw new ConfigurationException("Could not load HAPI properties", e);
             }
 
@@ -373,6 +384,10 @@ public class HapiProperties {
 
     public static boolean getGraphqlEnabled() {
         return HapiProperties.getBooleanProperty(GRAPHQL_ENABLED, true);
+    }
+
+    public static Boolean getTerminologyUploaderEnabled() {
+        return HapiProperties.getBooleanProperty(TERMINOLOGY_UPLOADER_ENABLED, false);
     }
 
 }
