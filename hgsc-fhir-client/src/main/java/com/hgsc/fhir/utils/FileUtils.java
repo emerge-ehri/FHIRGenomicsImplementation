@@ -2,10 +2,9 @@ package com.hgsc.fhir.utils;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Properties;
 
 public class FileUtils {
-
-   public static String PROJECT_DIRECTORY = "/Users/feiy/IdeaProjects/fhir-implementation/hgsc-fhir-client/";
 
    public HashMap<String, String> readMapperConfig(String fileName) {
       HashMap<String, String> mappingConfig = new HashMap<>();
@@ -39,5 +38,18 @@ public class FileUtils {
          e.printStackTrace();
       }
       return bytesArray;
+   }
+
+   public String loadPropertyValue(String propertiesFileName, String propertyName) {
+
+      try (InputStream input = new FileInputStream(getClass().getClassLoader().getResource(propertiesFileName).getPath())) {
+         Properties prop = new Properties();
+         prop.load(input);
+         return prop.getProperty(propertyName);
+      } catch (IOException ex) {
+         ex.printStackTrace();
+      }
+
+      return null;
    }
 }

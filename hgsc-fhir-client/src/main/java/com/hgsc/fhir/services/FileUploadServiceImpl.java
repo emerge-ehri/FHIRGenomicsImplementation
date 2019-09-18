@@ -7,6 +7,7 @@ import com.hgsc.fhir.models.HgscEmergeReport;
 import com.hgsc.fhir.utils.FhirResourcesMappingUtils;
 import com.hgsc.fhir.utils.FileUtils;
 import com.hgsc.fhir.utils.JsonMappingUtil;
+import com.hgsc.fhir.utils.mapper.OrganizationBCMValueMapper;
 import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
 import org.json.simple.JSONArray;
@@ -25,9 +26,10 @@ public class FileUploadServiceImpl {
 
    private static Logger logger = Logger.getLogger(FileUploadServiceImpl.class);
 
-   static FhirContext ctx = FhirContext.forR4();
-   static IGenericClient client = ctx.newRestfulGenericClient("https://dev.hl7fhir.hgsc.bcm.edu/hapi-fhir-jpaserver/fhir/");
    FileUtils fileUtils = new FileUtils();
+
+   FhirContext ctx = FhirContext.forR4();
+   IGenericClient client = ctx.newRestfulGenericClient(fileUtils.loadPropertyValue("config.properties", "jpaserver.url"));
 
    public ArrayList<String> createFhirResources(File file) {
 
@@ -40,7 +42,7 @@ public class FileUploadServiceImpl {
 
    public Map<String, Object> createIndividualFhirResources(HgscEmergeReport hgscEmergeReport) {
 
-      HashMap<String, String> mappingConfig = fileUtils.readMapperConfig(FileUtils.PROJECT_DIRECTORY + "/src/main/resources/mapping.conf");
+      HashMap<String, String> mappingConfig = fileUtils.readMapperConfig(getClass().getClassLoader().getResource("mapping.conf").getPath());
       Map<String, Object> newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscEmergeReport);
       return newResources;
    }
@@ -62,12 +64,16 @@ public class FileUploadServiceImpl {
       Organization organization = (Organization) fhirResources.get("Organization");
       organization.setId(IdDt.newRandomUuid());
 
+      Organization organizationBCM = new OrganizationBCMValueMapper().organizationBCMValueMapping();
+      organizationBCM.setId(IdDt.newRandomUuid());
+
       Observation obsOverall = (Observation) fhirResources.get("ObsOverall");
       obsOverall.setId(IdDt.newRandomUuid());
 
       Practitioner geneticist = (Practitioner) fhirResources.get("Geneticist");
       geneticist.setId(IdDt.newRandomUuid());
 
+      organization.setPartOf(new Reference(organizationBCM.getId()));
       specimen.addRequest(new Reference(serviceRequest.getId()));
       serviceRequest.addSpecimen(new Reference(specimen.getId()));
       obsOverall.addBasedOn(new Reference(serviceRequest.getId()));
@@ -118,6 +124,14 @@ public class FileUploadServiceImpl {
               .setMethod(Bundle.HTTPVerb.POST);
 
       bundle.addEntry()
+              .setFullUrl(organizationBCM.getId())
+              .setResource(organizationBCM)
+              .getRequest()
+              .setUrl("Organization")
+              //.setIfNoneExist("name=Baylor College of Medicine")
+              .setMethod(Bundle.HTTPVerb.POST);
+
+      bundle.addEntry()
               .setFullUrl(obsOverall.getId())
               .setResource(obsOverall)
               .getRequest()
@@ -163,14 +177,14 @@ public class FileUploadServiceImpl {
       return resultURLArr;
    }
 
-   public DiagnosticReport searchDiagnosticReportById(String diagnosticReportId) {
+   public DiagnosticReport searchDiagnosticReportById(String projectDir, String diagnosticReportId) {
       DiagnosticReport diagnosticReport = client.read().resource(DiagnosticReport.class).withId(diagnosticReportId).execute();
 
       String string = ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport);
       System.out.println(string);
 
       byte[] byteArray = diagnosticReport.getPresentedFormFirstRep().getData();
-      File outputFile = new File(FileUtils.PROJECT_DIRECTORY + "outputFile.pdf");
+      File outputFile = new File(projectDir + "outputFile.pdf");
 
       // save byte[] into the output file
       try (FileOutputStream fos = new FileOutputStream(outputFile)) {

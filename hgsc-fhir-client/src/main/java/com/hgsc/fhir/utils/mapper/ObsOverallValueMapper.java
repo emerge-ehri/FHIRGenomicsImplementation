@@ -15,12 +15,6 @@ public class ObsOverallValueMapper {
         obsOverall.setText(new Narrative().setStatus(Narrative.NarrativeStatus.EMPTY).setDiv(new XhtmlNode().setValue("fixed")));
         //Profile
         obsOverall.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/obs-overall");
-        //Identifier
-        if (mappingConfig.containsKey("HgscEmergeReport.reportIdentifier")) {
-            obsOverall.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscEmergeReport.getReportIdentifier())
-                    .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
-                            .setCode("FILL").setDisplay("Filler Identifier"))));
-        }
         //Status
         if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
             obsOverall.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
@@ -53,8 +47,7 @@ public class ObsOverallValueMapper {
         //BodySite
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectionSource")) {
             obsOverall.setBodySite(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
-                    .setCode("119297000").setDisplay(hgscEmergeReport.getSampleCollectionSource()))
-                    .setText(hgscEmergeReport.getSampleCollectionSource()));
+                    .setCode("119297000").setDisplay(hgscEmergeReport.getSampleCollectionSource())));
         }
 
         return obsOverall;

@@ -1,14 +1,7 @@
 package com.hgsc.fhir;
 
 import com.hgsc.fhir.services.FileUploadServiceImpl;
-import com.hgsc.fhir.utils.FileUtils;
 import org.apache.log4j.Logger;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -16,6 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024,
         maxFileSize = 1024 * 1024 * 10,
@@ -28,7 +26,8 @@ public class FileUploadServlet extends HttpServlet {
 
         logger.info("------------ FileUploadServlet ------------");
 
-        String UPLOAD_DIRECTORY = FileUtils.PROJECT_DIRECTORY + "/src/main/webapp/WEB-INF/uploadFiles/";
+        String projectDir = this.getServletContext().getRealPath(File.separator);
+        String UPLOAD_DIRECTORY = projectDir + "/WEB-INF/uploadFiles/";
         Part filePart = request.getPart("filename");
         String fileName = getSubmittedFileName(filePart);
 

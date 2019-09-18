@@ -12,15 +12,22 @@ public class GeneticistValueMapper {
 
         //Text
         geneticist.setText(new Narrative().setStatus(Narrative.NarrativeStatus.EMPTY).setDiv(new XhtmlNode().setValue("fixed")));
+        //Identifier
+        geneticist.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("101")
+                .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                        .setCode("NPI").setDisplay("National provider identifier"))));
         //Name
         geneticist.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily("Murdock").addGiven("David")
                 .addSuffix("M.D., F.A.C.M.G.").setText("David Murdock, M.D., F.A.C.M.G."));
         //Qualification
         geneticist.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept().addCoding(new Coding()
                 .setSystem("http://terminology.hl7.org/CodeSystem/v2-2.7-0360")
-                .setCode("MD").setDisplay("M.D.")).setText("ABMGG Certified Molecular Geneticist, Assistant Laboratory Director")));
+                .setCode("MD").setDisplay("Doctor of Medicine")).setText("ABMGG Certified Molecular Geneticist, Assistant Laboratory Director"))
+                .addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("101")
+                        .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                                .setCode("NPI").setDisplay("National provider identifier")))));
         //Address
-        geneticist.addAddress(new Address().addLine("1 Baylor Plaza").setCity("Houston").setState("TX").setPostalCode("77030").setCountry("USA"));
+        geneticist.addAddress(new Address().addLine("One Baylor Plaza").setCity("Houston").setState("TX").setPostalCode("77030").setCountry("USA"));
 
         return geneticist;
     }
