@@ -1,4 +1,4 @@
-package com.hgsc.fhir.models;
+package edu.bcm.hgsc.fhir.models;
 
 import com.fasterxml.jackson.annotation.*;
 

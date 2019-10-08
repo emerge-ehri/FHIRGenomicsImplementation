@@ -1,8 +1,7 @@
-package com.hgsc.fhir.utils.mapper;
+package edu.bcm.hgsc.fhir.utils.mapper;
 
-import com.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,8 +10,6 @@ public class ObsOverallValueMapper {
 
     public Observation obsOverallValueMapping(Observation obsOverall, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
 
-        //Text
-        obsOverall.setText(new Narrative().setStatus(Narrative.NarrativeStatus.EMPTY).setDiv(new XhtmlNode().setValue("fixed")));
         //Profile
         obsOverall.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/obs-overall");
         //Status

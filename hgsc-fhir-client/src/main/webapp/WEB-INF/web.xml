@@ -10,7 +10,7 @@
 <display-name>hgsc-fhir-client Web Application</display-name>
 <servlet>
   <servlet-name>FileUploadServlet</servlet-name>
-  <servlet-class>com.hgsc.fhir.FileUploadServlet</servlet-class>
+  <servlet-class>edu.bcm.hgsc.fhir.FileUploadServlet</servlet-class>
 </servlet>
 <servlet-mapping>
   <servlet-name>FileUploadServlet</servlet-name>

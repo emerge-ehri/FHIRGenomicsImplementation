@@ -1,8 +1,7 @@
-package com.hgsc.fhir.utils.mapper;
+package edu.bcm.hgsc.fhir.utils.mapper;
 
-import com.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.util.HashMap;
 
@@ -10,8 +9,6 @@ public class OrganizationValueMapper {
 
     public Organization organizationValueMapping(Organization organization, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
 
-        //Text
-        organization.setText(new Narrative().setStatus(Narrative.NarrativeStatus.EMPTY).setDiv(new XhtmlNode().setValue("fixed")));
         //Identifier
         organization.addIdentifier(new Identifier().setSystem("http://www.hgsc.bcm.edu").setValue("CAP# 8004250 / CLIA# 45D2027450")
                 .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")

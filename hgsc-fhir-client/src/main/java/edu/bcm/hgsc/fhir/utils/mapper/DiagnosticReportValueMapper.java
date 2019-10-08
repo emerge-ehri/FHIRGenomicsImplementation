@@ -1,9 +1,8 @@
-package com.hgsc.fhir.utils.mapper;
+package edu.bcm.hgsc.fhir.utils.mapper;
 
-import com.hgsc.fhir.models.HgscEmergeReport;
-import com.hgsc.fhir.utils.FileUtils;
+import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.utils.FileUtils;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -12,8 +11,6 @@ public class DiagnosticReportValueMapper {
 
     public DiagnosticReport diagnosticReportValueMapping(DiagnosticReport diagnosticReport, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, FileUtils fileUtils) {
 
-        //Text
-        diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.EMPTY).setDiv(new XhtmlNode().setValue("fixed")));
         //Profile
         diagnosticReport.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/diagnosticreport");
         //Identifier

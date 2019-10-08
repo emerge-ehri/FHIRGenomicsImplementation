@@ -1,4 +1,4 @@
-package com.hgsc.fhir.utils;
+package edu.bcm.hgsc.fhir.utils;
 
 import java.io.*;
 import java.util.HashMap;

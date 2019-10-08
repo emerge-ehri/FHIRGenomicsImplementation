@@ -1,7 +1,7 @@
-package com.hgsc.fhir.utils;
+package edu.bcm.hgsc.fhir.utils;
 
-import com.hgsc.fhir.models.HgscEmergeReport;
-import com.hgsc.fhir.utils.mapper.*;
+import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.utils.mapper.*;
 import org.hl7.fhir.r4.model.*;
 
 import java.util.HashMap;
@@ -28,10 +28,12 @@ public class FhirResourcesMappingUtils {
         Specimen specimen = null;
         ServiceRequest serviceRequest = null;
         Organization organization = null;
+        Organization organizationBCM = null;
         // ObsOverall
         Observation obsOverall = null;
         // Geneticist
-        Practitioner geneticist = null;
+        Practitioner geneticistOne = null;
+        Practitioner geneticistTwo = null;
         DiagnosticReport diagnosticReport = null;
 
         // create all available resources
@@ -50,11 +52,17 @@ public class FhirResourcesMappingUtils {
                     case "Organization":
                         organization = (Organization) Class.forName("org.hl7.fhir.r4.model.Organization").newInstance();
                         break;
+                    case "OrganizationBCM":
+                        organizationBCM = (Organization) Class.forName("org.hl7.fhir.r4.model.Organization").newInstance();
+                        break;
                     case "ObsOverall":
                         obsOverall = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
                         break;
-                    case "Geneticist":
-                        geneticist = (Practitioner) Class.forName("org.hl7.fhir.r4.model.Practitioner").newInstance();
+                    case "GeneticistOne":
+                        geneticistOne = (Practitioner) Class.forName("org.hl7.fhir.r4.model.Practitioner").newInstance();
+                        break;
+                    case "GeneticistTwo":
+                        geneticistTwo = (Practitioner) Class.forName("org.hl7.fhir.r4.model.Practitioner").newInstance();
                         break;
                     case "DiagnosticReport":
                         diagnosticReport = (DiagnosticReport) Class.forName("org.hl7.fhir.r4.model.DiagnosticReport").newInstance();
@@ -82,13 +90,21 @@ public class FhirResourcesMappingUtils {
             organization = new OrganizationValueMapper().organizationValueMapping(organization, mappingConfig, hgscEmergeReport);
             results.put("Organization", organization);
         }
+        if (organizationBCM != null) {
+            organizationBCM = new OrganizationBCMValueMapper().organizationBCMValueMapping(organizationBCM, mappingConfig, hgscEmergeReport);
+            results.put("OrganizationBCM", organizationBCM);
+        }
         if (obsOverall != null) {
             obsOverall = new ObsOverallValueMapper().obsOverallValueMapping(obsOverall, mappingConfig, hgscEmergeReport);
             results.put("ObsOverall", obsOverall);
         }
-        if (geneticist != null) {
-            geneticist = new GeneticistValueMapper().geneticistValueMapping(geneticist, mappingConfig, hgscEmergeReport);
-            results.put("Geneticist", geneticist);
+        if (geneticistOne != null) {
+            geneticistOne = new GeneticistValueMapper().geneticistOneValueMapping(geneticistOne, mappingConfig, hgscEmergeReport);
+            results.put("GeneticistOne", geneticistOne);
+        }
+        if (geneticistTwo != null) {
+            geneticistTwo = new GeneticistValueMapper().geneticistTwoValueMapping(geneticistTwo, mappingConfig, hgscEmergeReport);
+            results.put("GeneticistTwo", geneticistTwo);
         }
         if (diagnosticReport != null) {
             diagnosticReport = new DiagnosticReportValueMapper().diagnosticReportValueMapping(diagnosticReport, mappingConfig, hgscEmergeReport, fileUtils);

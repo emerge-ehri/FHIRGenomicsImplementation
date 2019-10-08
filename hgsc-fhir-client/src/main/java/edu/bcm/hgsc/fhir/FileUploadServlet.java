@@ -1,6 +1,6 @@
-package com.hgsc.fhir;
+package edu.bcm.hgsc.fhir;
 
-import com.hgsc.fhir.services.FileUploadServiceImpl;
+import edu.bcm.hgsc.fhir.services.FileUploadServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

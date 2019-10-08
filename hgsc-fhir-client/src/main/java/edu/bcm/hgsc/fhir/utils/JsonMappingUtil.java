@@ -1,7 +1,7 @@
-package com.hgsc.fhir.utils;
+package edu.bcm.hgsc.fhir.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
 import org.apache.log4j.Logger;
 
 import java.io.File;

@@ -1,8 +1,10 @@
-package com.hgsc.fhir.utils.mapper;
+package edu.bcm.hgsc.fhir.utils.mapper;
 
-import com.hgsc.fhir.models.HgscEmergeReport;
-import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.Identifier;
+import org.hl7.fhir.r4.model.ServiceRequest;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,8 +13,6 @@ public class ServiceRequestValueMapper {
 
     public ServiceRequest serviceRequestValueMapping(ServiceRequest serviceRequest, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
 
-        //Text
-        serviceRequest.setText(new Narrative().setStatus(Narrative.NarrativeStatus.EMPTY).setDiv(new XhtmlNode().setValue("fixed")));
         //Profile
         serviceRequest.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/servicerequest");
         //Identifier

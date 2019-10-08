@@ -1,6 +1,6 @@
-package com.hgsc.fhir.utils.mapper;
+package edu.bcm.hgsc.fhir.utils.mapper;
 
-import com.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.codesystems.V3AdministrativeGender;
 import org.hl7.fhir.r4.model.codesystems.V3Ethnicity;

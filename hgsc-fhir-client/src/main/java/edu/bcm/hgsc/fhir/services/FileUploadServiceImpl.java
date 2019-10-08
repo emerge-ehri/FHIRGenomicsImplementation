@@ -1,15 +1,15 @@
-package com.hgsc.fhir.services;
+package edu.bcm.hgsc.fhir.services;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.model.primitive.IdDt;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
-import com.hgsc.fhir.models.HgscEmergeReport;
-import com.hgsc.fhir.utils.FhirResourcesMappingUtils;
-import com.hgsc.fhir.utils.FileUtils;
-import com.hgsc.fhir.utils.JsonMappingUtil;
-import com.hgsc.fhir.utils.mapper.OrganizationBCMValueMapper;
+import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.utils.FhirResourcesMappingUtils;
+import edu.bcm.hgsc.fhir.utils.FileUtils;
+import edu.bcm.hgsc.fhir.utils.JsonMappingUtil;
 import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -64,14 +64,16 @@ public class FileUploadServiceImpl {
       Organization organization = (Organization) fhirResources.get("Organization");
       organization.setId(IdDt.newRandomUuid());
 
-      Organization organizationBCM = new OrganizationBCMValueMapper().organizationBCMValueMapping();
+      Organization organizationBCM = (Organization) fhirResources.get("OrganizationBCM");
       organizationBCM.setId(IdDt.newRandomUuid());
 
       Observation obsOverall = (Observation) fhirResources.get("ObsOverall");
       obsOverall.setId(IdDt.newRandomUuid());
 
-      Practitioner geneticist = (Practitioner) fhirResources.get("Geneticist");
-      geneticist.setId(IdDt.newRandomUuid());
+      Practitioner geneticistOne = (Practitioner) fhirResources.get("GeneticistOne");
+      geneticistOne.setId(IdDt.newRandomUuid());
+      Practitioner geneticistTwo = (Practitioner) fhirResources.get("GeneticistTwo");
+      geneticistTwo.setId(IdDt.newRandomUuid());
 
       organization.setPartOf(new Reference(organizationBCM.getId()));
       specimen.addRequest(new Reference(serviceRequest.getId()));
@@ -85,10 +87,31 @@ public class FileUploadServiceImpl {
       // The diagnosticReport refers to the patient/specimen using the ID, which is already set to a temporary UUID
       diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
       diagnosticReport.addPerformer(new Reference(organization.getId()));
-      diagnosticReport.addResultsInterpreter(new Reference(geneticist.getId()));
+      diagnosticReport.addResultsInterpreter(new Reference(geneticistOne.getId()))
+              .addResultsInterpreter(new Reference(geneticistTwo.getId()));
       diagnosticReport.addSpecimen(new Reference(specimen.getId()));
       diagnosticReport.setSubject(new Reference(patient.getId()));
       diagnosticReport.addResult(new Reference(obsOverall.getId()));
+
+      //Narrative
+      patient.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(patient))));
+      specimen.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(specimen))));
+      serviceRequest.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(serviceRequest))));
+      organization.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organization))));
+      organizationBCM.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organizationBCM))));
+      obsOverall.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsOverall))));
+      geneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistOne))));
+      geneticistTwo.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistTwo))));
+      diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport))));
 
       // Create a bundle that will be used as a transaction
       Bundle bundle = new Bundle();
@@ -139,8 +162,15 @@ public class FileUploadServiceImpl {
               .setMethod(Bundle.HTTPVerb.POST);
 
       bundle.addEntry()
-              .setFullUrl(geneticist.getId())
-              .setResource(geneticist)
+              .setFullUrl(geneticistOne.getId())
+              .setResource(geneticistOne)
+              .getRequest()
+              .setUrl("Practitioner")
+              .setMethod(Bundle.HTTPVerb.POST);
+
+      bundle.addEntry()
+              .setFullUrl(geneticistTwo.getId())
+              .setResource(geneticistTwo)
               .getRequest()
               .setUrl("Practitioner")
               .setMethod(Bundle.HTTPVerb.POST);
