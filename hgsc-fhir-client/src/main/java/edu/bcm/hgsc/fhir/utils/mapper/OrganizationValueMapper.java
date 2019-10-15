@@ -9,10 +9,11 @@ public class OrganizationValueMapper {
 
     public Organization organizationValueMapping(Organization organization, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
 
+        //Profile
+        organization.getMeta().addProfile("http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization");
         //Identifier
-        organization.addIdentifier(new Identifier().setSystem("http://www.hgsc.bcm.edu").setValue("CAP# 8004250 / CLIA# 45D2027450")
-                .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
-                        .setCode("FILL").setDisplay("Filler Identifier"))));
+        organization.addIdentifier(new Identifier().setSystem("urn:oid:2.16.840.1.113883.4.7").setValue("45D2027450"))
+                .addIdentifier(new Identifier().setSystem("http://www.hgsc.bcm.edu").setValue("8004250"));
         //Active
         organization.setActive(true);
         //Name

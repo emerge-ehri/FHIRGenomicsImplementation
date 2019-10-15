@@ -2,6 +2,7 @@ package edu.bcm.hgsc.fhir.services;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.model.primitive.IdDt;
+import ca.uhn.fhir.narrative.DefaultThymeleafNarrativeGenerator;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
 import edu.bcm.hgsc.fhir.utils.FhirResourcesMappingUtils;
@@ -70,6 +71,9 @@ public class FileUploadServiceImpl {
       Observation obsOverall = (Observation) fhirResources.get("ObsOverall");
       obsOverall.setId(IdDt.newRandomUuid());
 
+      Observation dxCNVVariants = (Observation) fhirResources.get("DxCNVVariants");
+      dxCNVVariants.setId(IdDt.newRandomUuid());
+
       Practitioner geneticistOne = (Practitioner) fhirResources.get("GeneticistOne");
       geneticistOne.setId(IdDt.newRandomUuid());
       Practitioner geneticistTwo = (Practitioner) fhirResources.get("GeneticistTwo");
@@ -82,6 +86,11 @@ public class FileUploadServiceImpl {
       obsOverall.setSubject(new Reference(patient.getId()));
       obsOverall.setSpecimen(new Reference(specimen.getId()));
       obsOverall.addPerformer(new Reference(organization.getId()));
+      dxCNVVariants.addBasedOn(new Reference(serviceRequest.getId()));
+      dxCNVVariants.setSubject(new Reference(patient.getId()));
+      dxCNVVariants.setSpecimen(new Reference(specimen.getId()));
+      dxCNVVariants.addPerformer(new Reference(organization.getId()));
+      dxCNVVariants.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText("Comments"));
 
       DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
       // The diagnosticReport refers to the patient/specimen using the ID, which is already set to a temporary UUID
@@ -94,8 +103,9 @@ public class FileUploadServiceImpl {
       diagnosticReport.addResult(new Reference(obsOverall.getId()));
 
       //Narrative
-      patient.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(patient))));
+      ctx.setNarrativeGenerator(new DefaultThymeleafNarrativeGenerator());
+      //patient.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(patient))));
       specimen.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(specimen))));
       serviceRequest.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
@@ -106,12 +116,14 @@ public class FileUploadServiceImpl {
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organizationBCM))));
       obsOverall.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsOverall))));
+      dxCNVVariants.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxCNVVariants))));
       geneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistOne))));
       geneticistTwo.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistTwo))));
-      diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport))));
+      //diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport))));
 
       // Create a bundle that will be used as a transaction
       Bundle bundle = new Bundle();
@@ -157,6 +169,13 @@ public class FileUploadServiceImpl {
       bundle.addEntry()
               .setFullUrl(obsOverall.getId())
               .setResource(obsOverall)
+              .getRequest()
+              .setUrl("Observation")
+              .setMethod(Bundle.HTTPVerb.POST);
+
+      bundle.addEntry()
+              .setFullUrl(dxCNVVariants.getId())
+              .setResource(dxCNVVariants)
               .getRequest()
               .setUrl("Observation")
               .setMethod(Bundle.HTTPVerb.POST);
