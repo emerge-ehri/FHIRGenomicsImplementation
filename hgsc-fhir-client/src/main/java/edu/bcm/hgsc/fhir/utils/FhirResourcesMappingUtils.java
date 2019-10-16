@@ -33,6 +33,8 @@ public class FhirResourcesMappingUtils {
         Observation obsOverall = null;
         //DxCNVVariants
         Observation dxCNVVariants = null;
+        //DxSNPINDELVariants
+        Observation dxSNPINDELVariants = null;
         // Geneticist
         Practitioner geneticistOne = null;
         Practitioner geneticistTwo = null;
@@ -62,6 +64,9 @@ public class FhirResourcesMappingUtils {
                         break;
                     case "DxCNVVariants":
                         dxCNVVariants = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
+                    case "DxSNPINDELVariants":
+                        dxSNPINDELVariants = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
                         break;
                     case "GeneticistOne":
                         geneticistOne = (Practitioner) Class.forName("org.hl7.fhir.r4.model.Practitioner").newInstance();
@@ -106,6 +111,10 @@ public class FhirResourcesMappingUtils {
         if (dxCNVVariants != null) {
             dxCNVVariants = new DxCNVVariantsValueMapper().dxCNVVariantsValueMapping(dxCNVVariants, mappingConfig, hgscEmergeReport);
             results.put("DxCNVVariants", dxCNVVariants);
+        }
+        if (dxSNPINDELVariants != null) {
+            dxSNPINDELVariants = new DxSNPINDELVariantsValueMapper().dxSNPINDELVariantsValueMapping(dxSNPINDELVariants, mappingConfig, hgscEmergeReport);
+            results.put("DxSNPINDELVariants", dxSNPINDELVariants);
         }
         if (geneticistOne != null) {
             geneticistOne = new GeneticistValueMapper().geneticistOneValueMapping(geneticistOne, mappingConfig, hgscEmergeReport);

@@ -38,7 +38,7 @@ public class FileUploadServiceImpl {
       HgscEmergeReport report = util.readFromEmergeReportJsonFile(file);
 
       Map<String, Object> fhirResources = this.createIndividualFhirResources(report);
-      return this.createBundle(fhirResources);
+      return this.createBundle(fhirResources, report);
    }
 
    public Map<String, Object> createIndividualFhirResources(HgscEmergeReport hgscEmergeReport) {
@@ -48,7 +48,7 @@ public class FileUploadServiceImpl {
       return newResources;
    }
 
-   public ArrayList<String> createBundle(Map<String, Object> fhirResources) {
+   public ArrayList<String> createBundle(Map<String, Object> fhirResources, HgscEmergeReport hgscEmergeReport) {
 
       Patient patient = (Patient)fhirResources.get("Patient");
       // Give the patient a temporary UUID so that other resources in the transaction can refer to it
@@ -74,6 +74,9 @@ public class FileUploadServiceImpl {
       Observation dxCNVVariants = (Observation) fhirResources.get("DxCNVVariants");
       dxCNVVariants.setId(IdDt.newRandomUuid());
 
+      Observation dxSNPINDELVariants = (Observation) fhirResources.get("DxSNPINDELVariants");
+      dxSNPINDELVariants.setId(IdDt.newRandomUuid());
+
       Practitioner geneticistOne = (Practitioner) fhirResources.get("GeneticistOne");
       geneticistOne.setId(IdDt.newRandomUuid());
       Practitioner geneticistTwo = (Practitioner) fhirResources.get("GeneticistTwo");
@@ -91,6 +94,11 @@ public class FileUploadServiceImpl {
       dxCNVVariants.setSpecimen(new Reference(specimen.getId()));
       dxCNVVariants.addPerformer(new Reference(organization.getId()));
       dxCNVVariants.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText("Comments"));
+      dxSNPINDELVariants.addBasedOn(new Reference(serviceRequest.getId()));
+      dxSNPINDELVariants.setSubject(new Reference(patient.getId()));
+      dxSNPINDELVariants.setSpecimen(new Reference(specimen.getId()));
+      dxSNPINDELVariants.addPerformer(new Reference(organization.getId()));
+      dxSNPINDELVariants.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText(hgscEmergeReport.getVariants().get(0).getNotes()));
 
       DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
       // The diagnosticReport refers to the patient/specimen using the ID, which is already set to a temporary UUID
@@ -118,6 +126,8 @@ public class FileUploadServiceImpl {
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsOverall))));
       dxCNVVariants.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxCNVVariants))));
+      dxSNPINDELVariants.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxSNPINDELVariants))));
       geneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistOne))));
       geneticistTwo.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
@@ -176,6 +186,13 @@ public class FileUploadServiceImpl {
       bundle.addEntry()
               .setFullUrl(dxCNVVariants.getId())
               .setResource(dxCNVVariants)
+              .getRequest()
+              .setUrl("Observation")
+              .setMethod(Bundle.HTTPVerb.POST);
+
+      bundle.addEntry()
+              .setFullUrl(dxSNPINDELVariants.getId())
+              .setResource(dxSNPINDELVariants)
               .getRequest()
               .setUrl("Observation")
               .setMethod(Bundle.HTTPVerb.POST);
