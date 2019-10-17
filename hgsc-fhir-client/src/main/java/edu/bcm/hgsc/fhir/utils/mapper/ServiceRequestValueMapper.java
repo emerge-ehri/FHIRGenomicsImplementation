@@ -31,8 +31,10 @@ public class ServiceRequestValueMapper {
         serviceRequest.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
                 .setCode("108252007").setDisplay("Laboratory procedure")));
         //Code
-        serviceRequest.setCode(new CodeableConcept().addCoding(new Coding().setSystem("https://hgsc.bcm.edu/lab-test-codes/")
-                .setCode("emerge-seq-ngs-pnl").setDisplay("eMERGE-Seq NGS Panel")).setText("eMERGE-Seq Panel - CHOP"));
+        if (mappingConfig.containsKey("HgscEmergeReport.testName")) {
+            serviceRequest.setCode(new CodeableConcept().addCoding(new Coding().setSystem("https://hgsc.bcm.edu/lab-test-codes/")
+                    .setCode("emerge-seq-ngs-pnl").setDisplay("eMERGE-Seq NGS Panel")).setText(hgscEmergeReport.getTestName()));
+        }
         //AuthoredOn
         if (mappingConfig.containsKey("HgscEmergeReport.onDate")) {
             serviceRequest.setAuthoredOn(new Date(hgscEmergeReport.getOnDate()));
@@ -41,8 +43,10 @@ public class ServiceRequestValueMapper {
         serviceRequest.setPerformerType(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
                 .setCode("310049001").setDisplay("Clinical genetics service")));
         //ReasonCode
-        serviceRequest.addReasonCode(new CodeableConcept().addCoding(new Coding().setSystem("https://emerge.geneinsight.com")
-                .setCode("10093-7").setDisplay("Not selected for trait")));
+        if (mappingConfig.containsKey("HgscEmergeReport.indicationForTesting")) {
+            serviceRequest.addReasonCode(new CodeableConcept().addCoding(new Coding().setSystem("https://emerge.geneinsight.com")
+                    .setCode("10093-7").setDisplay(hgscEmergeReport.getIndicationForTesting())));
+        }
 
         return serviceRequest;
     }

@@ -118,8 +118,11 @@ public class FileUploadServiceImpl {
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(specimen))));
       serviceRequest.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(serviceRequest))));
+      //organization.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organization))));
+      //hard code organization narrative
       organization.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organization))));
+              .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>id</b>: Human Genome Sequencing Center Clinical Laboratory</p><p>One Baylor Plaza • Houston • TX 77030</p><p>Phone: 713.798.6539 • Fax: 713.798.5741 • www.hgsc.bcm.edu • email: questions@hgsc.bcm.edu</p><p>CAP# 8004250 / CLIA# 45D2027450</p></div>")));
       organizationBCM.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organizationBCM))));
       obsOverall.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
@@ -128,10 +131,13 @@ public class FileUploadServiceImpl {
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxCNVVariants))));
       dxSNPINDELVariants.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxSNPINDELVariants))));
-      geneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistOne))));
+      //geneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistOne))));
       geneticistTwo.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistTwo))));
+      //hard code organization narrative
+      geneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>Practitioner Name</b>: David Murdock, M.D., F.A.C.M.G.</p><p><b>Title</b>: ABMGG Certified Molecular Geneticist, Assistant Laboratory Director</p>")));
       //diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport))));
 
