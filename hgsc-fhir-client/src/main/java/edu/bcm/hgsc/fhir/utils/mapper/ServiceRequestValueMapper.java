@@ -31,7 +31,7 @@ public class ServiceRequestValueMapper {
         serviceRequest.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
                 .setCode("108252007").setDisplay("Laboratory procedure")));
         //Code
-        if (mappingConfig.containsKey("HgscEmergeReport.testName")) {
+        if (mappingConfig.containsKey("HgscEmergeReport.testname")) {
             serviceRequest.setCode(new CodeableConcept().addCoding(new Coding().setSystem("https://hgsc.bcm.edu/lab-test-codes/")
                     .setCode("emerge-seq-ngs-pnl").setDisplay("eMERGE-Seq NGS Panel")).setText(hgscEmergeReport.getTestName()));
         }

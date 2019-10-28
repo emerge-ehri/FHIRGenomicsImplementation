@@ -58,10 +58,10 @@ public class DxSNPINDELVariantsValueMapper {
                         .setDisplay(hgscEmergeReport.getVariants().get(0).getCDNA()))));
 
         //Component:dna-chg-type
-        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                new Coding().setSystem("http://loinc.org").setCode("48019-4").setDisplay("DNA change type")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                        .setCode("LA6690-7").setDisplay("Substitution"))));
+//        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+//                new Coding().setSystem("http://loinc.org").setCode("48019-4").setDisplay("DNA change type")))
+//                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+//                        .setCode("LA6690-7").setDisplay("Substitution"))));
         //Component:variation-code
         dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("81252-9").setDisplay("Discrete genetic variant")))

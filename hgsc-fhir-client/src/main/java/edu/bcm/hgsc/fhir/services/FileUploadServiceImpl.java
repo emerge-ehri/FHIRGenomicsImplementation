@@ -157,8 +157,8 @@ public class FileUploadServiceImpl {
 
         //Narrative
         ctx.setNarrativeGenerator(new DefaultThymeleafNarrativeGenerator());
-        patient.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(patient))));
+        //patient.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(patient))));
         specimen.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(specimen))));
         serviceRequest.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
@@ -203,8 +203,9 @@ public class FileUploadServiceImpl {
                 //.setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>Practitioner Name</b>: David Murdock, M.D., F.A.C.M.G.</p><p><b>Title</b>: ABMGG Certified Molecular Geneticist, Assistant Laboratory Director</p>")));
         planDefinition.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(planDefinition))));
-        diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport))));
+        //diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport))));
+
 
         // Create a bundle that will be used as a transaction
         Bundle bundle = new Bundle();
