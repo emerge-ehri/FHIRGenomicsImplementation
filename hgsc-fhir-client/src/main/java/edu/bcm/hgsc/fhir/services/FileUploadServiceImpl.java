@@ -82,6 +82,9 @@ public class FileUploadServiceImpl {
       Practitioner geneticistTwo = (Practitioner) fhirResources.get("GeneticistTwo");
       geneticistTwo.setId(IdDt.newRandomUuid());
 
+      PlanDefinition planDefinition = (PlanDefinition) fhirResources.get("PlanDefinition");
+      planDefinition.setId(IdDt.newRandomUuid());
+
       organization.setPartOf(new Reference(organizationBCM.getId()));
       specimen.addRequest(new Reference(serviceRequest.getId()));
       serviceRequest.addSpecimen(new Reference(specimen.getId()));
@@ -140,6 +143,8 @@ public class FileUploadServiceImpl {
               .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>Practitioner Name</b>: David Murdock, M.D., F.A.C.M.G.</p><p><b>Title</b>: ABMGG Certified Molecular Geneticist, Assistant Laboratory Director</p>")));
       //diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
               //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport))));
+      planDefinition.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+              .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(planDefinition))));
 
       // Create a bundle that will be used as a transaction
       Bundle bundle = new Bundle();
@@ -215,6 +220,13 @@ public class FileUploadServiceImpl {
               .setResource(geneticistTwo)
               .getRequest()
               .setUrl("Practitioner")
+              .setMethod(Bundle.HTTPVerb.POST);
+
+      bundle.addEntry()
+              .setFullUrl(planDefinition.getId())
+              .setResource(planDefinition)
+              .getRequest()
+              .setUrl("PlanDefinition")
               .setMethod(Bundle.HTTPVerb.POST);
 
       bundle.addEntry()

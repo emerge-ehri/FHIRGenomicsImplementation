@@ -39,6 +39,8 @@ public class FhirResourcesMappingUtils {
         Practitioner geneticistOne = null;
         Practitioner geneticistTwo = null;
         DiagnosticReport diagnosticReport = null;
+        // PlanDefinition
+        PlanDefinition planDefinition = null;
 
         // create all available resources
         for (String resource : resources) {
@@ -77,6 +79,8 @@ public class FhirResourcesMappingUtils {
                     case "DiagnosticReport":
                         diagnosticReport = (DiagnosticReport) Class.forName("org.hl7.fhir.r4.model.DiagnosticReport").newInstance();
                         break;
+                    case "PlanDefinition":
+                        planDefinition = (PlanDefinition) Class.forName("org.hl7.fhir.r4.model.PlanDefinition").newInstance();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -128,6 +132,11 @@ public class FhirResourcesMappingUtils {
             diagnosticReport = new DiagnosticReportValueMapper().diagnosticReportValueMapping(diagnosticReport, mappingConfig, hgscEmergeReport, fileUtils);
             results.put("DiagnosticReport", diagnosticReport);
         }
+        if (planDefinition != null) {
+            planDefinition = new PlanDefinitionValueMapper().planDefinitionValueMapping(planDefinition, mappingConfig, hgscEmergeReport);
+            results.put("PlanDefinition", planDefinition);
+        }
+
 
         return results;
     }
