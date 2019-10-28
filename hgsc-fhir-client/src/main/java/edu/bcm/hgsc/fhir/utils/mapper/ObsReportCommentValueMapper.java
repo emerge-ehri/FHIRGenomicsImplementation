@@ -1,0 +1,35 @@
+package edu.bcm.hgsc.fhir.utils.mapper;
+
+import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import org.hl7.fhir.r4.model.*;
+
+import java.util.Date;
+import java.util.HashMap;
+
+public class ObsReportCommentValueMapper {
+
+    public Observation obsReportCommentValueMapping(Observation obsReportComment, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+
+    	//Status
+        if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
+            obsReportComment.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
+        }
+        //Code
+        obsReportComment.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                .setCode("86467-8").setDisplay("Report comment")));
+        //EffectiveDateTime
+        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
+            obsReportComment.setEffective(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())));
+        }
+        //Issued
+        if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
+            obsReportComment.setIssued(new Date(hgscEmergeReport.getReportDate()));
+        }
+        //ValueString
+        if (mappingConfig.containsKey("HgscEmergeReport.reportComment")) {
+            obsReportComment.setValue(new StringType(hgscEmergeReport.getReportComment()));
+        }
+
+        return obsReportComment;
+    }
+}

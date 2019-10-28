@@ -1,17 +1,14 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import java.util.Date;
-import java.util.HashMap;
-
 import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
-import org.hl7.fhir.r4.model.Annotation;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Observation.ObservationComponentComponent;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Reference;
+
+import java.util.Date;
+import java.util.HashMap;
 
 public class DxCNVVariantsValueMapper {
 

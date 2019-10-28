@@ -35,12 +35,27 @@ public class FhirResourcesMappingUtils {
         Observation dxCNVVariants = null;
         //DxSNPINDELVariants
         Observation dxSNPINDELVariants = null;
+
+        //ObsReportComment
+        Observation obsReportComment = null;
+        //PgxPanel
+        Observation pgxPanel = null;
+        //PgxResult
+        Observation pgxResult_1001 = null;
+        Observation pgxResult_2001 = null;
+        Observation pgxResult_3001 = null;
+        Observation pgxResult_4001 = null;
+        Observation pgxResult_5001 = null;
+        Observation pgxResult_6001 = null;
+
         // Geneticist
         Practitioner geneticistOne = null;
         Practitioner geneticistTwo = null;
-        DiagnosticReport diagnosticReport = null;
+
         // PlanDefinition
         PlanDefinition planDefinition = null;
+
+        DiagnosticReport diagnosticReport = null;
 
         // create all available resources
         for (String resource : resources) {
@@ -70,17 +85,42 @@ public class FhirResourcesMappingUtils {
                     case "DxSNPINDELVariants":
                         dxSNPINDELVariants = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
                         break;
+                    case "ObsReportComment":
+                        obsReportComment = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
+                    case "PgxPanel":
+                        pgxPanel = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
+                    case "PgxResult_1001":
+                        pgxResult_1001 = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
+                    case "PgxResult_2001":
+                        pgxResult_2001 = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
+                    case "PgxResult_3001":
+                        pgxResult_3001 = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
+                    case "PgxResult_4001":
+                        pgxResult_4001 = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
+                    case "PgxResult_5001":
+                        pgxResult_5001 = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
+                    case "PgxResult_6001":
+                        pgxResult_6001 = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
                     case "GeneticistOne":
                         geneticistOne = (Practitioner) Class.forName("org.hl7.fhir.r4.model.Practitioner").newInstance();
                         break;
                     case "GeneticistTwo":
                         geneticistTwo = (Practitioner) Class.forName("org.hl7.fhir.r4.model.Practitioner").newInstance();
                         break;
+                    case "PlanDefinition":
+                        planDefinition = (PlanDefinition) Class.forName("org.hl7.fhir.r4.model.PlanDefinition").newInstance();
+                        break;
                     case "DiagnosticReport":
                         diagnosticReport = (DiagnosticReport) Class.forName("org.hl7.fhir.r4.model.DiagnosticReport").newInstance();
                         break;
-                    case "PlanDefinition":
-                        planDefinition = (PlanDefinition) Class.forName("org.hl7.fhir.r4.model.PlanDefinition").newInstance();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -120,6 +160,38 @@ public class FhirResourcesMappingUtils {
             dxSNPINDELVariants = new DxSNPINDELVariantsValueMapper().dxSNPINDELVariantsValueMapping(dxSNPINDELVariants, mappingConfig, hgscEmergeReport);
             results.put("DxSNPINDELVariants", dxSNPINDELVariants);
         }
+        if (obsReportComment != null) {
+            obsReportComment = new ObsReportCommentValueMapper().obsReportCommentValueMapping(obsReportComment, mappingConfig, hgscEmergeReport);
+            results.put("ObsReportComment", obsReportComment);
+        }
+        if (pgxPanel != null) {
+            pgxPanel = new PgxPanelValueMapper().pgxPanelValueMapping(pgxPanel, mappingConfig, hgscEmergeReport);
+            results.put("PgxPanel", pgxPanel);
+        }
+        if (pgxResult_1001 != null) {
+            pgxResult_1001 = new PgxMedImplicationsValueMapper().pgxResult_1001_ValueMapping(pgxResult_1001, mappingConfig, hgscEmergeReport);
+            results.put("PgxResult_1001", pgxResult_1001);
+        }
+        if (pgxResult_2001 != null) {
+            pgxResult_2001 = new PgxMedImplicationsValueMapper().pgxResult_2001_ValueMapping(pgxResult_2001, mappingConfig, hgscEmergeReport);
+            results.put("PgxResult_2001", pgxResult_2001);
+        }
+        if (pgxResult_3001 != null) {
+            pgxResult_3001 = new PgxMedImplicationsValueMapper().pgxResult_3001_ValueMapping(pgxResult_3001, mappingConfig, hgscEmergeReport);
+            results.put("PgxResult_3001", pgxResult_3001);
+        }
+        if (pgxResult_4001 != null) {
+            pgxResult_4001 = new PgxMedImplicationsValueMapper().pgxResult_4001_ValueMapping(pgxResult_4001, mappingConfig, hgscEmergeReport);
+            results.put("PgxResult_4001", pgxResult_4001);
+        }
+        if (pgxResult_5001 != null) {
+            pgxResult_5001 = new PgxMedImplicationsValueMapper().pgxResult_5001_ValueMapping(pgxResult_5001, mappingConfig, hgscEmergeReport);
+            results.put("PgxResult_5001", pgxResult_5001);
+        }
+        if (pgxResult_6001 != null) {
+            pgxResult_6001 = new PgxMedImplicationsValueMapper().pgxResult_6001_ValueMapping(pgxResult_6001, mappingConfig, hgscEmergeReport);
+            results.put("PgxResult_6001", pgxResult_6001);
+        }
         if (geneticistOne != null) {
             geneticistOne = new GeneticistValueMapper().geneticistOneValueMapping(geneticistOne, mappingConfig, hgscEmergeReport);
             results.put("GeneticistOne", geneticistOne);
@@ -128,15 +200,14 @@ public class FhirResourcesMappingUtils {
             geneticistTwo = new GeneticistValueMapper().geneticistTwoValueMapping(geneticistTwo, mappingConfig, hgscEmergeReport);
             results.put("GeneticistTwo", geneticistTwo);
         }
-        if (diagnosticReport != null) {
-            diagnosticReport = new DiagnosticReportValueMapper().diagnosticReportValueMapping(diagnosticReport, mappingConfig, hgscEmergeReport, fileUtils);
-            results.put("DiagnosticReport", diagnosticReport);
-        }
         if (planDefinition != null) {
             planDefinition = new PlanDefinitionValueMapper().planDefinitionValueMapping(planDefinition, mappingConfig, hgscEmergeReport);
             results.put("PlanDefinition", planDefinition);
         }
-
+        if (diagnosticReport != null) {
+            diagnosticReport = new DiagnosticReportValueMapper().diagnosticReportValueMapping(diagnosticReport, mappingConfig, hgscEmergeReport, fileUtils);
+            results.put("DiagnosticReport", diagnosticReport);
+        }
 
         return results;
     }
