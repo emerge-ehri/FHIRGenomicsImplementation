@@ -186,27 +186,27 @@ public class FhirResourcesMappingUtils {
             results.put("PgxPanel", pgxPanel);
         }
         if (pgxResult_1001 != null) {
-            pgxResult_1001 = new PgxMedImplicationsValueMapper().pgxResult_1001_ValueMapping(pgxResult_1001, mappingConfig, hgscEmergeReport);
+            pgxResult_1001 = new PgxMedImplicationsValueMapper().pgxResult_1001_ValueMapping(pgxResult_1001, mappingConfig, hgscEmergeReport, sdf);
             results.put("PgxResult_1001", pgxResult_1001);
         }
         if (pgxResult_2001 != null) {
-            pgxResult_2001 = new PgxMedImplicationsValueMapper().pgxResult_2001_ValueMapping(pgxResult_2001, mappingConfig, hgscEmergeReport);
+            pgxResult_2001 = new PgxMedImplicationsValueMapper().pgxResult_2001_ValueMapping(pgxResult_2001, mappingConfig, hgscEmergeReport, sdf);
             results.put("PgxResult_2001", pgxResult_2001);
         }
         if (pgxResult_3001 != null) {
-            pgxResult_3001 = new PgxMedImplicationsValueMapper().pgxResult_3001_ValueMapping(pgxResult_3001, mappingConfig, hgscEmergeReport);
+            pgxResult_3001 = new PgxMedImplicationsValueMapper().pgxResult_3001_ValueMapping(pgxResult_3001, mappingConfig, hgscEmergeReport, sdf);
             results.put("PgxResult_3001", pgxResult_3001);
         }
         if (pgxResult_4001 != null) {
-            pgxResult_4001 = new PgxMedImplicationsValueMapper().pgxResult_4001_ValueMapping(pgxResult_4001, mappingConfig, hgscEmergeReport);
+            pgxResult_4001 = new PgxMedImplicationsValueMapper().pgxResult_4001_ValueMapping(pgxResult_4001, mappingConfig, hgscEmergeReport, sdf);
             results.put("PgxResult_4001", pgxResult_4001);
         }
         if (pgxResult_5001 != null) {
-            pgxResult_5001 = new PgxMedImplicationsValueMapper().pgxResult_5001_ValueMapping(pgxResult_5001, mappingConfig, hgscEmergeReport);
+            pgxResult_5001 = new PgxMedImplicationsValueMapper().pgxResult_5001_ValueMapping(pgxResult_5001, mappingConfig, hgscEmergeReport, sdf);
             results.put("PgxResult_5001", pgxResult_5001);
         }
         if (pgxResult_6001 != null) {
-            pgxResult_6001 = new PgxMedImplicationsValueMapper().pgxResult_6001_ValueMapping(pgxResult_6001, mappingConfig, hgscEmergeReport);
+            pgxResult_6001 = new PgxMedImplicationsValueMapper().pgxResult_6001_ValueMapping(pgxResult_6001, mappingConfig, hgscEmergeReport, sdf);
             results.put("PgxResult_6001", pgxResult_6001);
         }
         if (obsInhDisPaths != null) {
