@@ -118,6 +118,7 @@ public class FileUploadServiceImpl {
         specimen.addRequest(new Reference(serviceRequest.getId()));
         serviceRequest.addSpecimen(new Reference(specimen.getId()));
         serviceRequest.addPerformer(new Reference(organization.getId()));
+        serviceRequest.addInstantiatesCanonical(planDefinition.getId());
         //serviceRequest.setRequester(new Reference(????));
 
         dxPanel.addBasedOn(new Reference(serviceRequest.getId()));
@@ -173,7 +174,7 @@ public class FileUploadServiceImpl {
         obsInhDisPaths.addPerformer(new Reference(organization.getId()));
         obsInhDisPaths.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText(hgscEmergeReport.getVariants().get(0).getNotes()));
         obsInhDisPaths.setSpecimen(new Reference(specimen.getId()));
-        obsInhDisPaths.addDerivedFrom(new Reference(obsInhDisPaths.getId()));
+        obsInhDisPaths.addDerivedFrom(new Reference(dxSNPINDELVariants.getId()));
 
         dxPanel.addHasMember(new Reference(obsOverall.getId()))
                 .addHasMember(new Reference(obsInhDisPaths.getId()))

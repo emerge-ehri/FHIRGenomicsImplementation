@@ -23,7 +23,7 @@ public class ServiceRequestValueMapper {
                             .setCode("ACSN").setDisplay("Accession ID"))));
         }
         //InstantiatesCanonical
-        serviceRequest.addInstantiatesCanonical("http://amc1.edu/lab-sc1/fhir/PlanDefinition/emerge-chop-pnl");
+        //serviceRequest.addInstantiatesCanonical("http://amc1.edu/lab-sc1/fhir/PlanDefinition/emerge-chop-pnl");
         //Status
         serviceRequest.setStatus(ServiceRequest.ServiceRequestStatus.COMPLETED);
         //Intent
