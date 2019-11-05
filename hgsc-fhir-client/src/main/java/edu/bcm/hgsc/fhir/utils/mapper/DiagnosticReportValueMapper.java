@@ -4,12 +4,13 @@ import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
 import edu.bcm.hgsc.fhir.utils.FileUtils;
 import org.hl7.fhir.r4.model.*;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 public class DiagnosticReportValueMapper {
 
-    public DiagnosticReport diagnosticReportValueMapping(DiagnosticReport diagnosticReport, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, FileUtils fileUtils) {
+    public DiagnosticReport diagnosticReportValueMapping(DiagnosticReport diagnosticReport, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, FileUtils fileUtils, SimpleDateFormat sdf) throws ParseException {
 
         //Profile
         diagnosticReport.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/diagnosticreport");
@@ -31,22 +32,9 @@ public class DiagnosticReportValueMapper {
 
         Extension ext3 = new Extension("http://hl7.org/fhir/StructureDefinition/test-disclaimer",
                 new StringType("This test was developed ..... (disclaimer text from report footer)"));
-
-        Extension ext4 = new Extension("http://hl7.org/fhir/StructureDefinition/comments");
-        if (mappingConfig.containsKey("HgscEmergeReport.reportComment")) {
-            ext4.setValue(new StringType(hgscEmergeReport.getReportComment()));
-        } else {
-            ext4.setValue(new StringType(""));
-        }
-
-//        Extension ext5 = new Extension("http://hl7.org/fhir/StructureDefinition/workflow-instantiatesCanonicalPlanDefinition",
-//                new StringType("PlanDefinition/emerge-chop-pnl"));
-
         diagnosticReport.addExtension(ext1);
         diagnosticReport.addExtension(ext2);
         diagnosticReport.addExtension(ext3);
-        diagnosticReport.addExtension(ext4);
-        //diagnosticReport.addExtension(ext5);
 
         //Status
         if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
@@ -62,11 +50,11 @@ public class DiagnosticReportValueMapper {
                 .setCode("81247-9").setDisplay("Master HL7 genetic variant reporting panel")));
         //EffectiveDateTime
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            diagnosticReport.setEffective(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())));
+            diagnosticReport.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
         }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            diagnosticReport.setIssued(new Date(hgscEmergeReport.getReportDate()));
+            diagnosticReport.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
 //        if (mappingConfig.containsKey("HgscEmergeReport.attachedReport")) {
 //            Attachment attachedReport = new Attachment();

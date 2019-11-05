@@ -6,12 +6,13 @@ import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.ServiceRequest;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 public class ServiceRequestValueMapper {
 
-    public ServiceRequest serviceRequestValueMapping(ServiceRequest serviceRequest, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public ServiceRequest serviceRequestValueMapping(ServiceRequest serviceRequest, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
 
         //Profile
         serviceRequest.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/servicerequest");
@@ -37,7 +38,7 @@ public class ServiceRequestValueMapper {
         }
         //AuthoredOn
         if (mappingConfig.containsKey("HgscEmergeReport.onDate")) {
-            serviceRequest.setAuthoredOn(new Date(hgscEmergeReport.getOnDate()));
+            serviceRequest.setAuthoredOn(sdf.parse(hgscEmergeReport.getOnDate()));
         }
         //PerformerType
         serviceRequest.setPerformerType(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")

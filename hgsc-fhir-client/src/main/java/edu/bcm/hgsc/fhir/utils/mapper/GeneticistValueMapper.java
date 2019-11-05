@@ -10,7 +10,7 @@ public class GeneticistValueMapper {
     public Practitioner geneticistOneValueMapping(Practitioner geneticistOne, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
 
         //Identifier
-        geneticistOne.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("101")
+        geneticistOne.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI???")
                 .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                         .setCode("NPI").setDisplay("National provider identifier"))));
         //Name
@@ -20,7 +20,7 @@ public class GeneticistValueMapper {
         geneticistOne.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept().addCoding(new Coding()
                 .setSystem("http://terminology.hl7.org/CodeSystem/v2-2.7-0360")
                 .setCode("MD").setDisplay("Doctor of Medicine")).setText("ABMGG Certified Molecular Geneticist, Assistant Laboratory Director"))
-                .addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("101")
+                .addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI???")
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                                 .setCode("NPI").setDisplay("National provider identifier")))));
         //Address
@@ -32,7 +32,7 @@ public class GeneticistValueMapper {
     public Practitioner geneticistTwoValueMapping(Practitioner geneticistTwo, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
 
         //Identifier
-        geneticistTwo.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("101")
+        geneticistTwo.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI???")
                 .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                         .setCode("NPI").setDisplay("National provider identifier"))));
         //Name
@@ -42,7 +42,7 @@ public class GeneticistValueMapper {
         geneticistTwo.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept().addCoding(new Coding()
                 .setSystem("http://terminology.hl7.org/CodeSystem/v2-2.7-0360")
                 .setCode("MD").setDisplay("Doctor of Medicine")).setText("ABMGG Certified Molecular Geneticist, Chief Quality Officer, Vice President, Chief Medical Officer"))
-                .addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("101")
+                .addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI???")
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                                 .setCode("NPI").setDisplay("National provider identifier")))));
         //Address

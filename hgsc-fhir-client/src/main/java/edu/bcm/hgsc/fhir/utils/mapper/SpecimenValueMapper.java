@@ -3,12 +3,13 @@ package edu.bcm.hgsc.fhir.utils.mapper;
 import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
 import org.hl7.fhir.r4.model.*;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 public class SpecimenValueMapper {
 
-    public Specimen specimenValueMapping(Specimen specimen, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Specimen specimenValueMapping(Specimen specimen, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
 
         //Profile
         specimen.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/specimen");
@@ -30,11 +31,11 @@ public class SpecimenValueMapper {
                 .setCode("258566005").setDisplay("Deoxyribonucleic acid sample")));
         //ReceivedTime
         if (mappingConfig.containsKey("HgscEmergeReport.sampleReceivedDate")) {
-            specimen.setReceivedTime(new Date(hgscEmergeReport.getSampleReceivedDate()));
+            specimen.setReceivedTime(sdf.parse(hgscEmergeReport.getSampleReceivedDate()));
         }
         //Collection
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            specimen.setCollection(new Specimen.SpecimenCollectionComponent().setCollected(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())))
+            specimen.setCollection(new Specimen.SpecimenCollectionComponent().setCollected(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())))
                     .setBodySite(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
                             .setCode("119297000").setDisplay("Blood specimen (specimen)"))));
         }

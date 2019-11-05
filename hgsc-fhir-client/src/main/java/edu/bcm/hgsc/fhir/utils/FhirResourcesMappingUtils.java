@@ -4,6 +4,8 @@ import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
 import edu.bcm.hgsc.fhir.utils.mapper.*;
 import org.hl7.fhir.r4.model.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -12,9 +14,10 @@ public class FhirResourcesMappingUtils {
 
     FileUtils fileUtils = new FileUtils();
 
-    public Map<String, Object> mapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Map<String, Object> mapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) throws ParseException {
 
         Map<String, Object> results = new HashMap<String, Object>();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 
         // Get resource types from the mapping config file
         HashSet<String> resources = new HashSet<String>();
@@ -38,6 +41,8 @@ public class FhirResourcesMappingUtils {
 
         //ObsReportComment
         Observation obsReportComment = null;
+        //DxPanel
+        Observation dxPanel = null;
         //PgxPanel
         Observation pgxPanel = null;
         //PgxResult
@@ -47,6 +52,8 @@ public class FhirResourcesMappingUtils {
         Observation pgxResult_4001 = null;
         Observation pgxResult_5001 = null;
         Observation pgxResult_6001 = null;
+        //ObsInhDisPaths
+        Observation obsInhDisPaths = null;
 
         // Geneticist
         Practitioner geneticistOne = null;
@@ -88,6 +95,9 @@ public class FhirResourcesMappingUtils {
                     case "ObsReportComment":
                         obsReportComment = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
                         break;
+                    case "DxPanel":
+                        dxPanel = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
                     case "PgxPanel":
                         pgxPanel = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
                         break;
@@ -109,6 +119,9 @@ public class FhirResourcesMappingUtils {
                     case "PgxResult_6001":
                         pgxResult_6001 = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
                         break;
+                    case "ObsInhDisPaths":
+                        obsInhDisPaths = (Observation) Class.forName("org.hl7.fhir.r4.model.Observation").newInstance();
+                        break;
                     case "GeneticistOne":
                         geneticistOne = (Practitioner) Class.forName("org.hl7.fhir.r4.model.Practitioner").newInstance();
                         break;
@@ -129,15 +142,15 @@ public class FhirResourcesMappingUtils {
 
         // set resource values
         if (patient != null) {
-            patient = new PatientValueMapper().patientValueMapping(patient, mappingConfig, hgscEmergeReport);
+            patient = new PatientValueMapper().patientValueMapping(patient, mappingConfig, hgscEmergeReport, sdf);
             results.put("Patient", patient);
         }
         if (specimen != null) {
-            specimen = new SpecimenValueMapper().specimenValueMapping(specimen, mappingConfig, hgscEmergeReport);
+            specimen = new SpecimenValueMapper().specimenValueMapping(specimen, mappingConfig, hgscEmergeReport, sdf);
             results.put("Specimen", specimen);
         }
         if (serviceRequest != null) {
-            serviceRequest = new ServiceRequestValueMapper().serviceRequestValueMapping(serviceRequest, mappingConfig, hgscEmergeReport);
+            serviceRequest = new ServiceRequestValueMapper().serviceRequestValueMapping(serviceRequest, mappingConfig, hgscEmergeReport, sdf);
             results.put("ServiceRequest", serviceRequest);
         }
         if (organization != null) {
@@ -149,20 +162,24 @@ public class FhirResourcesMappingUtils {
             results.put("OrganizationBCM", organizationBCM);
         }
         if (obsOverall != null) {
-            obsOverall = new ObsOverallValueMapper().obsOverallValueMapping(obsOverall, mappingConfig, hgscEmergeReport);
+            obsOverall = new ObsOverallValueMapper().obsOverallValueMapping(obsOverall, mappingConfig, hgscEmergeReport, sdf);
             results.put("ObsOverall", obsOverall);
         }
-        if (dxCNVVariants != null) {
-            dxCNVVariants = new DxCNVVariantsValueMapper().dxCNVVariantsValueMapping(dxCNVVariants, mappingConfig, hgscEmergeReport);
-            results.put("DxCNVVariants", dxCNVVariants);
-        }
+//        if (dxCNVVariants != null) {
+//            dxCNVVariants = new DxCNVVariantsValueMapper().dxCNVVariantsValueMapping(dxCNVVariants, mappingConfig, hgscEmergeReport);
+//            results.put("DxCNVVariants", dxCNVVariants);
+//        }
         if (dxSNPINDELVariants != null) {
-            dxSNPINDELVariants = new DxSNPINDELVariantsValueMapper().dxSNPINDELVariantsValueMapping(dxSNPINDELVariants, mappingConfig, hgscEmergeReport);
+            dxSNPINDELVariants = new DxSNPINDELVariantsValueMapper().dxSNPINDELVariantsValueMapping(dxSNPINDELVariants, mappingConfig, hgscEmergeReport, sdf);
             results.put("DxSNPINDELVariants", dxSNPINDELVariants);
         }
         if (obsReportComment != null) {
-            obsReportComment = new ObsReportCommentValueMapper().obsReportCommentValueMapping(obsReportComment, mappingConfig, hgscEmergeReport);
+            obsReportComment = new ObsReportCommentValueMapper().obsReportCommentValueMapping(obsReportComment, mappingConfig, hgscEmergeReport, sdf);
             results.put("ObsReportComment", obsReportComment);
+        }
+        if (dxPanel != null) {
+            dxPanel = new DxPanelValueMapper().dxPanelValueMapping(dxPanel, mappingConfig, hgscEmergeReport, sdf);
+            results.put("DxPanel", dxPanel);
         }
         if (pgxPanel != null) {
             pgxPanel = new PgxPanelValueMapper().pgxPanelValueMapping(pgxPanel, mappingConfig, hgscEmergeReport);
@@ -192,6 +209,10 @@ public class FhirResourcesMappingUtils {
             pgxResult_6001 = new PgxMedImplicationsValueMapper().pgxResult_6001_ValueMapping(pgxResult_6001, mappingConfig, hgscEmergeReport);
             results.put("PgxResult_6001", pgxResult_6001);
         }
+        if (obsInhDisPaths != null) {
+            obsInhDisPaths = new ObsInhDisPathsValueMapper().obsInhDisPathsValueMapping(obsInhDisPaths, mappingConfig, hgscEmergeReport, sdf);
+            results.put("ObsInhDisPaths", obsInhDisPaths);
+        }
         if (geneticistOne != null) {
             geneticistOne = new GeneticistValueMapper().geneticistOneValueMapping(geneticistOne, mappingConfig, hgscEmergeReport);
             results.put("GeneticistOne", geneticistOne);
@@ -205,7 +226,7 @@ public class FhirResourcesMappingUtils {
             results.put("PlanDefinition", planDefinition);
         }
         if (diagnosticReport != null) {
-            diagnosticReport = new DiagnosticReportValueMapper().diagnosticReportValueMapping(diagnosticReport, mappingConfig, hgscEmergeReport, fileUtils);
+            diagnosticReport = new DiagnosticReportValueMapper().diagnosticReportValueMapping(diagnosticReport, mappingConfig, hgscEmergeReport, fileUtils, sdf);
             results.put("DiagnosticReport", diagnosticReport);
         }
 

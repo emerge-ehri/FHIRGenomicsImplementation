@@ -6,6 +6,9 @@ import org.hl7.fhir.r4.model.codesystems.V3AdministrativeGender;
 import org.hl7.fhir.r4.model.codesystems.V3Ethnicity;
 import org.hl7.fhir.r4.model.codesystems.V3Race;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
@@ -15,7 +18,7 @@ import java.util.stream.Stream;
 
 public class PatientValueMapper {
 
-    public Patient patientValueMapping(Patient patient, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Patient patientValueMapping(Patient patient, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
 
         //Identifier
         //The code PI creates warnings during validation but until the HL7 Vocabulary group resolves this, we will be ignoring the warnings.
@@ -38,15 +41,9 @@ public class PatientValueMapper {
             patient.getNameFirstRep().setText(hgscEmergeReport.getPatientFirstName()
                     + " " + hgscEmergeReport.getPatientMiddleInitial() + " " + hgscEmergeReport.getPatientLastName());
         }
-        //Language
-        //patient.setLanguageElement(new CodeType("en-US"));
-        //Gender
-        if (mappingConfig.containsKey("HgscEmergeReport.sex")) {
-            patient.setGender(Enumerations.AdministrativeGender.fromCode(hgscEmergeReport.getSex().toLowerCase()));
-        }
         //DateOfBirth
         if (mappingConfig.containsKey("HgscEmergeReport.dateOfBirth")) {
-            patient.setBirthDate(new Date(hgscEmergeReport.getDateOfBirth()));
+            patient.setBirthDate(sdf.parse(hgscEmergeReport.getDateOfBirth()));
         }
 
         //extensions
@@ -87,7 +84,10 @@ public class PatientValueMapper {
         Extension ext3child2 = new Extension("text", new StringType(hgscEmergeReport.getRace()));
         ext3.addExtension(ext3child2);
 
-        Extension ext4 = new Extension("http://hl7.org/fhir/StructureDefinition/patient-age", new IntegerType(calAge(hgscEmergeReport.getDateOfBirth())));
+        Extension ext4 = null;
+        if (mappingConfig.containsKey("HgscEmergeReport.dateOfBirth")) {
+            ext4 = new Extension("http://hl7.org/fhir/StructureDefinition/patient-age", new IntegerType(calAge(hgscEmergeReport.getDateOfBirth(), sdf)));
+        }
 
         patient.addExtension(ext1);
         patient.addExtension(ext2);
@@ -97,10 +97,10 @@ public class PatientValueMapper {
         return patient;
     }
 
-    public int calAge(String patientDOB) {
+    public int calAge(String patientDOB, SimpleDateFormat sdf) throws ParseException {
 
         Calendar c = Calendar.getInstance();
-        c.setTime(new Date(patientDOB));
+        c.setTime(sdf.parse(patientDOB));
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH) + 1;
         int date = c.get(Calendar.DATE);

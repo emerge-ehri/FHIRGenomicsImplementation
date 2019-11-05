@@ -43,7 +43,12 @@ public class FileUploadServiceImpl {
     public Map<String, Object> createIndividualFhirResources(HgscEmergeReport hgscEmergeReport) {
 
         HashMap<String, String> mappingConfig = fileUtils.readMapperConfig(getClass().getClassLoader().getResource("mapping.properties").getPath());
-        Map<String, Object> newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscEmergeReport);
+        Map<String, Object> newResources = null;
+        try {
+            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscEmergeReport);
+        } catch (java.text.ParseException e) {
+            logger.error("Failed to Parse Date data type:", e);
+        }
         return newResources;
     }
 
@@ -70,14 +75,17 @@ public class FileUploadServiceImpl {
         Observation obsOverall = (Observation) fhirResources.get("ObsOverall");
         obsOverall.setId(IdDt.newRandomUuid());
 
-        Observation dxCNVVariants = (Observation) fhirResources.get("DxCNVVariants");
-        dxCNVVariants.setId(IdDt.newRandomUuid());
+//        Observation dxCNVVariants = (Observation) fhirResources.get("DxCNVVariants");
+//        dxCNVVariants.setId(IdDt.newRandomUuid());
 
         Observation dxSNPINDELVariants = (Observation) fhirResources.get("DxSNPINDELVariants");
         dxSNPINDELVariants.setId(IdDt.newRandomUuid());
 
         Observation obsReportComment = (Observation) fhirResources.get("ObsReportComment");
         obsReportComment.setId(IdDt.newRandomUuid());
+
+        Observation dxPanel = (Observation) fhirResources.get("DxPanel");
+        dxPanel.setId(IdDt.newRandomUuid());
 
         Observation pgxPanel = (Observation) fhirResources.get("PgxPanel");
         pgxPanel.setId(IdDt.newRandomUuid());
@@ -95,6 +103,9 @@ public class FileUploadServiceImpl {
         Observation pgxResult_6001 = (Observation) fhirResources.get("PgxResult_6001");
         pgxResult_6001.setId(IdDt.newRandomUuid());
 
+        Observation obsInhDisPaths = (Observation) fhirResources.get("ObsInhDisPaths");
+        obsInhDisPaths.setId(IdDt.newRandomUuid());
+
         Practitioner geneticistOne = (Practitioner) fhirResources.get("GeneticistOne");
         geneticistOne.setId(IdDt.newRandomUuid());
         Practitioner geneticistTwo = (Practitioner) fhirResources.get("GeneticistTwo");
@@ -106,15 +117,24 @@ public class FileUploadServiceImpl {
         organization.setPartOf(new Reference(organizationBCM.getId()));
         specimen.addRequest(new Reference(serviceRequest.getId()));
         serviceRequest.addSpecimen(new Reference(specimen.getId()));
+        serviceRequest.addPerformer(new Reference(organization.getId()));
+        //serviceRequest.setRequester(new Reference(????));
+
+        dxPanel.addBasedOn(new Reference(serviceRequest.getId()));
+        dxPanel.setSubject(new Reference(patient.getId()));
+        dxPanel.setSpecimen(new Reference(specimen.getId()));
+        dxPanel.addPerformer(new Reference(organization.getId()));
+
         obsOverall.addBasedOn(new Reference(serviceRequest.getId()));
         obsOverall.setSubject(new Reference(patient.getId()));
         obsOverall.setSpecimen(new Reference(specimen.getId()));
         obsOverall.addPerformer(new Reference(organization.getId()));
-        dxCNVVariants.addBasedOn(new Reference(serviceRequest.getId()));
-        dxCNVVariants.setSubject(new Reference(patient.getId()));
-        dxCNVVariants.setSpecimen(new Reference(specimen.getId()));
-        dxCNVVariants.addPerformer(new Reference(organization.getId()));
-        dxCNVVariants.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText("Comments"));
+        obsOverall.addDerivedFrom(new Reference(obsInhDisPaths.getId()));
+//        dxCNVVariants.addBasedOn(new Reference(serviceRequest.getId()));
+//        dxCNVVariants.setSubject(new Reference(patient.getId()));
+//        dxCNVVariants.setSpecimen(new Reference(specimen.getId()));
+//        dxCNVVariants.addPerformer(new Reference(organization.getId()));
+//        dxCNVVariants.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText("Comments"));
         dxSNPINDELVariants.addBasedOn(new Reference(serviceRequest.getId()));
         dxSNPINDELVariants.setSubject(new Reference(patient.getId()));
         dxSNPINDELVariants.setSpecimen(new Reference(specimen.getId()));
@@ -125,16 +145,22 @@ public class FileUploadServiceImpl {
         obsReportComment.addPerformer(new Reference(organization.getId()));
         pgxResult_1001.setSubject(new Reference(patient.getId()));
         pgxResult_1001.addPerformer(new Reference(organization.getId()));
+        //pgxResult_1001.addDerivedFrom(new Reference(pgxGeno_1001.getId()));
         pgxResult_2001.setSubject(new Reference(patient.getId()));
         pgxResult_2001.addPerformer(new Reference(organization.getId()));
+        //pgxResult_2001.addDerivedFrom(new Reference(pgxGeno_2001.getId()));
         pgxResult_3001.setSubject(new Reference(patient.getId()));
         pgxResult_3001.addPerformer(new Reference(organization.getId()));
+        //pgxResult_3001.addDerivedFrom(new Reference(pgxGeno_3001.getId()));
         pgxResult_4001.setSubject(new Reference(patient.getId()));
         pgxResult_4001.addPerformer(new Reference(organization.getId()));
+        //pgxResult_4001.addDerivedFrom(new Reference(pgxGeno_4001.getId()));
         pgxResult_5001.setSubject(new Reference(patient.getId()));
         pgxResult_5001.addPerformer(new Reference(organization.getId()));
+        //pgxResult_5001.addDerivedFrom(new Reference(pgxGeno_5001.getId()));
         pgxResult_6001.setSubject(new Reference(patient.getId()));
         pgxResult_6001.addPerformer(new Reference(organization.getId()));
+        //pgxResult_6001.addDerivedFrom(new Reference(pgxGeno_6001.getId()));
         pgxPanel.addHasMember(new Reference(pgxResult_1001.getId()))
                 .addHasMember(new Reference(pgxResult_2001.getId()))
                 .addHasMember(new Reference(pgxResult_3001.getId()))
@@ -142,8 +168,18 @@ public class FileUploadServiceImpl {
                 .addHasMember(new Reference(pgxResult_5001.getId()))
                 .addHasMember(new Reference(pgxResult_6001.getId()));
 
+        obsInhDisPaths.addBasedOn(new Reference(serviceRequest.getId()));
+        obsInhDisPaths.setSubject(new Reference(patient.getId()));
+        obsInhDisPaths.addPerformer(new Reference(organization.getId()));
+        obsInhDisPaths.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText(hgscEmergeReport.getVariants().get(0).getNotes()));
+        obsInhDisPaths.setSpecimen(new Reference(specimen.getId()));
+        obsInhDisPaths.addDerivedFrom(new Reference(obsInhDisPaths.getId()));
+
+        dxPanel.addHasMember(new Reference(obsOverall.getId()))
+                .addHasMember(new Reference(obsInhDisPaths.getId()))
+                .addHasMember(new Reference(dxSNPINDELVariants.getId()));
+
         DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
-        // The diagnosticReport refers to the patient/specimen using the ID, which is already set to a temporary UUID
         diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
         diagnosticReport.addPerformer(new Reference(organization.getId()));
         diagnosticReport.addResultsInterpreter(new Reference(geneticistOne.getId()))
@@ -151,6 +187,7 @@ public class FileUploadServiceImpl {
         diagnosticReport.addSpecimen(new Reference(specimen.getId()));
         diagnosticReport.setSubject(new Reference(patient.getId()));
         diagnosticReport.addResult(new Reference(obsOverall.getId()))
+                .addResult(new Reference(dxPanel.getId()))
                 .addResult(new Reference(pgxPanel.getId()))
                 .addResult(new Reference(obsReportComment.getId()));
 
@@ -171,13 +208,15 @@ public class FileUploadServiceImpl {
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organizationBCM))));
         obsOverall.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsOverall))));
-        dxCNVVariants.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxCNVVariants))));
+        //dxCNVVariants.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxCNVVariants))));
         dxSNPINDELVariants.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxSNPINDELVariants))));
 
         obsReportComment.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsReportComment))));
+        dxPanel.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxPanel))));
         pgxPanel.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(pgxPanel))));
         pgxResult_1001.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
@@ -192,6 +231,9 @@ public class FileUploadServiceImpl {
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(pgxResult_5001))));
         pgxResult_6001.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(pgxResult_6001))));
+
+        obsInhDisPaths.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsInhDisPaths))));
 
         geneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistOne))));
@@ -254,12 +296,12 @@ public class FileUploadServiceImpl {
                 .setUrl("Observation")
                 .setMethod(Bundle.HTTPVerb.POST);
 
-        bundle.addEntry()
-                .setFullUrl(dxCNVVariants.getId())
-                .setResource(dxCNVVariants)
-                .getRequest()
-                .setUrl("Observation")
-                .setMethod(Bundle.HTTPVerb.POST);
+//        bundle.addEntry()
+//                .setFullUrl(dxCNVVariants.getId())
+//                .setResource(dxCNVVariants)
+//                .getRequest()
+//                .setUrl("Observation")
+//                .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
                 .setFullUrl(dxSNPINDELVariants.getId())
@@ -271,6 +313,13 @@ public class FileUploadServiceImpl {
         bundle.addEntry()
                 .setFullUrl(obsReportComment.getId())
                 .setResource(obsReportComment)
+                .getRequest()
+                .setUrl("Observation")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
+                .setFullUrl(dxPanel.getId())
+                .setResource(dxPanel)
                 .getRequest()
                 .setUrl("Observation")
                 .setMethod(Bundle.HTTPVerb.POST);
@@ -320,6 +369,13 @@ public class FileUploadServiceImpl {
         bundle.addEntry()
                 .setFullUrl(pgxResult_6001.getId())
                 .setResource(pgxResult_6001)
+                .getRequest()
+                .setUrl("Observation")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
+                .setFullUrl(obsInhDisPaths.getId())
+                .setResource(obsInhDisPaths)
                 .getRequest()
                 .setUrl("Observation")
                 .setMethod(Bundle.HTTPVerb.POST);

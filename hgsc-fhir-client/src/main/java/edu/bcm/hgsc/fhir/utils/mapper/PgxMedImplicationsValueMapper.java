@@ -1,21 +1,16 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import java.util.Date;
-import java.util.HashMap;
-
 import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.RelatedArtifact;
-import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Observation.ObservationComponentComponent;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 public class PgxMedImplicationsValueMapper {
 
-    public Observation pgxResult_1001_ValueMapping(Observation pgxResult_1001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Observation pgxResult_1001_ValueMapping(Observation pgxResult_1001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
 
         //Profile
         pgxResult_1001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
@@ -35,11 +30,11 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //EffectiveDateTime
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_1001.setEffective(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())));
+            pgxResult_1001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
         }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_1001.setIssued(new Date(hgscEmergeReport.getReportDate()));
+            pgxResult_1001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
         //ValueCodeableConcept
         pgxResult_1001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
@@ -101,7 +96,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_1001;
     }
     
-    public Observation pgxResult_2001_ValueMapping(Observation pgxResult_2001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Observation pgxResult_2001_ValueMapping(Observation pgxResult_2001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
     	//Profile
         pgxResult_2001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
@@ -120,11 +115,11 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //EffectiveDateTime
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_2001.setEffective(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())));
+            pgxResult_2001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
         }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_2001.setIssued(new Date(hgscEmergeReport.getReportDate()));
+            pgxResult_2001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
         //ValueCodeableConcept
         pgxResult_2001.setValue(new CodeableConcept().setText("Normal DPD activity and 'normal' risk for fluoropyrimidine toxicity"));
@@ -166,7 +161,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_2001;
     }
     
-    public Observation pgxResult_3001_ValueMapping(Observation pgxResult_3001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Observation pgxResult_3001_ValueMapping(Observation pgxResult_3001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
     	//Profile
         pgxResult_3001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-efficacy");
         //extensions
@@ -185,11 +180,11 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("51961-1").setDisplay("Genetic variation's effect on drug efficacy")));
         //EffectiveDateTime
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_3001.setEffective(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())));
+            pgxResult_3001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
         }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_3001.setIssued(new Date(hgscEmergeReport.getReportDate()));
+            pgxResult_3001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
         //ValueCodeableConcept
         pgxResult_3001.setValue(new CodeableConcept().setText("Favorable response genotype"));
@@ -231,7 +226,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_3001;
     }
     
-    public Observation pgxResult_4001_ValueMapping(Observation pgxResult_4001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Observation pgxResult_4001_ValueMapping(Observation pgxResult_4001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
     	//Profile
         pgxResult_4001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-transporter");
         //extensions
@@ -250,11 +245,11 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("TBD???").setDisplay("Genetic variation's effect on drug transporter function")));
         //EffectiveDateTime
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_4001.setEffective(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())));
+            pgxResult_4001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
         }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_4001.setIssued(new Date(hgscEmergeReport.getReportDate()));
+            pgxResult_4001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
         //ValueCodeableConcept
         pgxResult_4001.setValue(new CodeableConcept().setText("Normal function, Normal simvastatin induced myopathy risk"));
@@ -274,7 +269,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_4001;
     }
     
-    public Observation pgxResult_5001_ValueMapping(Observation pgxResult_5001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Observation pgxResult_5001_ValueMapping(Observation pgxResult_5001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
     	//Profile
         pgxResult_5001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-transporter");
         //extensions
@@ -293,11 +288,11 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //EffectiveDateTime
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_5001.setEffective(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())));
+            pgxResult_5001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
         }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_5001.setIssued(new Date(hgscEmergeReport.getReportDate()));
+            pgxResult_5001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
         //ValueCodeableConcept
         pgxResult_5001.setValue(new CodeableConcept().setText("High activity"));
@@ -333,7 +328,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_5001;
     }
     
-    public Observation pgxResult_6001_ValueMapping(Observation pgxResult_6001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Observation pgxResult_6001_ValueMapping(Observation pgxResult_6001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
     	//Profile
         pgxResult_6001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-transporter");
         //extensions
@@ -352,11 +347,11 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //EffectiveDateTime
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_6001.setEffective(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())));
+            pgxResult_6001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
         }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_6001.setIssued(new Date(hgscEmergeReport.getReportDate()));
+            pgxResult_6001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
         //ValueCodeableConcept
         pgxResult_6001.setValue(new CodeableConcept().setText("Extensive metabolizer"));

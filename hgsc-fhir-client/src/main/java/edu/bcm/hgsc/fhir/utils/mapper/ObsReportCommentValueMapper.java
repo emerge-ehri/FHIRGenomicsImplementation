@@ -3,12 +3,13 @@ package edu.bcm.hgsc.fhir.utils.mapper;
 import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
 import org.hl7.fhir.r4.model.*;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 public class ObsReportCommentValueMapper {
 
-    public Observation obsReportCommentValueMapping(Observation obsReportComment, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Observation obsReportCommentValueMapping(Observation obsReportComment, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
 
     	//Status
         if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
@@ -19,11 +20,11 @@ public class ObsReportCommentValueMapper {
                 .setCode("86467-8").setDisplay("Report comment")));
         //EffectiveDateTime
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            obsReportComment.setEffective(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())));
+            obsReportComment.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
         }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            obsReportComment.setIssued(new Date(hgscEmergeReport.getReportDate()));
+            obsReportComment.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
         //ValueString
         if (mappingConfig.containsKey("HgscEmergeReport.reportComment")) {

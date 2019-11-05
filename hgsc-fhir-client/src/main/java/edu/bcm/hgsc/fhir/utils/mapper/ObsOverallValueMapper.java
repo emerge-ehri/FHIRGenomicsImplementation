@@ -3,12 +3,13 @@ package edu.bcm.hgsc.fhir.utils.mapper;
 import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
 import org.hl7.fhir.r4.model.*;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 public class ObsOverallValueMapper {
 
-    public Observation obsOverallValueMapping(Observation obsOverall, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Observation obsOverallValueMapping(Observation obsOverall, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
 
         //Profile
         obsOverall.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/obs-overall");
@@ -24,11 +25,11 @@ public class ObsOverallValueMapper {
                 .setCode("51968-6").setDisplay("Genetic disease analysis overall interpretation")));
         //EffectiveDateTime
         if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            obsOverall.setEffective(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())));
+            obsOverall.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
         }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            obsOverall.setIssued(new Date(hgscEmergeReport.getReportDate()));
+            obsOverall.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
         //ValueCodeableConcept
         if (mappingConfig.containsKey("HgscEmergeReport.overallInterpretation")) {

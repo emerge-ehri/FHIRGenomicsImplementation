@@ -1,13 +1,11 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import java.util.HashMap;
-
 import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.StringType;
+
+import java.util.HashMap;
 
 public class PgxPanelValueMapper {
 
@@ -15,10 +13,6 @@ public class PgxPanelValueMapper {
 
     	//Profile
         pgxPanel.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/grouper");
-    	//extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType("Summary text if available"));
-        pgxPanel.addExtension(ext);
     	//Status
         if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
             pgxPanel.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
