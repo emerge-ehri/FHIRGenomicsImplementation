@@ -113,6 +113,22 @@ public class FhirResourcesMappingUtils {
                         Practitioner geneticistTwo = new GeneticistValueMapper().geneticistTwoValueMapping(mappingConfig, hgscEmergeReport);
                         results.put("GeneticistTwo", geneticistTwo);
                         break;
+                    case "PgxGeno_1001":
+                        Observation pgxGeno_1001 = new PgxGenotypesValueMapper().pgxGeno_1001_ValueMapping(mappingConfig, hgscEmergeReport, sdf);
+                        results.put("PgxGeno_1001", pgxGeno_1001);
+                        break;
+                    case "PgxGeno_2001":
+                        Observation pgxGeno_2001 = new PgxGenotypesValueMapper().pgxGeno_2001_ValueMapping(mappingConfig, hgscEmergeReport, sdf);
+                        results.put("PgxGeno_2001", pgxGeno_2001);
+                        break;
+                    case "PgxGeno_5001":
+                        Observation pgxGeno_5001 = new PgxGenotypesValueMapper().pgxGeno_5001_ValueMapping(mappingConfig, hgscEmergeReport, sdf);
+                        results.put("PgxGeno_5001", pgxGeno_5001);
+                        break;
+                    case "PgxGeno_6001":
+                        Observation pgxGeno_6001 = new PgxGenotypesValueMapper().pgxGeno_6001_ValueMapping(mappingConfig, hgscEmergeReport, sdf);
+                        results.put("PgxGeno_6001", pgxGeno_6001);
+                        break;
                     case "PlanDefinition":
                         PlanDefinition planDefinition = new PlanDefinitionValueMapper().planDefinitionValueMapping(mappingConfig, hgscEmergeReport);
                         results.put("PlanDefinition", planDefinition);

@@ -6,13 +6,11 @@ import org.hl7.fhir.r4.model.codesystems.V3AdministrativeGender;
 import org.hl7.fhir.r4.model.codesystems.V3Ethnicity;
 import org.hl7.fhir.r4.model.codesystems.V3Race;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
@@ -29,20 +27,24 @@ public class PatientValueMapper {
                     .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                             .setCode("PI").setDisplay("Patient internal identifier"))));
         }
+
         //Name
-        if (mappingConfig.containsKey("HgscEmergeReport.patientLastName")) {
-            patient.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily(hgscEmergeReport.getPatientLastName()));
+        if(hgscEmergeReport.getPatientLastName() != null) {
+            if (mappingConfig.containsKey("HgscEmergeReport.patientLastName")) {
+                patient.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily(hgscEmergeReport.getPatientLastName()));
+            }
+            if (mappingConfig.containsKey("HgscEmergeReport.patientFirstName")) {
+                patient.getNameFirstRep().addGiven(hgscEmergeReport.getPatientFirstName());
+            }
+            if (mappingConfig.containsKey("HgscEmergeReport.patientMiddleInitial")) {
+                patient.getNameFirstRep().addGiven(hgscEmergeReport.getPatientMiddleInitial());
+            }
+            if (mappingConfig.containsKey("HgscEmergeReport.patientName")) {
+                patient.getNameFirstRep().setText(hgscEmergeReport.getPatientFirstName()
+                        + " " + hgscEmergeReport.getPatientMiddleInitial() + " " + hgscEmergeReport.getPatientLastName());
+            }
         }
-        if (mappingConfig.containsKey("HgscEmergeReport.patientFirstName")) {
-            patient.getNameFirstRep().addGiven(hgscEmergeReport.getPatientFirstName());
-        }
-        if (mappingConfig.containsKey("HgscEmergeReport.patientMiddleInitial")) {
-            patient.getNameFirstRep().addGiven(hgscEmergeReport.getPatientMiddleInitial());
-        }
-        if (mappingConfig.containsKey("HgscEmergeReport.patientName")) {
-            patient.getNameFirstRep().setText(hgscEmergeReport.getPatientFirstName()
-                    + " " + hgscEmergeReport.getPatientMiddleInitial() + " " + hgscEmergeReport.getPatientLastName());
-        }
+
         //DateOfBirth
         if (mappingConfig.containsKey("HgscEmergeReport.dateOfBirth")) {
             patient.setBirthDate(sdf.parse(hgscEmergeReport.getDateOfBirth()));
