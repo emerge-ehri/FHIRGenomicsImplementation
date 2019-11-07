@@ -9,9 +9,11 @@ import java.util.HashMap;
 
 public class ObsReportCommentValueMapper {
 
-    public Observation obsReportCommentValueMapping(Observation obsReportComment, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation obsReportCommentValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
 
-    	//Status
+        Observation obsReportComment = new Observation();
+
+        //Status
         if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
             obsReportComment.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
         }

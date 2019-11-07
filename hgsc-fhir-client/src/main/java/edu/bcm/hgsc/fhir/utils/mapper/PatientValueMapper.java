@@ -18,7 +18,9 @@ import java.util.stream.Stream;
 
 public class PatientValueMapper {
 
-    public Patient patientValueMapping(Patient patient, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Patient patientValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        Patient patient = new Patient();
 
         //Identifier
         //The code PI creates warnings during validation but until the HL7 Vocabulary group resolves this, we will be ignoring the warnings.

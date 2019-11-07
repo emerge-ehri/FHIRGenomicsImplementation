@@ -10,7 +10,9 @@ import java.util.HashMap;
 
 public class DiagnosticReportValueMapper {
 
-    public DiagnosticReport diagnosticReportValueMapping(DiagnosticReport diagnosticReport, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, FileUtils fileUtils, SimpleDateFormat sdf) throws ParseException {
+    public DiagnosticReport diagnosticReportValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, FileUtils fileUtils, SimpleDateFormat sdf) throws ParseException {
+
+        DiagnosticReport diagnosticReport = new DiagnosticReport();
 
         //Profile
         diagnosticReport.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/diagnosticreport");

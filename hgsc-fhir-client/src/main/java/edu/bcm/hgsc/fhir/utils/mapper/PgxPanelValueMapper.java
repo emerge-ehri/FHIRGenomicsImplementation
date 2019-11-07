@@ -9,9 +9,11 @@ import java.util.HashMap;
 
 public class PgxPanelValueMapper {
 
-    public Observation pgxPanelValueMapping(Observation pgxPanel, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Observation pgxPanelValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
 
-    	//Profile
+        Observation pgxPanel = new Observation();
+
+        //Profile
         pgxPanel.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/grouper");
     	//Status
         if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {

@@ -10,7 +10,9 @@ import java.util.HashMap;
  */
 public class PlanDefinitionValueMapper {
 
-    public PlanDefinition planDefinitionValueMapping(PlanDefinition planDefinition, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public PlanDefinition planDefinitionValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+
+        PlanDefinition planDefinition = new PlanDefinition();
 
         // Profile
         planDefinition.getMeta().addProfile("") ;

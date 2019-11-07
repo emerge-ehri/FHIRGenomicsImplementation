@@ -12,9 +12,11 @@ import java.util.HashMap;
 
 public class DxPanelValueMapper {
 
-    public Observation dxPanelValueMapping(Observation dxPanel, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation dxPanelValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
 
-    	//Profile
+        Observation dxPanel = new Observation();
+
+        //Profile
         dxPanel.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/grouper");
     	//Status
         if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {

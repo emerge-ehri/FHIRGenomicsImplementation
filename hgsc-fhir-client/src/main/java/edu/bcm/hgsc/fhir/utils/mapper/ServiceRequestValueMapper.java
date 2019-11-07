@@ -12,7 +12,9 @@ import java.util.HashMap;
 
 public class ServiceRequestValueMapper {
 
-    public ServiceRequest serviceRequestValueMapping(ServiceRequest serviceRequest, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public ServiceRequest serviceRequestValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        ServiceRequest serviceRequest = new ServiceRequest();
 
         //Profile
         serviceRequest.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/servicerequest");

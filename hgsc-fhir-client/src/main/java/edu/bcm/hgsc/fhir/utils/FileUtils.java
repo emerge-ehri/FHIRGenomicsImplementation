@@ -1,16 +1,20 @@
 package edu.bcm.hgsc.fhir.utils;
 
+import org.apache.log4j.Logger;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Properties;
 
 public class FileUtils {
 
+   private static Logger logger = Logger.getLogger(FileUtils.class);
+
    public HashMap<String, String> readMapperConfig(String fileName) {
       HashMap<String, String> mappingConfig = new HashMap<>();
       File myFile = new File(fileName);
       if (!myFile.exists()) {
-         System.err.println("File Not Found:" + fileName);
+         logger.error("File Not Found:" + fileName);
       }
       try (FileInputStream fis = new FileInputStream(fileName);
            InputStreamReader inputStreamReader = new InputStreamReader(fis, "UTF-8");
@@ -22,7 +26,7 @@ public class FileUtils {
             mappingConfig.put(arr[0], arr[1]);
          }
       } catch (IOException e) {
-         e.getStackTrace();
+         logger.error("readMapperConfig Failed:", e);
       }
       return mappingConfig;
    }
@@ -35,7 +39,7 @@ public class FileUtils {
          bytesArray = new byte[(int)file.length()];
          fileInputStream.read(bytesArray);
       } catch (IOException e) {
-         e.printStackTrace();
+         logger.error("readBytesFromFile Failed:", e);
       }
       return bytesArray;
    }
@@ -46,8 +50,8 @@ public class FileUtils {
          Properties prop = new Properties();
          prop.load(input);
          return prop.getProperty(propertyName);
-      } catch (IOException ex) {
-         ex.printStackTrace();
+      } catch (IOException e) {
+         logger.error("loadPropertyValue Failed:", e);
       }
 
       return null;

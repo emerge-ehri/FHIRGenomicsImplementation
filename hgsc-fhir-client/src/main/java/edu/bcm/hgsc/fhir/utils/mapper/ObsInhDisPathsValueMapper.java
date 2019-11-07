@@ -9,7 +9,9 @@ import java.util.HashMap;
 
 public class ObsInhDisPathsValueMapper {
 
-    public Observation obsInhDisPathsValueMapping(Observation obsInhDisPaths, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation obsInhDisPathsValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation obsInhDisPaths = new Observation();
 
         //Observation-secondaryFinding
         //if (mappingConfig.containsKey("HgscEmergeReport.secondaryFinding"))

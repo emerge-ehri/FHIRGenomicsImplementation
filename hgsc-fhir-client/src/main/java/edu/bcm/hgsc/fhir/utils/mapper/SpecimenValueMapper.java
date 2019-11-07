@@ -9,7 +9,9 @@ import java.util.HashMap;
 
 public class SpecimenValueMapper {
 
-    public Specimen specimenValueMapping(Specimen specimen, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Specimen specimenValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        Specimen specimen = new Specimen();
 
         //Profile
         specimen.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/specimen");

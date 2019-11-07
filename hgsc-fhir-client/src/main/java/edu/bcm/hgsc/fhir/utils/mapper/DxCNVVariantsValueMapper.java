@@ -12,7 +12,10 @@ import java.util.HashMap;
 
 public class DxCNVVariantsValueMapper {
 
-    public Observation dxCNVVariantsValueMapping(Observation dxCNVVariants, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Observation dxCNVVariantsValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+
+        Observation dxCNVVariants = new Observation();
+
         //Profile
         dxCNVVariants.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/obs-variant");
         //Status

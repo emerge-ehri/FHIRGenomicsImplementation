@@ -10,7 +10,10 @@ import java.util.HashMap;
 
 public class DxSNPINDELVariantsValueMapper {
 
-    public Observation dxSNPINDELVariantsValueMapping(Observation dxSNPINDELVariants, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation dxSNPINDELVariantsValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation dxSNPINDELVariants = new Observation();
+
         //Profile
         dxSNPINDELVariants.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/obs-variant");
         //Status

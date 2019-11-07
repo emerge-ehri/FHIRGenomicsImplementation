@@ -9,7 +9,9 @@ import java.util.HashMap;
 
 public class ObsOverallValueMapper {
 
-    public Observation obsOverallValueMapping(Observation obsOverall, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation obsOverallValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation obsOverall = new Observation();
 
         //Profile
         obsOverall.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/obs-overall");

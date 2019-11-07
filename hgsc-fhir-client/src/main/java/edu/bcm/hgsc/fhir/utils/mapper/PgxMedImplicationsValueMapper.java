@@ -10,7 +10,9 @@ import java.util.HashMap;
 
 public class PgxMedImplicationsValueMapper {
 
-    public Observation pgxResult_1001_ValueMapping(Observation pgxResult_1001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_1001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation pgxResult_1001 = new Observation();
 
         //Profile
         pgxResult_1001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
@@ -96,8 +98,11 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_1001;
     }
     
-    public Observation pgxResult_2001_ValueMapping(Observation pgxResult_2001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
-    	//Profile
+    public Observation pgxResult_2001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation pgxResult_2001 = new Observation();
+
+        //Profile
         pgxResult_2001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
@@ -161,8 +166,11 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_2001;
     }
     
-    public Observation pgxResult_3001_ValueMapping(Observation pgxResult_3001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
-    	//Profile
+    public Observation pgxResult_3001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation pgxResult_3001 = new Observation();
+
+        //Profile
         pgxResult_3001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-efficacy");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text", 
@@ -226,8 +234,11 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_3001;
     }
     
-    public Observation pgxResult_4001_ValueMapping(Observation pgxResult_4001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
-    	//Profile
+    public Observation pgxResult_4001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation pgxResult_4001 = new Observation();
+
+        //Profile
         pgxResult_4001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-transporter");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text", 
@@ -269,8 +280,11 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_4001;
     }
     
-    public Observation pgxResult_5001_ValueMapping(Observation pgxResult_5001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
-    	//Profile
+    public Observation pgxResult_5001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation pgxResult_5001 = new Observation();
+
+        //Profile
         pgxResult_5001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-transporter");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text", 
@@ -328,8 +342,11 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_5001;
     }
     
-    public Observation pgxResult_6001_ValueMapping(Observation pgxResult_6001, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
-    	//Profile
+    public Observation pgxResult_6001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation pgxResult_6001 = new Observation();
+
+        //Profile
         pgxResult_6001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-transporter");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text", 

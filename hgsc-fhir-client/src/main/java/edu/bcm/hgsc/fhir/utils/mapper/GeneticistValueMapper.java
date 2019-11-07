@@ -7,7 +7,9 @@ import java.util.HashMap;
 
 public class GeneticistValueMapper {
 
-    public Practitioner geneticistOneValueMapping(Practitioner geneticistOne, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Practitioner geneticistOneValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+
+        Practitioner geneticistOne = new Practitioner();
 
         //Identifier
         geneticistOne.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI???")
@@ -29,7 +31,9 @@ public class GeneticistValueMapper {
         return geneticistOne;
     }
 
-    public Practitioner geneticistTwoValueMapping(Practitioner geneticistTwo, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Practitioner geneticistTwoValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+
+        Practitioner geneticistTwo = new Practitioner();
 
         //Identifier
         geneticistTwo.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI???")

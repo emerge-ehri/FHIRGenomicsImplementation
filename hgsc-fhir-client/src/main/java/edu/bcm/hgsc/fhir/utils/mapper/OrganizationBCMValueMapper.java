@@ -9,8 +9,10 @@ import java.util.HashMap;
 
 public class OrganizationBCMValueMapper {
 
-    public Organization organizationBCMValueMapping(Organization organizationBCM, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
-        
+    public Organization organizationBCMValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+
+        Organization organizationBCM = new Organization();
+
         //Active
         organizationBCM.setActive(true);
         //Name

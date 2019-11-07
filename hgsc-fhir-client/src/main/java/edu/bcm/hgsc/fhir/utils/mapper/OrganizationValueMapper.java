@@ -7,7 +7,9 @@ import java.util.HashMap;
 
 public class OrganizationValueMapper {
 
-    public Organization organizationValueMapping(Organization organization, HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Organization organizationValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+
+        Organization organization = new Organization();
 
         //Profile
         organization.getMeta().addProfile("http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization");
