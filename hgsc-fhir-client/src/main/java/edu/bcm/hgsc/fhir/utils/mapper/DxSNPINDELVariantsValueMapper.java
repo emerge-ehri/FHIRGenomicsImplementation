@@ -58,32 +58,27 @@ public class DxSNPINDELVariantsValueMapper {
                         .setCode(hgscEmergeReport.getVariants().get(0).getCDNA())
                         .setDisplay(hgscEmergeReport.getVariants().get(0).getCDNA()))));
 
-        //Component:dna-chg-type
-//        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-//                new Coding().setSystem("http://loinc.org").setCode("48019-4").setDisplay("DNA change type")))
-//                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-//                        .setCode("LA6690-7").setDisplay("Substitution"))));
         //Component:variation-code
-//        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-//                new Coding().setSystem("http://loinc.org").setCode("81252-9").setDisplay("Discrete genetic variant")))
-//                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/clinvar/variation/")
-//                        .setCode("3131").setDisplay("NM_181798.1(KCNQ1):c.1171C>T (p.Arg391Ter)"))));
+        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("81252-9").setDisplay("Discrete genetic variant")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/clinvar/variation/")
+                        .setCode("3131").setDisplay("NM_181798.1(KCNQ1):c.1171C>T (p.Arg391Ter)"))));
         //Component:dbSNP-id
-//        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-//                new Coding().setSystem("http://loinc.org").setCode("81255-2").setDisplay("dbSNP [ID]")))
-//                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/snp/"))));
+        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("81255-2").setDisplay("dbSNP [ID]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/snp/"))));
 
         //Component:genomic-dna-chg
-//        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-//                new Coding().setSystem("http://loinc.org").setCode("81290-9").setDisplay("Genomic DNA change (gHGVS)")))
-//                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org/")
-//                        .setCode(hgscEmergeReport.getVariants().get(0).getGenomic())
-//                        .setDisplay(hgscEmergeReport.getVariants().get(0).getGenomic()))));
+        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("81290-9").setDisplay("Genomic DNA change (gHGVS)")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org/")
+                        .setCode(hgscEmergeReport.getVariants().get(0).getGenomic())
+                        .setDisplay(hgscEmergeReport.getVariants().get(0).getGenomic()))));
         //Component:genomic-source-class
-//        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-//                new Coding().setSystem("http://loinc.org").setCode("48002-0").setDisplay("Genomic source class [Type]")))
-//                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-//                        .setCode("LL378-1").setDisplay(hgscEmergeReport.getGenomicSource()))));
+        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("48002-0").setDisplay("Genomic source class [Type]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode("LL378-1").setDisplay(hgscEmergeReport.getGenomicSource()))));
         //Component:amino-acid-chg
         dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("48005-3").setDisplay("Amino acid change (pHGVS)")))
@@ -92,10 +87,10 @@ public class DxSNPINDELVariantsValueMapper {
                         .setDisplay(hgscEmergeReport.getVariants().get(0).getProteinChange()))));
 
         //Component:amino-acid-chg-type
-//        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-//                new Coding().setSystem("http://loinc.org").setCode("48006-1").setDisplay("Amino acid change [Type]")))
-//                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-//                        .setCode("???").setDisplay("???"))));
+        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("48006-1").setDisplay("Amino acid change [Type]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode("???").setDisplay("???"))));
         //Component:transcript-ref-seq
         dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("51958-7").setDisplay("Transcript reference sequence [ID]")))
@@ -103,19 +98,9 @@ public class DxSNPINDELVariantsValueMapper {
                         .setCode(hgscEmergeReport.getVariants().get(0).getTranscript())
                         .setDisplay(hgscEmergeReport.getVariants().get(0).getTranscript()))));
         //Component:genomic-ref-seq
-        //dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                //new Coding().setSystem("http://loinc.org").setCode("48013-7").setDisplay("Genomic reference sequence [ID]"))));
+        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("48013-7").setDisplay("Genomic reference sequence [ID]"))));
 
-        //Component:sample-allelic-frequency
-        //dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                //new Coding().setSystem("http://loinc.org").setCode("81258-6").setDisplay("Sample variant allelic frequency [NFr]")))
-                //.setValue(new Quantity().setValue("???"))
-        //);
-        //Component:allelic-read-depth
-        //dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                //new Coding().setSystem("http://loinc.org").setCode("82121-5").setDisplay("Allelic read depth")))
-                //.setValue(new Quantity().setValue("???"))
-        //);
         //Component:allelic-state
         dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("53034-5").setDisplay("Allelic state")))
@@ -131,10 +116,10 @@ public class DxSNPINDELVariantsValueMapper {
                 new Coding().setSystem("http://loinc.org").setCode("69551-0").setDisplay("Genomic alt allele [ID]")))
                 .setValue(new StringType(hgscEmergeReport.getVariants().get(0).getAlt())));
         //Component:coordinate-system
-//        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-//                new Coding().setSystem("http://loinc.org").setCode("92822-6").setDisplay("Genomic coordinate system [Type]")))
-//                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-//                        .setCode("LA30102-0").setDisplay("1-based character counting"))));
+        dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("92822-6").setDisplay("Genomic coordinate system [Type]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode("LA30102-0").setDisplay("1-based character counting"))));
 
         //Component:allele-start-end
         dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(

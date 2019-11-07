@@ -34,11 +34,6 @@ public class DxPanelValueMapper {
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             dxPanel.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
-        //BodySite
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectionSource")) {
-            dxPanel.setBodySite(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
-                    .setCode("119297000").setDisplay(hgscEmergeReport.getSampleCollectionSource())));
-        }
 
         return dxPanel;
     }

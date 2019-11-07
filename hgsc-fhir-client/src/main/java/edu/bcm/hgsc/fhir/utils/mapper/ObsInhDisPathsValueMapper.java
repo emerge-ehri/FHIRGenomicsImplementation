@@ -44,10 +44,10 @@ public class ObsInhDisPathsValueMapper {
                     .setCode("LA6668-3").setDisplay(hgscEmergeReport.getVariants().get(0).getInterpretation())));
         }
         //BodySite
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectionSource")) {
-            obsInhDisPaths.setBodySite(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
-                    .setCode("119297000").setDisplay(hgscEmergeReport.getSampleCollectionSource())));
-        }
+//        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectionSource")) {
+//            obsInhDisPaths.setBodySite(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
+//                    .setCode("119297000").setDisplay(hgscEmergeReport.getSampleCollectionSource())));
+//        }
 
         //extensions
         Extension ext = new Extension("http:/xxx/fhir/StructureDefinition/interpretation-summary-text",

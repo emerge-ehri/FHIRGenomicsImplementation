@@ -33,7 +33,7 @@ public class ObsOverallValueMapper {
         }
         //ValueCodeableConcept
         if (mappingConfig.containsKey("HgscEmergeReport.overallInterpretation")) {
-            obsOverall.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.orgvs/LL541-4")
+            obsOverall.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org/LL541-4")
                     .setCode("LA6576-8").setDisplay(hgscEmergeReport.getOverallInterpretation())));
         }
 
@@ -43,10 +43,10 @@ public class ObsOverallValueMapper {
         obsOverall.addExtension(ext);
 
         //BodySite
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectionSource")) {
-            obsOverall.setBodySite(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
-                    .setCode("119297000").setDisplay(hgscEmergeReport.getSampleCollectionSource())));
-        }
+//        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectionSource")) {
+//            obsOverall.setBodySite(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
+//                    .setCode("119297000").setDisplay(hgscEmergeReport.getSampleCollectionSource())));
+//        }
 
         return obsOverall;
     }
