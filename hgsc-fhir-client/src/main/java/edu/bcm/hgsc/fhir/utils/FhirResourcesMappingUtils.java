@@ -74,7 +74,7 @@ public class FhirResourcesMappingUtils {
                         results.put("DxPanel", dxPanel);
                         break;
                     case "PgxPanel":
-                        Observation pgxPanel = new PgxPanelValueMapper().pgxPanelValueMapping(mappingConfig, hgscEmergeReport);
+                        Observation pgxPanel = new PgxPanelValueMapper().pgxPanelValueMapping(mappingConfig, hgscEmergeReport, sdf);
                         results.put("PgxPanel", pgxPanel);
                         break;
                     case "PgxResult_1001":
@@ -128,6 +128,10 @@ public class FhirResourcesMappingUtils {
                     case "PgxGeno_6001":
                         Observation pgxGeno_6001 = new PgxGenotypesValueMapper().pgxGeno_6001_ValueMapping(mappingConfig, hgscEmergeReport, sdf);
                         results.put("PgxGeno_6001", pgxGeno_6001);
+                        break;
+                    case "Task":
+                        Task task = new TaskValueMapper().taskValueMapping(mappingConfig, hgscEmergeReport);
+                        results.put("Task", task);
                         break;
                     case "PlanDefinition":
                         PlanDefinition planDefinition = new PlanDefinitionValueMapper().planDefinitionValueMapping(mappingConfig, hgscEmergeReport);

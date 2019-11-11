@@ -28,14 +28,9 @@ public class DiagnosticReportValueMapper {
                 new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.DOCUMENTATION).setLabel("Genetic Sequencing Coverage Information")
                         .setDisplay("The BED file attached includes sequencing coverage information for the genetic regions studied for the specimen the test is performed on.")
                         .setDocument(new Attachment().setContentType("text/BED").setData(null)));
-
-        Extension ext2 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/recommendedAction",
-                new Reference(new Task()));
-
         Extension ext3 = new Extension("http://hl7.org/fhir/StructureDefinition/test-disclaimer",
                 new StringType("This test was developed ..... (disclaimer text from report footer)"));
         diagnosticReport.addExtension(ext1);
-        diagnosticReport.addExtension(ext2);
         diagnosticReport.addExtension(ext3);
 
         //Status

@@ -120,6 +120,9 @@ public class FileUploadServiceImpl {
         Practitioner geneticistTwo = (Practitioner) fhirResources.get("GeneticistTwo");
         geneticistTwo.setId(IdDt.newRandomUuid());
 
+        Task task = (Task) fhirResources.get("Task");
+        task.setId(IdDt.newRandomUuid());
+
         PlanDefinition planDefinition = (PlanDefinition) fhirResources.get("PlanDefinition");
         planDefinition.setId(IdDt.newRandomUuid());
 
@@ -134,6 +137,11 @@ public class FileUploadServiceImpl {
         dxPanel.setSubject(new Reference(patient.getId()));
         dxPanel.setSpecimen(new Reference(specimen.getId()));
         dxPanel.addPerformer(new Reference(organization.getId()));
+
+        pgxPanel.addBasedOn(new Reference(serviceRequest.getId()));
+        pgxPanel.setSubject(new Reference(patient.getId()));
+        pgxPanel.setSpecimen(new Reference(specimen.getId()));
+        pgxPanel.addPerformer(new Reference(organization.getId()));
 
         obsOverall.addBasedOn(new Reference(serviceRequest.getId()));
         obsOverall.setSubject(new Reference(patient.getId()));
@@ -203,6 +211,10 @@ public class FileUploadServiceImpl {
                 .addResultsInterpreter(new Reference(geneticistTwo.getId()));
         diagnosticReport.addSpecimen(new Reference(specimen.getId()));
         diagnosticReport.setSubject(new Reference(patient.getId()));
+        //Extension
+        Extension ext2 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/recommendedAction",
+                new Reference(task.getId()));
+        diagnosticReport.addExtension(ext2);
         diagnosticReport.addResult(new Reference(obsOverall.getId()))
                 .addResult(new Reference(dxPanel.getId()))
                 .addResult(new Reference(pgxPanel.getId()))
@@ -268,6 +280,8 @@ public class FileUploadServiceImpl {
         //hard code organization narrative
         //geneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 //.setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>Practitioner Name</b>: David Murdock, M.D., F.A.C.M.G.</p><p><b>Title</b>: ABMGG Certified Molecular Geneticist, Assistant Laboratory Director</p>")));
+        task.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(task))));
         planDefinition.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(planDefinition))));
         diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
@@ -448,6 +462,13 @@ public class FileUploadServiceImpl {
                 .setResource(geneticistTwo)
                 .getRequest()
                 .setUrl("Practitioner")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
+                .setFullUrl(task.getId())
+                .setResource(task)
+                .getRequest()
+                .setUrl("Task")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()

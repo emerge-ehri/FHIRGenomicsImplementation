@@ -102,7 +102,9 @@ public class DxSNPINDELVariantsValueMapper {
                         .setDisplay(hgscEmergeReport.getVariants().get(0).getTranscript()))));
         //Component:genomic-ref-seq
         dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                new Coding().setSystem("http://loinc.org").setCode("48013-7").setDisplay("Genomic reference sequence [ID]"))));
+                new Coding().setSystem("http://loinc.org").setCode("48013-7").setDisplay("Genomic reference sequence [ID]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("???")
+                        .setCode("???").setDisplay("???"))));
 
         //Component:allelic-state
         dxSNPINDELVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
