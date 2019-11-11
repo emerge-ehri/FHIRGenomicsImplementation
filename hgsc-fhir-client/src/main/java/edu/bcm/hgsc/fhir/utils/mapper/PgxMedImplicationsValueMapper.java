@@ -319,7 +319,7 @@ public class PgxMedImplicationsValueMapper {
         		.setCode("C0004482").setDisplay("azathioprine")));
         Extension ext1 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/RelatedArtifact", 
         		new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.JUSTIFICATION)
-        		.setUrl("https://cpicpgx.org/guidelines/guideline-for-thiopurines-and-tpmt/ thioguanine"));
+        		.setUrl("https://cpicpgx.org/guidelines/guideline-for-thiopurines-and-tpmt/thioguanine"));
         component_azathioprine.addExtension(ext1);
         pgxResult_5001.addComponent(component_azathioprine);
         //Component:medication-assessed (mercaptopurine)
