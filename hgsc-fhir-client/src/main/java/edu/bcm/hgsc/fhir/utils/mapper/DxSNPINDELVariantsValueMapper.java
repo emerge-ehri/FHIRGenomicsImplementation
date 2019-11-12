@@ -27,10 +27,6 @@ public class DxSNPINDELVariantsValueMapper {
         dxSNPINDELVariants.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("69548-6").setDisplay("Genetic variant assessment")));
 
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            dxSNPINDELVariants.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             dxSNPINDELVariants.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));

@@ -29,10 +29,6 @@ public class PgxGenotypesValueMapper {
         //Code
         pgxGeno_1001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("84413-4").setDisplay("genotype display name")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxGeno_1001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             pgxGeno_1001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
@@ -63,10 +59,6 @@ public class PgxGenotypesValueMapper {
         //Code
         pgxGeno_2001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("84413-4").setDisplay("genotype display name")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxGeno_2001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             pgxGeno_2001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
@@ -97,10 +89,6 @@ public class PgxGenotypesValueMapper {
         //Code
         pgxGeno_5001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("84413-4").setDisplay("genotype display name")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxGeno_5001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             pgxGeno_5001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
@@ -131,10 +119,6 @@ public class PgxGenotypesValueMapper {
         //Code
         pgxGeno_6001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("84413-4").setDisplay("genotype display name")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxGeno_6001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             pgxGeno_6001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));

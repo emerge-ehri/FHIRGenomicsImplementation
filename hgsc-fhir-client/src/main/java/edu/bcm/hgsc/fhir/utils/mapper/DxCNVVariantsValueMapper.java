@@ -7,12 +7,14 @@ import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Observation.ObservationComponentComponent;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
 public class DxCNVVariantsValueMapper {
 
-    public Observation dxCNVVariantsValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Observation dxCNVVariantsValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation dxCNVVariants = new Observation();
 
@@ -28,13 +30,9 @@ public class DxCNVVariantsValueMapper {
         //Code
         dxCNVVariants.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("69548-6").setDisplay("Genetic variant assessment")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            dxCNVVariants.setEffective(new DateTimeType(new Date(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            dxCNVVariants.setIssued(new Date(hgscEmergeReport.getReportDate()));
+            dxCNVVariants.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
         //ValueCodeableConcept
         dxCNVVariants.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")

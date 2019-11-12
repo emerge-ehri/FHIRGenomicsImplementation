@@ -20,10 +20,6 @@ public class ObsReportCommentValueMapper {
         //Code
         obsReportComment.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("86467-8").setDisplay("Report comment")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            obsReportComment.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             obsReportComment.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));

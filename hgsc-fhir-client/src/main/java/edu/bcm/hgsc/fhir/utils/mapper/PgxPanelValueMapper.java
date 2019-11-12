@@ -28,11 +28,6 @@ public class PgxPanelValueMapper {
         //Code
         pgxPanel.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("TBD-grouper")));
-
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxPanel.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             pgxPanel.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));

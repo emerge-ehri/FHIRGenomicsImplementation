@@ -58,7 +58,7 @@ public class FhirResourcesMappingUtils {
                         results.put("ObsOverall", obsOverall);
                         break;
                     case "DxCNVVariants":
-                        Observation dxCNVVariants = new DxCNVVariantsValueMapper().dxCNVVariantsValueMapping(mappingConfig, hgscEmergeReport);
+                        Observation dxCNVVariants = new DxCNVVariantsValueMapper().dxCNVVariantsValueMapping(mappingConfig, hgscEmergeReport, sdf);
                         results.put("DxCNVVariants", dxCNVVariants);
                         break;
                     case "DxSNPINDELVariants":

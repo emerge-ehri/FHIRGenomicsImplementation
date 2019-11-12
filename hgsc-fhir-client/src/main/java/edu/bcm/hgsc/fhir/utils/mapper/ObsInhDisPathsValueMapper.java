@@ -31,10 +31,6 @@ public class ObsInhDisPathsValueMapper {
         //Code
         obsInhDisPaths.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("53037-8").setDisplay("Genetic variation clinical significance")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            obsInhDisPaths.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             obsInhDisPaths.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));

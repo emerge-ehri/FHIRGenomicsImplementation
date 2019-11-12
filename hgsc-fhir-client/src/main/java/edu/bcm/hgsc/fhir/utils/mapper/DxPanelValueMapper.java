@@ -28,10 +28,6 @@ public class DxPanelValueMapper {
         //Code
         dxPanel.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("TBD-grouper")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            dxPanel.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             dxPanel.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));

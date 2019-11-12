@@ -25,10 +25,6 @@ public class ObsOverallValueMapper {
         //Code
         obsOverall.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("51968-6").setDisplay("Genetic disease analysis overall interpretation")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            obsOverall.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             obsOverall.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));

@@ -204,6 +204,8 @@ public class FileUploadServiceImpl {
                 .addHasMember(new Reference(obsInhDisPaths.getId()))
                 .addHasMember(new Reference(dxSNPINDELVariants.getId()));
 
+        task.setFor(new Reference(patient.getId()));
+
         DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
         diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
         diagnosticReport.addPerformer(new Reference(organization.getId()));

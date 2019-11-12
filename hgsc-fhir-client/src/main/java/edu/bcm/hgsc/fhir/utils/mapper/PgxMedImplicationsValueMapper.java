@@ -30,10 +30,6 @@ public class PgxMedImplicationsValueMapper {
         //Code
         pgxResult_1001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_1001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             pgxResult_1001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
@@ -118,10 +114,6 @@ public class PgxMedImplicationsValueMapper {
         //Code
         pgxResult_2001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_2001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             pgxResult_2001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
@@ -186,10 +178,6 @@ public class PgxMedImplicationsValueMapper {
         //Code
         pgxResult_3001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("51961-1").setDisplay("Genetic variation's effect on drug efficacy")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_3001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             pgxResult_3001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
@@ -254,10 +242,6 @@ public class PgxMedImplicationsValueMapper {
         //Code
         pgxResult_4001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("TBD???").setDisplay("Genetic variation's effect on drug transporter function")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_4001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             pgxResult_4001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
@@ -300,10 +284,6 @@ public class PgxMedImplicationsValueMapper {
         //Code
         pgxResult_5001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_5001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             pgxResult_5001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
@@ -362,10 +342,6 @@ public class PgxMedImplicationsValueMapper {
         //Code
         pgxResult_6001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            pgxResult_6001.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             pgxResult_6001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));

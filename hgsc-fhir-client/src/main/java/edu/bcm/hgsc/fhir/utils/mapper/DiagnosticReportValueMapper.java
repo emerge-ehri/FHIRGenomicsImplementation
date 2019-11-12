@@ -45,10 +45,6 @@ public class DiagnosticReportValueMapper {
         //Code
         diagnosticReport.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("81247-9").setDisplay("Master HL7 genetic variant reporting panel")));
-        //EffectiveDateTime
-        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectedDate")) {
-            diagnosticReport.setEffective(new DateTimeType(sdf.parse(hgscEmergeReport.getSampleCollectedDate())));
-        }
         //Issued
         if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
             diagnosticReport.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
