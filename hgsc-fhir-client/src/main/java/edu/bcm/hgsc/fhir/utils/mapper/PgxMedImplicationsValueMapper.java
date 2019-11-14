@@ -18,7 +18,7 @@ public class PgxMedImplicationsValueMapper {
         pgxResult_1001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType("This individual is homozygous for a non-functional allele of the CYP2C19 gene. Based on the genotype result, this patient is predicted to have a CYP2C19 poor metabolizer phenotype. This genotype information can be used by patients and clinicians as part of the shared decision-making process for several drugs metabolized by CYP2C19 including clopidogrel, voriconazole, amitriptyline, citalopram and escitalopram. For clopidogrel, individuals with this diplotype are expected to have significantly reduced platelet inhibition, increased residual platelet aggregation and increased risk for adverse cardiovascular events in response to clopidogrel. Alternative antiplatelet therapy (if no contraindication) is recommended. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline- for-clopidogrel-and-cyp2c19/. For voriconazole, higher dose-adjusted trough concentrations of voriconazole are expected in individuals with this genotype and may increase the probability of adverse events. An alternative agent that is not dependent on CYP2C19 metabolism such as isavuconazole, liposomal amphotericin B, or posaconazole is recommended as primary therapy in lieu of voriconazole. A lower than standard dosage of voriconazole with careful therapeutic drug monitoring is another alternative. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-voriconazole-and-cyp2c19/. For citalopram and escitalopram, a 50% reduction in starting dose is recommended with therapeutic drug monitoring to guide dose adjustment or select an alternate drug not predominantly metabolized by CYP2C19. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-selective-serotonin-reuptake-inhibitors-and-cyp2d6-and-cyp2c19/. For amitriptyline, a 50% reduction in starting dose is recommended with therapeutic drug monitoring to guide dose adjustment. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for- tricyclic-antidepressants-and-cyp2d6-and-cyp2c19/. For citalopram, escitalopram and amitriptyline, if CYP2D6 genotyping is available, refer to the current guidelines for dosing recommendations."));
+                new StringType(hgscEmergeReport.getPgxData().get(0).getInterpretation()));
         pgxResult_1001.addExtension(ext);
         //Status
         if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
@@ -36,7 +36,7 @@ public class PgxMedImplicationsValueMapper {
         }
         //ValueCodeableConcept
         pgxResult_1001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-        		.setCode("LA9657-3").setDisplay("Poor metabolizer")));
+        		.setCode("LA9657-3").setDisplay(hgscEmergeReport.getPgxData().get(0).getPhenotype())));
         
         //Component:medication-assessed (clopidogrel)
         ObservationComponentComponent component_clopidogrel = new ObservationComponentComponent();
@@ -102,7 +102,7 @@ public class PgxMedImplicationsValueMapper {
         pgxResult_2001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType("This individual is homozygous for the functional allele of the DPYD gene. This genotype information can be used by patients and clinicians as part of the shared decision-making process for fluoropyrimidines (capecitabine, fluorouracil, tegafur). Based on the genotype result, this patient is predicted to have a normal DPD activity phenotype. Individuals with this diplotype are expected to have 'normal' risk for fluoropyrimidine toxicity. Recommendations include the use of label recommended dosage and administration. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-fluoropyrimidines-and-dpyd/."));
+                new StringType(hgscEmergeReport.getPgxData().get(0).getInterpretation()));
         pgxResult_2001.addExtension(ext);
         //Status
         if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
@@ -119,7 +119,7 @@ public class PgxMedImplicationsValueMapper {
             pgxResult_2001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
         }
         //ValueCodeableConcept
-        pgxResult_2001.setValue(new CodeableConcept().setText("Normal DPD activity and 'normal' risk for fluoropyrimidine toxicity"));
+        pgxResult_2001.setValue(new CodeableConcept().setText(hgscEmergeReport.getPgxData().get(0).getPhenotype()));
         
         //Component:medication-assessed (capecitabine)
         ObservationComponentComponent component_capecitabine = new ObservationComponentComponent();
@@ -138,10 +138,7 @@ public class PgxMedImplicationsValueMapper {
         		new Coding().setSystem("http://loinc.org").setCode("51963-7").setDisplay("Medication assessed")))
         		.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://ncimeta.nci.nih.gov")
         		.setCode("C0016360").setDisplay("fluorouracil")));
-        Extension ext2 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/RelatedArtifact", 
-        		new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.JUSTIFICATION)
-        		.setUrl("https://cpicpgx.org/guidelines/guideline-for-fluoropyrimidines-and-dpyd/"));
-        component_fluorouracil.addExtension(ext2);
+        component_fluorouracil.addExtension(ext1);
         pgxResult_2001.addComponent(component_fluorouracil);
         //Component:medication-assessed (tegafur)
         ObservationComponentComponent component_tegafur = new ObservationComponentComponent();
@@ -149,10 +146,7 @@ public class PgxMedImplicationsValueMapper {
         		new Coding().setSystem("http://loinc.org").setCode("51963-7").setDisplay("Medication assessed")))
         		.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://ncimeta.nci.nih.gov")
         		.setCode("C0016778").setDisplay("tegafur")));
-        Extension ext3 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/RelatedArtifact", 
-        		new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.JUSTIFICATION)
-        		.setUrl("https://cpicpgx.org/guidelines/guideline-for-fluoropyrimidines-and-dpyd/"));
-        component_tegafur.addExtension(ext3);
+        component_tegafur.addExtension(ext1);
         pgxResult_2001.addComponent(component_tegafur);
         
         return pgxResult_2001;
@@ -202,10 +196,7 @@ public class PgxMedImplicationsValueMapper {
         		new Coding().setSystem("http://loinc.org").setCode("51963-7").setDisplay("Medication assessed")))
         		.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://ncimeta.nci.nih.gov")
         		.setCode("C0796545").setDisplay("peginterferon alfa-2b")));
-        Extension ext2 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/RelatedArtifact", 
-        		new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.JUSTIFICATION)
-        		.setUrl("https://cpicpgx.org/guidelines/guideline-for-peg-interferon-alpha-based-regimens-and-ifnl3/"));
-        component_fluorouracil.addExtension(ext2);
+        component_fluorouracil.addExtension(ext1);
         pgxResult_3001.addComponent(component_fluorouracil);
         //Component:medication-assessed (Ribavirin)
         ObservationComponentComponent component_ribavirin = new ObservationComponentComponent();
@@ -213,10 +204,7 @@ public class PgxMedImplicationsValueMapper {
         		new Coding().setSystem("http://loinc.org").setCode("51963-7").setDisplay("Medication assessed")))
         		.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://ncimeta.nci.nih.gov")
         		.setCode("C0035525").setDisplay("Ribavirin")));
-        Extension ext3 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/RelatedArtifact", 
-        		new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.JUSTIFICATION)
-        		.setUrl("https://cpicpgx.org/guidelines/guideline-for-peg-interferon-alpha-based-regimens-and-ifnl3/"));
-        component_ribavirin.addExtension(ext3);
+        component_ribavirin.addExtension(ext1);
         pgxResult_3001.addComponent(component_ribavirin);
         
         return pgxResult_3001;
@@ -269,7 +257,7 @@ public class PgxMedImplicationsValueMapper {
         Observation pgxResult_5001 = new Observation();
 
         //Profile
-        pgxResult_5001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-transporter");
+        pgxResult_5001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text", 
         		new StringType("This individual is homozygous for the normal high activity allele of the TPMT gene. Decreased TPMT gene activity is associated with toxicity and myelosuppression in response to thiopurines, and this genotype information can be used by patients and clinicians as part of the shared decision-making process for initiating treatment. Based on the genotype result, this patient is predicted to have normal TPMT function. Individuals with this diplotype are expected to have a normal response to mercaptopurine, azathioprine and thioguanine. A normal dose of thiopurine and adjustment following the disease-specific guidelines is recommended. Refer to current guidelines for dosage and recommendations for each specific thiopurine drug at https://cpicpgx.org/guidelines/guideline-for-thiopurines-and-tpmt/."));
@@ -327,7 +315,7 @@ public class PgxMedImplicationsValueMapper {
         Observation pgxResult_6001 = new Observation();
 
         //Profile
-        pgxResult_6001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-transporter");
+        pgxResult_6001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text", 
         		new StringType("This individual is homozygous for the normal allele for the CYP2C9 gene. Based on the genotype result, this patient is predicted to have normal CYP2C9 function.This individual is also heterozygous for the variant allele for the VKORC1 gene. Expression level of the VKORC1 gene is associated with warfarin sensitivity. Based on the genotype result, this patient is predicted to have medium sensitivity to warfarin."));

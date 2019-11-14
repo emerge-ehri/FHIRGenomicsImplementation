@@ -24,7 +24,7 @@ public class SpecimenValueMapper {
         }
         //AccessionIdentifier
         if (mappingConfig.containsKey("HgscEmergeReport.accessionNumber")) {
-            specimen.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscEmergeReport.getAccessionNumber())
+            specimen.setAccessionIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscEmergeReport.getLocalID())
                     .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                             .setCode("ACSN").setDisplay("Accession ID"))));
         }

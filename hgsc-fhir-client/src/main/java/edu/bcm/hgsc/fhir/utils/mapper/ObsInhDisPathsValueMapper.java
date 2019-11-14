@@ -14,12 +14,11 @@ public class ObsInhDisPathsValueMapper {
         Observation obsInhDisPaths = new Observation();
 
         //Observation-secondaryFinding
-        //if (mappingConfig.containsKey("HgscEmergeReport.secondaryFinding"))
-        Extension secondaryFinding = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/inherited-disease-pathogenicity",
-                new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/special-values").setCode("true").setDisplay("true"))
-                .addCoding(new Coding().setSystem("http://hl7.org/fhir/StructureDefinition/observation-secondaryFinding").setCode("acmg-version2").setDisplay("ACMG Version 2"))
-                .setText("map;variant.secondaryFindingText???"));
-        obsInhDisPaths.addExtension(secondaryFinding);
+        if (mappingConfig.containsKey("HgscEmergeReport.secondaryFinding")) {
+            Extension secondaryFinding = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/inherited-disease-pathogenicity",
+                    new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/special-values").setCode("true").setDisplay("true")));
+            obsInhDisPaths.addExtension(secondaryFinding);
+        }
 
         //Status
         if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
