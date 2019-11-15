@@ -1,13 +1,13 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscReport;
 import org.hl7.fhir.r4.model.*;
 
 import java.util.HashMap;
 
 public class TaskValueMapper {
 
-    public Task taskValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Task taskValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport) {
 
         Task task = new Task();
 

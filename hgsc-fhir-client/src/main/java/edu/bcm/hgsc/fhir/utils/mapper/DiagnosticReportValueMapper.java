@@ -1,6 +1,6 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.utils.FileUtils;
 import org.hl7.fhir.r4.model.*;
 
@@ -10,15 +10,15 @@ import java.util.HashMap;
 
 public class DiagnosticReportValueMapper {
 
-    public DiagnosticReport diagnosticReportValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, FileUtils fileUtils, SimpleDateFormat sdf) throws ParseException {
+    public DiagnosticReport diagnosticReportValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, FileUtils fileUtils, SimpleDateFormat sdf) throws ParseException {
 
         DiagnosticReport diagnosticReport = new DiagnosticReport();
 
         //Profile
         diagnosticReport.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/diagnosticreport");
         //Identifier
-        if (mappingConfig.containsKey("HgscEmergeReport.reportIdentifier")) {
-            diagnosticReport.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscEmergeReport.getReportIdentifier())
+        if (mappingConfig.containsKey("HgscReport.reportIdentifier")) {
+            diagnosticReport.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getReportIdentifier())
                     .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                             .setCode("FILL").setDisplay("Filler Identifier"))));
         }
@@ -26,7 +26,7 @@ public class DiagnosticReportValueMapper {
         //extensions
         Extension ext1 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/relatedArtifact",
                 new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.DOCUMENTATION).setLabel("Genetic Sequencing Coverage Information")
-                        .setDisplay(hgscEmergeReport.getGeneCoverage().toString()
+                        .setDisplay(hgscReport.getGeneCoverage().toString()
                                 //"The BED file attached includes sequencing coverage information for the genetic regions studied for the specimen the test is performed on."
                         )
                         .setDocument(new Attachment().setContentType("text/BED").setData(null)));
@@ -36,8 +36,8 @@ public class DiagnosticReportValueMapper {
         diagnosticReport.addExtension(ext3);
 
         //Status
-        if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
-            diagnosticReport.setStatus(DiagnosticReport.DiagnosticReportStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            diagnosticReport.setStatus(DiagnosticReport.DiagnosticReportStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
         }
         //Category
         diagnosticReport.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0074")
@@ -48,10 +48,10 @@ public class DiagnosticReportValueMapper {
         diagnosticReport.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("81247-9").setDisplay("Master HL7 genetic variant reporting panel")));
         //Issued
-        if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            diagnosticReport.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            diagnosticReport.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
-//        if (mappingConfig.containsKey("HgscEmergeReport.attachedReport")) {
+//        if (mappingConfig.containsKey("HgscReport.attachedReport")) {
 //            Attachment attachedReport = new Attachment();
 //            attachedReport.setData(fileUtils.readBytesFromFile(FileUtils.PROJECT_DIRECTORY + "Consent.pdf"));
 //            diagnosticReport.addPresentedForm(attachedReport);

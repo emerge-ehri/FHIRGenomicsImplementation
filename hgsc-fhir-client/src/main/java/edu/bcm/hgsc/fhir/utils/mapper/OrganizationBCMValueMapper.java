@@ -1,6 +1,6 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscReport;
 import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.ContactPoint;
 import org.hl7.fhir.r4.model.Organization;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class OrganizationBCMValueMapper {
 
-    public Organization organizationBCMValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Organization organizationBCMValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport) {
 
         Organization organizationBCM = new Organization();
 

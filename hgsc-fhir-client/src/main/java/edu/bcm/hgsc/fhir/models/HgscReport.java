@@ -61,7 +61,7 @@ import java.util.*;
         "cnvsFailed"
         
 })
-public class HgscEmergeReport {
+public class HgscReport {
 
     // Requried Fields
     public static final List<String> requiredFields = Collections.unmodifiableList(

@@ -1,6 +1,6 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscReport;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Observation.ObservationComponentComponent;
 
@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class PgxMedImplicationsValueMapper {
 
-    public Observation pgxResult_1001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_1001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxResult_1001 = new Observation();
 
@@ -18,11 +18,11 @@ public class PgxMedImplicationsValueMapper {
         pgxResult_1001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType(hgscEmergeReport.getPgxData().get(0).getInterpretation()));
+                new StringType(hgscReport.getPgxData().get(0).getInterpretation()));
         pgxResult_1001.addExtension(ext);
         //Status
-        if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
-            pgxResult_1001.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            pgxResult_1001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
         }
         //Category
         pgxResult_1001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -31,12 +31,12 @@ public class PgxMedImplicationsValueMapper {
         pgxResult_1001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //Issued
-        if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_1001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            pgxResult_1001.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
         pgxResult_1001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-        		.setCode("LA9657-3").setDisplay(hgscEmergeReport.getPgxData().get(0).getPhenotype())));
+        		.setCode("LA9657-3").setDisplay(hgscReport.getPgxData().get(0).getPhenotype())));
         
         //Component:medication-assessed (clopidogrel)
         ObservationComponentComponent component_clopidogrel = new ObservationComponentComponent();
@@ -94,7 +94,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_1001;
     }
     
-    public Observation pgxResult_2001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_2001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxResult_2001 = new Observation();
 
@@ -102,11 +102,11 @@ public class PgxMedImplicationsValueMapper {
         pgxResult_2001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType(hgscEmergeReport.getPgxData().get(0).getInterpretation()));
+                new StringType(hgscReport.getPgxData().get(0).getInterpretation()));
         pgxResult_2001.addExtension(ext);
         //Status
-        if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
-            pgxResult_2001.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            pgxResult_2001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
         }
         //Category
         pgxResult_2001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -115,11 +115,11 @@ public class PgxMedImplicationsValueMapper {
         pgxResult_2001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //Issued
-        if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_2001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            pgxResult_2001.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
-        pgxResult_2001.setValue(new CodeableConcept().setText(hgscEmergeReport.getPgxData().get(0).getPhenotype()));
+        pgxResult_2001.setValue(new CodeableConcept().setText(hgscReport.getPgxData().get(0).getPhenotype()));
         
         //Component:medication-assessed (capecitabine)
         ObservationComponentComponent component_capecitabine = new ObservationComponentComponent();
@@ -152,7 +152,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_2001;
     }
     
-    public Observation pgxResult_3001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_3001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxResult_3001 = new Observation();
 
@@ -163,8 +163,8 @@ public class PgxMedImplicationsValueMapper {
         		new StringType("This individual is homozygous for the rs12979860 C/C allele in the IFNL3 gene. This variant is the strongest baseline predictor of response to peginterferon alfa and ribavirin therapy in previously untreated patients and can be used by patients and clinicians as part of the shared decision-making process for initiating treatment for hepatitis C virus infection. Based on the genotype result, this patient is predicted to have an increased likelihood of response (higher sustained virologic response rate) to peginterferon alfa and ribavirin therapy as compared with patients with unfavorable response genotype. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-peg-interferon-alpha-based-regimens-and-ifnl3/"));
         pgxResult_3001.addExtension(ext);
         //Status
-        if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
-            pgxResult_3001.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            pgxResult_3001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
         }
         //Category
         pgxResult_3001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -173,8 +173,8 @@ public class PgxMedImplicationsValueMapper {
         pgxResult_3001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("51961-1").setDisplay("Genetic variation's effect on drug efficacy")));
         //Issued
-        if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_3001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            pgxResult_3001.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
         pgxResult_3001.setValue(new CodeableConcept().setText("Favorable response genotype"));
@@ -210,7 +210,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_3001;
     }
     
-    public Observation pgxResult_4001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_4001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxResult_4001 = new Observation();
 
@@ -221,8 +221,8 @@ public class PgxMedImplicationsValueMapper {
         		new StringType("This individual is homozygous for the rs4149056 T/T allele in the SLCO1B1 gene. This genotype information can be used by patients and clinicians as part of the shared decision-making process for simvastatin and other drugs affected by SLCO1B1. Based on the genotype result, this patient is predicted to have normal SLCO1B1 function. This means that there is no reason to adjust the dose of most medications that are affected by SLCO1B1 (including simvastatin) on the basis of SLCO1B1 genetic status. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-simvastatin-and-slco1b1/."));
         pgxResult_4001.addExtension(ext);
         //Status
-        if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
-            pgxResult_4001.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            pgxResult_4001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
         }
         //Category
         pgxResult_4001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -231,8 +231,8 @@ public class PgxMedImplicationsValueMapper {
         pgxResult_4001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("TBD???").setDisplay("Genetic variation's effect on drug transporter function")));
         //Issued
-        if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_4001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            pgxResult_4001.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
         pgxResult_4001.setValue(new CodeableConcept().setText("Normal function, Normal simvastatin induced myopathy risk"));
@@ -252,7 +252,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_4001;
     }
     
-    public Observation pgxResult_5001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_5001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxResult_5001 = new Observation();
 
@@ -263,8 +263,8 @@ public class PgxMedImplicationsValueMapper {
         		new StringType("This individual is homozygous for the normal high activity allele of the TPMT gene. Decreased TPMT gene activity is associated with toxicity and myelosuppression in response to thiopurines, and this genotype information can be used by patients and clinicians as part of the shared decision-making process for initiating treatment. Based on the genotype result, this patient is predicted to have normal TPMT function. Individuals with this diplotype are expected to have a normal response to mercaptopurine, azathioprine and thioguanine. A normal dose of thiopurine and adjustment following the disease-specific guidelines is recommended. Refer to current guidelines for dosage and recommendations for each specific thiopurine drug at https://cpicpgx.org/guidelines/guideline-for-thiopurines-and-tpmt/."));
         pgxResult_5001.addExtension(ext);
         //Status
-        if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
-            pgxResult_5001.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            pgxResult_5001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
         }
         //Category
         pgxResult_5001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -273,8 +273,8 @@ public class PgxMedImplicationsValueMapper {
         pgxResult_5001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //Issued
-        if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_5001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            pgxResult_5001.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
         pgxResult_5001.setValue(new CodeableConcept().setText("High activity"));
@@ -310,7 +310,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_5001;
     }
     
-    public Observation pgxResult_6001_ValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_6001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxResult_6001 = new Observation();
 
@@ -321,8 +321,8 @@ public class PgxMedImplicationsValueMapper {
         		new StringType("This individual is homozygous for the normal allele for the CYP2C9 gene. Based on the genotype result, this patient is predicted to have normal CYP2C9 function.This individual is also heterozygous for the variant allele for the VKORC1 gene. Expression level of the VKORC1 gene is associated with warfarin sensitivity. Based on the genotype result, this patient is predicted to have medium sensitivity to warfarin."));
         pgxResult_6001.addExtension(ext);
         //Status
-        if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
-            pgxResult_6001.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            pgxResult_6001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
         }
         //Category
         pgxResult_6001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -331,8 +331,8 @@ public class PgxMedImplicationsValueMapper {
         pgxResult_6001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //Issued
-        if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            pgxResult_6001.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            pgxResult_6001.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
         pgxResult_6001.setValue(new CodeableConcept().setText("Extensive metabolizer"));

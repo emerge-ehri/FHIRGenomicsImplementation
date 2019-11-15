@@ -1,13 +1,13 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscReport;
 import org.hl7.fhir.r4.model.*;
 
 import java.util.HashMap;
 
 public class OrganizationValueMapper {
 
-    public Organization organizationValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Organization organizationValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport) {
 
         Organization organization = new Organization();
 

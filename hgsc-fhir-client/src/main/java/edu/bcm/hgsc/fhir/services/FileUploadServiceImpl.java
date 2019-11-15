@@ -3,7 +3,7 @@ package edu.bcm.hgsc.fhir.services;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.model.primitive.IdDt;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
-import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.utils.FhirResourcesMappingUtils;
 import edu.bcm.hgsc.fhir.utils.FileUtils;
 import edu.bcm.hgsc.fhir.utils.JsonMappingUtil;
@@ -34,25 +34,25 @@ public class FileUploadServiceImpl {
     public ArrayList<String> createFhirResources(File file) {
 
         JsonMappingUtil util = new JsonMappingUtil();
-        HgscEmergeReport report = util.readFromEmergeReportJsonFile(file);
+        HgscReport report = util.readFromEmergeReportJsonFile(file);
 
         Map<String, Object> fhirResources = this.createIndividualFhirResources(report);
         return this.createBundle(fhirResources, report);
     }
 
-    public Map<String, Object> createIndividualFhirResources(HgscEmergeReport hgscEmergeReport) {
+    public Map<String, Object> createIndividualFhirResources(HgscReport hgscReport) {
 
         HashMap<String, String> mappingConfig = fileUtils.readMapperConfig(getClass().getClassLoader().getResource("mapping.properties").getPath());
         Map<String, Object> newResources = null;
         try {
-            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscEmergeReport);
+            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscReport);
         } catch (java.text.ParseException e) {
             logger.error("Failed to Parse Date data type:", e);
         }
         return newResources;
     }
 
-    public ArrayList<String> createBundle(Map<String, Object> fhirResources, HgscEmergeReport hgscEmergeReport) {
+    public ArrayList<String> createBundle(Map<String, Object> fhirResources, HgscReport hgscReport) {
 
         Patient patient = (Patient)fhirResources.get("Patient");
         // Give the patient a temporary UUID so that other resources in the transaction can refer to it
@@ -157,7 +157,7 @@ public class FileUploadServiceImpl {
         dxSNPINDELVariants.setSubject(new Reference(patient.getId()));
         dxSNPINDELVariants.setSpecimen(new Reference(specimen.getId()));
         dxSNPINDELVariants.addPerformer(new Reference(organization.getId()));
-        dxSNPINDELVariants.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText(hgscEmergeReport.getVariants().get(0).getNotes()));
+        dxSNPINDELVariants.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText(hgscReport.getVariants().get(0).getNotes()));
 
         pgxGeno_1001.setSubject(new Reference(patient.getId()));
         pgxGeno_1001.addPerformer(new Reference(organization.getId()));
@@ -196,7 +196,7 @@ public class FileUploadServiceImpl {
         obsInhDisPaths.addBasedOn(new Reference(serviceRequest.getId()));
         obsInhDisPaths.setSubject(new Reference(patient.getId()));
         obsInhDisPaths.addPerformer(new Reference(organization.getId()));
-        obsInhDisPaths.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText(hgscEmergeReport.getVariants().get(0).getNotes()));
+        obsInhDisPaths.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText(hgscReport.getVariants().get(0).getNotes()));
         obsInhDisPaths.setSpecimen(new Reference(specimen.getId()));
         obsInhDisPaths.addDerivedFrom(new Reference(dxSNPINDELVariants.getId()));
 

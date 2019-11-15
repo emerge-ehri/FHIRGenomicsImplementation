@@ -1,13 +1,13 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscReport;
 import org.hl7.fhir.r4.model.*;
 
 import java.util.HashMap;
 
 public class GeneticistValueMapper {
 
-    public Practitioner geneticistOneValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Practitioner geneticistOneValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport) {
 
         Practitioner geneticistOne = new Practitioner();
 
@@ -31,7 +31,7 @@ public class GeneticistValueMapper {
         return geneticistOne;
     }
 
-    public Practitioner geneticistTwoValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public Practitioner geneticistTwoValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport) {
 
         Practitioner geneticistTwo = new Practitioner();
 

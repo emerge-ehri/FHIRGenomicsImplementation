@@ -1,6 +1,6 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscReport;
 import org.hl7.fhir.r4.model.*;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class PlanDefinitionValueMapper {
 
-    public PlanDefinition planDefinitionValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport) {
+    public PlanDefinition planDefinitionValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport) {
 
         PlanDefinition planDefinition = new PlanDefinition();
 
@@ -18,8 +18,8 @@ public class PlanDefinitionValueMapper {
         planDefinition.getMeta().addProfile("") ;
 
         // Identifier
-        if (mappingConfig.containsKey("HgscEmergeReport.testName")) {
-            planDefinition.addIdentifier(new Identifier().setSystem("https://hgsc.bcm.edu/lab-test-codes/").setValue(hgscEmergeReport.getTestName())
+        if (mappingConfig.containsKey("HgscReport.testName")) {
+            planDefinition.addIdentifier(new Identifier().setSystem("https://hgsc.bcm.edu/lab-test-codes/").setValue(hgscReport.getTestName())
                     .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                             .setCode("FILL").setDisplay("Filler Identifier"))));
         }
@@ -28,18 +28,18 @@ public class PlanDefinitionValueMapper {
 
 
         // Name
-        if (mappingConfig.containsKey("HgscEmergeReport.testName")) {
-            planDefinition.setName(hgscEmergeReport.getTestName());
+        if (mappingConfig.containsKey("HgscReport.testName")) {
+            planDefinition.setName(hgscReport.getTestName());
         }
 
         // Title
-        if (mappingConfig.containsKey("HgscEmergeReport.reportName")) {
-            //planDefinition.setTitle(hgscEmergeReport.getReportName); // Does not exist right now but should be added to JSON
+        if (mappingConfig.containsKey("HgscReport.reportName")) {
+            //planDefinition.setTitle(hgscReport.getReportName); // Does not exist right now but should be added to JSON
         }
 
         // Subtitle
-        if (mappingConfig.containsKey("HgscEmergeReport.clinicalSite")) {
-            planDefinition.setSubtitle(hgscEmergeReport.getClinicalSite());
+        if (mappingConfig.containsKey("HgscReport.clinicalSite")) {
+            planDefinition.setSubtitle(hgscReport.getClinicalSite());
         }
 
         // Type
@@ -50,12 +50,12 @@ public class PlanDefinitionValueMapper {
         planDefinition.setStatus(Enumerations.PublicationStatus.ACTIVE);
 
         // Description
-        if (mappingConfig.containsKey("HgscEmergeReport.background")) {
-            planDefinition.setDescription(hgscEmergeReport.getBackground());
+        if (mappingConfig.containsKey("HgscReport.background")) {
+            planDefinition.setDescription(hgscReport.getBackground());
         }
 
         // Action
-        if (mappingConfig.containsKey("HgscEmergeReport.methodology")) {
+        if (mappingConfig.containsKey("HgscReport.methodology")) {
             PlanDefinition.PlanDefinitionActionComponent planDefinitionActionComponent = new PlanDefinition.PlanDefinitionActionComponent();
             planDefinitionActionComponent.setPrefix("5");
             planDefinitionActionComponent.setDescription("");

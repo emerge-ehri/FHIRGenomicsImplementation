@@ -1,9 +1,8 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscReport;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Observation;
 
 import java.text.ParseException;
@@ -12,15 +11,15 @@ import java.util.HashMap;
 
 public class DxPanelValueMapper {
 
-    public Observation dxPanelValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation dxPanelValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation dxPanel = new Observation();
 
         //Profile
         dxPanel.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/grouper");
     	//Status
-        if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
-            dxPanel.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            dxPanel.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
         }
         //Category
         dxPanel.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -29,8 +28,8 @@ public class DxPanelValueMapper {
         dxPanel.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("TBD-grouper")));
         //Issued
-        if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            dxPanel.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            dxPanel.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
 
         return dxPanel;

@@ -1,6 +1,6 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscReport;
 import org.hl7.fhir.r4.model.*;
 
 import java.text.ParseException;
@@ -9,20 +9,20 @@ import java.util.HashMap;
 
 public class ObsInhDisPathsValueMapper {
 
-    public Observation obsInhDisPathsValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation obsInhDisPathsValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation obsInhDisPaths = new Observation();
 
         //Observation-secondaryFinding
-        if (mappingConfig.containsKey("HgscEmergeReport.secondaryFinding")) {
+        if (mappingConfig.containsKey("HgscReport.secondaryFinding")) {
             Extension secondaryFinding = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/inherited-disease-pathogenicity",
                     new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/special-values").setCode("true").setDisplay("true")));
             obsInhDisPaths.addExtension(secondaryFinding);
         }
 
         //Status
-        if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
-            obsInhDisPaths.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            obsInhDisPaths.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
         }
         //Category
         obsInhDisPaths.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -31,24 +31,19 @@ public class ObsInhDisPathsValueMapper {
         obsInhDisPaths.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("53037-8").setDisplay("Genetic variation clinical significance")));
         //Issued
-        if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            obsInhDisPaths.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            obsInhDisPaths.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
 
         //ValueCodeableConcept
-        if (mappingConfig.containsKey("HgscEmergeReport.overallInterpretation")) {
+        if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
             obsInhDisPaths.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org/LL4034-6")
-                    .setCode("LA6668-3").setDisplay(hgscEmergeReport.getVariants().get(0).getInterpretation())));
+                    .setCode("LA6668-3").setDisplay(hgscReport.getVariants().get(0).getInterpretation())));
         }
-        //BodySite
-//        if (mappingConfig.containsKey("HgscEmergeReport.sampleCollectionSource")) {
-//            obsInhDisPaths.setBodySite(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
-//                    .setCode("119297000").setDisplay(hgscEmergeReport.getSampleCollectionSource())));
-//        }
 
         //extensions
         Extension ext = new Extension("http:/xxx/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType(hgscEmergeReport.getVariants().get(0).getInterpretation()));
+                new StringType(hgscReport.getVariants().get(0).getInterpretation()));
         obsInhDisPaths.addExtension(ext);
 
         //Component:associated-phenotype
@@ -64,7 +59,7 @@ public class ObsInhDisPathsValueMapper {
         obsInhDisPaths.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("TBD-mode-of-inheritance").setDisplay("Mode of Inheritance")))
                 .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org/LL3731-8")
-                        .setCode("LA24640-7").setDisplay(hgscEmergeReport.getVariants().get(0).getInheritance()))));
+                        .setCode("LA24640-7").setDisplay(hgscReport.getVariants().get(0).getInheritance()))));
 
         return obsInhDisPaths;
     }

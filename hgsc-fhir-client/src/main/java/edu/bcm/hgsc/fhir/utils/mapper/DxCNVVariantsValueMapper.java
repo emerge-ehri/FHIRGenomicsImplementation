@@ -1,28 +1,26 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
-import edu.bcm.hgsc.fhir.models.HgscEmergeReport;
+import edu.bcm.hgsc.fhir.models.HgscReport;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Observation.ObservationComponentComponent;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 public class DxCNVVariantsValueMapper {
 
-    public Observation dxCNVVariantsValueMapping(HashMap<String, String> mappingConfig, HgscEmergeReport hgscEmergeReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation dxCNVVariantsValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation dxCNVVariants = new Observation();
 
         //Profile
         dxCNVVariants.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/obs-variant");
         //Status
-        if (mappingConfig.containsKey("HgscEmergeReport.reportStatus")) {
-            dxCNVVariants.setStatus(Observation.ObservationStatus.fromCode(hgscEmergeReport.getReportStatus().toLowerCase()));
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            dxCNVVariants.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
         }
         //Category
         dxCNVVariants.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -31,8 +29,8 @@ public class DxCNVVariantsValueMapper {
         dxCNVVariants.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("69548-6").setDisplay("Genetic variant assessment")));
         //Issued
-        if (mappingConfig.containsKey("HgscEmergeReport.reportDate")) {
-            dxCNVVariants.setIssued(sdf.parse(hgscEmergeReport.getReportDate()));
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            dxCNVVariants.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
         dxCNVVariants.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
