@@ -101,7 +101,7 @@ public class PatientValueMapper {
         return patient;
     }
 
-    public int calAge(String patientDOB, SimpleDateFormat sdf) throws ParseException {
+    private int calAge(String patientDOB, SimpleDateFormat sdf) throws ParseException {
 
         Calendar c = Calendar.getInstance();
         c.setTime(sdf.parse(patientDOB));

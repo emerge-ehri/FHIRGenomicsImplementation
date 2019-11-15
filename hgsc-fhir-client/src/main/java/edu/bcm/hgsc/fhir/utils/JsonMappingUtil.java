@@ -10,7 +10,7 @@ public class JsonMappingUtil {
 
     private static Logger logger = Logger.getLogger(JsonMappingUtil.class);
 
-    public HgscReport readFromEmergeReportJsonFile(File jsonFile) {
+    public HgscReport readFromHgscReportJsonFile(File jsonFile) {
         ObjectMapper mapper = new ObjectMapper();
         HgscReport hgscReport = null;
 

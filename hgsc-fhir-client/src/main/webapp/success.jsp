@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <h2>Upload eMerge report and Parsing successfully!</h2>
+    <h2>Upload HGSC report and Parsing successfully!</h2>
     <h2>Below FHIR resources have been created:</h2>
     <table>
         <c:forEach  var="url" items="${resultURLArr}">

@@ -34,13 +34,13 @@ public class FileUploadServiceImpl {
     public ArrayList<String> createFhirResources(File file) {
 
         JsonMappingUtil util = new JsonMappingUtil();
-        HgscReport report = util.readFromEmergeReportJsonFile(file);
+        HgscReport report = util.readFromHgscReportJsonFile(file);
 
         Map<String, Object> fhirResources = this.createIndividualFhirResources(report);
         return this.createBundle(fhirResources, report);
     }
 
-    public Map<String, Object> createIndividualFhirResources(HgscReport hgscReport) {
+    private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport) {
 
         HashMap<String, String> mappingConfig = fileUtils.readMapperConfig(getClass().getClassLoader().getResource("mapping.properties").getPath());
         Map<String, Object> newResources = null;
@@ -52,7 +52,7 @@ public class FileUploadServiceImpl {
         return newResources;
     }
 
-    public ArrayList<String> createBundle(Map<String, Object> fhirResources, HgscReport hgscReport) {
+    private ArrayList<String> createBundle(Map<String, Object> fhirResources, HgscReport hgscReport) {
 
         Patient patient = (Patient)fhirResources.get("Patient");
         // Give the patient a temporary UUID so that other resources in the transaction can refer to it
@@ -512,7 +512,7 @@ public class FileUploadServiceImpl {
         return resultURLArr;
     }
 
-    public DiagnosticReport searchDiagnosticReportById(String projectDir, String diagnosticReportId) {
+    private DiagnosticReport searchDiagnosticReportById(String projectDir, String diagnosticReportId) {
         DiagnosticReport diagnosticReport = client.read().resource(DiagnosticReport.class).withId(diagnosticReportId).execute();
 
         String string = ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport);

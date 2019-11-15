@@ -12,8 +12,8 @@
     <img src="./images/HGSC_Logo.png" width="150" height="80"/>
     <img src="./images/FHIR_Logo.png" width="180" height="80" hspace="76"/>
 
-    <h3>This website is for uploading eMerge report JSON file and parsing as HL7 FHIR format.</h3><br />
-    <h3>Please upload your eMerge report below:</h3>
+    <h3>This website is for uploading HGSC report JSON file and parsing as HL7 FHIR format.</h3><br />
+    <h3>Please upload your HGSC report below:</h3>
     <form action="fileupload"  method="post" enctype="multipart/form-data">
         <input class="btn btn-lg btn-primary" type="file" name="filename"><br>
         <input class="btn btn-lg btn-primary" type="submit" name="submit" value="submit">
