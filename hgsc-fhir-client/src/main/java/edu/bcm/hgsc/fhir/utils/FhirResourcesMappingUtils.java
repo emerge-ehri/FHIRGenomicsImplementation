@@ -25,8 +25,7 @@ public class FhirResourcesMappingUtils {
         // Get resource types from the mapping config file
         HashSet<String> resources = new HashSet<String>();
         for (String value : mappingConfig.values()) {
-            String[] strArr = value.split("\\.");
-            resources.add(strArr[0]);
+            resources.add(value);
         }
 
         // create all available resources
