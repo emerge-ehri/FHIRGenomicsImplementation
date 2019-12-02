@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class PgxMedImplicationsValueMapper {
 
-    private PgxDatum getPgxDataByGeneSymbol(HgscReport hgscReport, String geneSymbol) {
+    public PgxDatum getPgxDataByGeneSymbol(HgscReport hgscReport, String geneSymbol) {
 
         for(PgxDatum pgxDatum : hgscReport.getPgxData()) {
             if(pgxDatum.getGeneSymbol().equals(geneSymbol)) {

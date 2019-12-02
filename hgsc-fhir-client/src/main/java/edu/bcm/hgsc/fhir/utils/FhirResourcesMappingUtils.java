@@ -124,6 +124,14 @@ public class FhirResourcesMappingUtils {
                         PractitionerRole practitionerRole = new PractitionerRoleValueMapper().practitionerRoleValueMapping(mappingConfig, hgscReport);
                         results.put("PractitionerRole", practitionerRole);
                         break;
+                    case "PractitionerRoleGeneticistOne":
+                        PractitionerRole practitionerRoleGeneticistOne = new PractitionerRoleValueMapper().practitionerRoleGeneticistOneValueMapping(mappingConfig, hgscReport);
+                        results.put("PractitionerRoleGeneticistOne", practitionerRoleGeneticistOne);
+                        break;
+                    case "PractitionerRoleGeneticistTwo":
+                        PractitionerRole practitionerRoleGeneticistTwo = new PractitionerRoleValueMapper().practitionerRoleGeneticistTwoValueMapping(mappingConfig, hgscReport);
+                        results.put("PractitionerRoleGeneticistTwo", practitionerRoleGeneticistTwo);
+                        break;
                     case "PgxGeno_1001":
                         Observation pgxGeno_1001 = new PgxGenotypesValueMapper().pgxGeno_1001_ValueMapping(mappingConfig, hgscReport, sdf);
                         results.put("PgxGeno_1001", pgxGeno_1001);
@@ -132,6 +140,14 @@ public class FhirResourcesMappingUtils {
                         Observation pgxGeno_2001 = new PgxGenotypesValueMapper().pgxGeno_2001_ValueMapping(mappingConfig, hgscReport, sdf);
                         results.put("PgxGeno_2001", pgxGeno_2001);
                         break;
+                    case "PgxGeno_3001":
+                        Observation pgxGeno_3001 = new PgxGenotypesValueMapper().pgxGeno_3001_ValueMapping(mappingConfig, hgscReport, sdf);
+                        results.put("PgxGeno_3001", pgxGeno_3001);
+                        break;
+                    case "PgxGeno_4001":
+                        Observation pgxGeno_4001 = new PgxGenotypesValueMapper().pgxGeno_4001_ValueMapping(mappingConfig, hgscReport, sdf);
+                        results.put("PgxGeno_4001", pgxGeno_4001);
+                        break;
                     case "PgxGeno_5001":
                         Observation pgxGeno_5001 = new PgxGenotypesValueMapper().pgxGeno_5001_ValueMapping(mappingConfig, hgscReport, sdf);
                         results.put("PgxGeno_5001", pgxGeno_5001);
@@ -139,6 +155,10 @@ public class FhirResourcesMappingUtils {
                     case "PgxGeno_6001":
                         Observation pgxGeno_6001 = new PgxGenotypesValueMapper().pgxGeno_6001_ValueMapping(mappingConfig, hgscReport, sdf);
                         results.put("PgxGeno_6001", pgxGeno_6001);
+                        break;
+                    case "PgxGeno_7001":
+                        Observation pgxGeno_7001 = new PgxGenotypesValueMapper().pgxGeno_7001_ValueMapping(mappingConfig, hgscReport, sdf);
+                        results.put("PgxGeno_7001", pgxGeno_7001);
                         break;
                     case "Task":
                         Task task = new TaskValueMapper().taskValueMapping(mappingConfig, hgscReport);

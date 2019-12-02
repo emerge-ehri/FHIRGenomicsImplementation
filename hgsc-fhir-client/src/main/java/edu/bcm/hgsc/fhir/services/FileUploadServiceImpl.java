@@ -110,10 +110,16 @@ public class FileUploadServiceImpl {
         pgxGeno_1001.setId(IdDt.newRandomUuid());
         Observation pgxGeno_2001 = (Observation) fhirResources.get("PgxGeno_2001");
         pgxGeno_2001.setId(IdDt.newRandomUuid());
+        Observation pgxGeno_3001 = (Observation) fhirResources.get("PgxGeno_3001");
+        pgxGeno_3001.setId(IdDt.newRandomUuid());
+        Observation pgxGeno_4001 = (Observation) fhirResources.get("PgxGeno_4001");
+        pgxGeno_4001.setId(IdDt.newRandomUuid());
         Observation pgxGeno_5001 = (Observation) fhirResources.get("PgxGeno_5001");
         pgxGeno_5001.setId(IdDt.newRandomUuid());
         Observation pgxGeno_6001 = (Observation) fhirResources.get("PgxGeno_6001");
         pgxGeno_6001.setId(IdDt.newRandomUuid());
+        Observation pgxGeno_7001 = (Observation) fhirResources.get("PgxGeno_7001");
+        pgxGeno_7001.setId(IdDt.newRandomUuid());
 
         HashMap<String, Observation> obsInhDisPaths = (HashMap<String, Observation>) fhirResources.get("ObsInhDisPaths");
 
@@ -124,6 +130,10 @@ public class FileUploadServiceImpl {
 
         PractitionerRole practitionerRole = (PractitionerRole) fhirResources.get("PractitionerRole");
         practitionerRole.setId(IdDt.newRandomUuid());
+        PractitionerRole practitionerRoleGeneticistOne = (PractitionerRole) fhirResources.get("PractitionerRoleGeneticistOne");
+        practitionerRoleGeneticistOne.setId(IdDt.newRandomUuid());
+        PractitionerRole practitionerRoleGeneticistTwo = (PractitionerRole) fhirResources.get("PractitionerRoleGeneticistTwo");
+        practitionerRoleGeneticistTwo.setId(IdDt.newRandomUuid());
 
         Task task = (Task) fhirResources.get("Task");
         task.setId(IdDt.newRandomUuid());
@@ -138,6 +148,10 @@ public class FileUploadServiceImpl {
         serviceRequest.addInstantiatesCanonical(planDefinition.getId());
         practitionerRole.setPractitioner(new Reference(geneticistOne.getId()));
         practitionerRole.setOrganization(new Reference(organizationCHP.getId()));
+        practitionerRoleGeneticistOne.setPractitioner(new Reference(geneticistOne.getId()));
+        practitionerRoleGeneticistOne.setOrganization(new Reference(organizationHGSC.getId()));
+        practitionerRoleGeneticistTwo.setPractitioner(new Reference(geneticistTwo.getId()));
+        practitionerRoleGeneticistTwo.setOrganization(new Reference(organizationHGSC.getId()));
 
         dxPanel.addBasedOn(new Reference(serviceRequest.getId()));
         dxPanel.setSubject(new Reference(patient.getId()));
@@ -180,6 +194,7 @@ public class FileUploadServiceImpl {
             obsOverall.addDerivedFrom(new Reference(inhDisPath.getId()));
             dxPanel.addHasMember(new Reference(snpVariant.getId()))
                     .addHasMember(new Reference(inhDisPath.getId()));
+            //task.setReasonReference(new Reference(inhDisPath.getId()));
 
             dxSNPINDELVariants.put(v.getGene(), snpVariant);
             obsInhDisPaths.put(v.getGene(), inhDisPath);
@@ -187,12 +202,38 @@ public class FileUploadServiceImpl {
 
         pgxGeno_1001.setSubject(new Reference(patient.getId()));
         pgxGeno_1001.addPerformer(new Reference(organizationHGSC.getId()));
+        pgxGeno_1001.addBasedOn(new Reference(serviceRequest.getId()));
+        pgxGeno_1001.setSpecimen(new Reference(specimen.getId()));
+
         pgxGeno_2001.setSubject(new Reference(patient.getId()));
         pgxGeno_2001.addPerformer(new Reference(organizationHGSC.getId()));
+        pgxGeno_2001.addBasedOn(new Reference(serviceRequest.getId()));
+        pgxGeno_2001.setSpecimen(new Reference(specimen.getId()));
+
+        pgxGeno_3001.setSubject(new Reference(patient.getId()));
+        pgxGeno_3001.addPerformer(new Reference(organizationHGSC.getId()));
+        pgxGeno_3001.addBasedOn(new Reference(serviceRequest.getId()));
+        pgxGeno_3001.setSpecimen(new Reference(specimen.getId()));
+
+        pgxGeno_4001.setSubject(new Reference(patient.getId()));
+        pgxGeno_4001.addPerformer(new Reference(organizationHGSC.getId()));
+        pgxGeno_4001.addBasedOn(new Reference(serviceRequest.getId()));
+        pgxGeno_4001.setSpecimen(new Reference(specimen.getId()));
+
         pgxGeno_5001.setSubject(new Reference(patient.getId()));
         pgxGeno_5001.addPerformer(new Reference(organizationHGSC.getId()));
+        pgxGeno_5001.addBasedOn(new Reference(serviceRequest.getId()));
+        pgxGeno_5001.setSpecimen(new Reference(specimen.getId()));
+
         pgxGeno_6001.setSubject(new Reference(patient.getId()));
         pgxGeno_6001.addPerformer(new Reference(organizationHGSC.getId()));
+        pgxGeno_6001.addBasedOn(new Reference(serviceRequest.getId()));
+        pgxGeno_6001.setSpecimen(new Reference(specimen.getId()));
+
+        pgxGeno_7001.setSubject(new Reference(patient.getId()));
+        pgxGeno_7001.addPerformer(new Reference(organizationHGSC.getId()));
+        pgxGeno_7001.addBasedOn(new Reference(serviceRequest.getId()));
+        pgxGeno_7001.setSpecimen(new Reference(specimen.getId()));
 
         obsReportComment.setSubject(new Reference(patient.getId()));
         obsReportComment.addPerformer(new Reference(organizationHGSC.getId()));
@@ -204,17 +245,17 @@ public class FileUploadServiceImpl {
         pgxResult_2001.addDerivedFrom(new Reference(pgxGeno_2001.getId()));
         pgxResult_3001.setSubject(new Reference(patient.getId()));
         pgxResult_3001.addPerformer(new Reference(organizationHGSC.getId()));
-        //pgxResult_3001.addDerivedFrom(new Reference(pgxGeno_3001.getId()));
+        pgxResult_3001.addDerivedFrom(new Reference(pgxGeno_3001.getId()));
         pgxResult_4001.setSubject(new Reference(patient.getId()));
         pgxResult_4001.addPerformer(new Reference(organizationHGSC.getId()));
-        //pgxResult_4001.addDerivedFrom(new Reference(pgxGeno_4001.getId()));
+        pgxResult_4001.addDerivedFrom(new Reference(pgxGeno_4001.getId()));
         pgxResult_5001.setSubject(new Reference(patient.getId()));
         pgxResult_5001.addPerformer(new Reference(organizationHGSC.getId()));
         pgxResult_5001.addDerivedFrom(new Reference(pgxGeno_5001.getId()));
         pgxResult_6001.setSubject(new Reference(patient.getId()));
         pgxResult_6001.addPerformer(new Reference(organizationHGSC.getId()));
         pgxResult_6001.addDerivedFrom(new Reference(pgxGeno_6001.getId()));
-        //pgxResult_6001.addDerivedFrom(new Reference(pgxGeno_7001.getId()));
+        pgxResult_6001.addDerivedFrom(new Reference(pgxGeno_7001.getId()));
 
         pgxPanel.addHasMember(new Reference(pgxResult_1001.getId()))
                 .addHasMember(new Reference(pgxResult_2001.getId()))
@@ -227,17 +268,13 @@ public class FileUploadServiceImpl {
                 //.addHasMember(new Reference(dxCNVVariants.getId()));
 
         task.setFor(new Reference(patient.getId()));
-        //???task.setReasonReference(new Reference(obsInhDisPaths.get))
-
-
-
-        //serviceRequest.setRequester(new Reference(practitionerRole.getId()));
+        serviceRequest.setRequester(new Reference(practitionerRole.getId()));
 
         DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
         diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
         diagnosticReport.addPerformer(new Reference(organizationHGSC.getId()));
-        diagnosticReport.addResultsInterpreter(new Reference(geneticistOne.getId()))
-                .addResultsInterpreter(new Reference(geneticistTwo.getId()));
+        diagnosticReport.addResultsInterpreter(new Reference(practitionerRoleGeneticistOne.getId()))
+                .addResultsInterpreter(new Reference(practitionerRoleGeneticistTwo.getId()));
         diagnosticReport.addSpecimen(new Reference(specimen.getId()));
         diagnosticReport.setSubject(new Reference(patient.getId()));
         //Extension
@@ -294,10 +331,16 @@ public class FileUploadServiceImpl {
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(pgxGeno_1001))));
         pgxGeno_2001.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(pgxGeno_2001))));
+        pgxGeno_3001.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(pgxGeno_3001))));
+        pgxGeno_4001.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(pgxGeno_4001))));
         pgxGeno_5001.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(pgxGeno_5001))));
         pgxGeno_6001.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(pgxGeno_6001))));
+        pgxGeno_7001.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(pgxGeno_7001))));
 
         geneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistOne))));
@@ -306,6 +349,11 @@ public class FileUploadServiceImpl {
 
         practitionerRole.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(practitionerRole))));
+        practitionerRoleGeneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(practitionerRoleGeneticistOne))));
+        practitionerRoleGeneticistTwo.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(practitionerRoleGeneticistTwo))));
+
         task.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(task))));
         planDefinition.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
@@ -323,7 +371,7 @@ public class FileUploadServiceImpl {
                 .setResource(patient)
                 .getRequest()
                 .setUrl("Patient")
-                //.setIfNoneExist("name=Yan&identifier=1234567")
+                //.setIfNoneExist("identifier=22651339000")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -331,6 +379,7 @@ public class FileUploadServiceImpl {
                 .setResource(specimen)
                 .getRequest()
                 .setUrl("Specimen")
+                //.setIfNoneExist("name=Yan&identifier=1234567")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -338,6 +387,7 @@ public class FileUploadServiceImpl {
                 .setResource(serviceRequest)
                 .getRequest()
                 .setUrl("ServiceRequest")
+                //.setIfNoneExist("name=Yan&identifier=1234567")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -345,6 +395,7 @@ public class FileUploadServiceImpl {
                 .setResource(organizationHGSC)
                 .getRequest()
                 .setUrl("Organization")
+                //.setIfNoneExist("name=Yan&identifier=1234567")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -479,6 +530,20 @@ public class FileUploadServiceImpl {
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
+                .setFullUrl(pgxGeno_3001.getId())
+                .setResource(pgxGeno_3001)
+                .getRequest()
+                .setUrl("Observation")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
+                .setFullUrl(pgxGeno_4001.getId())
+                .setResource(pgxGeno_4001)
+                .getRequest()
+                .setUrl("Observation")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
                 .setFullUrl(pgxGeno_5001.getId())
                 .setResource(pgxGeno_5001)
                 .getRequest()
@@ -493,10 +558,18 @@ public class FileUploadServiceImpl {
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
+                .setFullUrl(pgxGeno_7001.getId())
+                .setResource(pgxGeno_7001)
+                .getRequest()
+                .setUrl("Observation")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
                 .setFullUrl(geneticistOne.getId())
                 .setResource(geneticistOne)
                 .getRequest()
                 .setUrl("Practitioner")
+                //.setIfNoneExist("name=Yan&identifier=1234567")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -504,6 +577,28 @@ public class FileUploadServiceImpl {
                 .setResource(geneticistTwo)
                 .getRequest()
                 .setUrl("Practitioner")
+                //.setIfNoneExist("name=Yan&identifier=1234567")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
+                .setFullUrl(practitionerRole.getId())
+                .setResource(practitionerRole)
+                .getRequest()
+                .setUrl("PractitionerRole")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
+                .setFullUrl(practitionerRoleGeneticistOne.getId())
+                .setResource(practitionerRoleGeneticistOne)
+                .getRequest()
+                .setUrl("PractitionerRole")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
+                .setFullUrl(practitionerRoleGeneticistTwo.getId())
+                .setResource(practitionerRoleGeneticistTwo)
+                .getRequest()
+                .setUrl("PractitionerRole")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -518,12 +613,14 @@ public class FileUploadServiceImpl {
                 .setResource(planDefinition)
                 .getRequest()
                 .setUrl("PlanDefinition")
+                //.setIfNoneExist("name=Yan&identifier=1234567")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
                 .setResource(diagnosticReport)
                 .getRequest()
                 .setUrl("DiagnosticReport")
+                //.setIfNoneExist("name=Yan&identifier=1234567")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         Bundle resp = client.transaction().withBundle(bundle).execute();

@@ -1,6 +1,7 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
 import edu.bcm.hgsc.fhir.models.HgscReport;
+import edu.bcm.hgsc.fhir.models.PgxDatum;
 import org.hl7.fhir.r4.model.*;
 
 import java.text.ParseException;
@@ -9,16 +10,16 @@ import java.util.HashMap;
 
 public class PgxGenotypesValueMapper {
 
+    PgxMedImplicationsValueMapper pgxMedImplicationsValueMapper = new PgxMedImplicationsValueMapper();
+
     public Observation pgxGeno_1001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxGeno_1001 = new Observation();
 
+        PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "CYP2C19");
+
         //Profile
         pgxGeno_1001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/genotype");
-        //extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType("This individual has a CYP2C19 *2/*2 genotype."));
-        pgxGeno_1001.addExtension(ext);
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
             pgxGeno_1001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
@@ -34,7 +35,13 @@ public class PgxGenotypesValueMapper {
             pgxGeno_1001.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
-        pgxGeno_1001.setValue(new CodeableConcept().setText("CYP2C19 *2/*2"));
+        pgxGeno_1001.setValue(new CodeableConcept().setText(pgxData.getDiplotype()));
+
+        //Component:gene-studied
+        pgxGeno_1001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                        .setCode("2621").setDisplay(pgxData.getGeneSymbol()))));
 
         return pgxGeno_1001;
     }
@@ -43,12 +50,10 @@ public class PgxGenotypesValueMapper {
 
         Observation pgxGeno_2001 = new Observation();
 
+        PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "DPYD");
+
         //Profile
         pgxGeno_2001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/genotype");
-        //extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType("This individual has a DPYD *1/*1 genotype."));
-        pgxGeno_2001.addExtension(ext);
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
             pgxGeno_2001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
@@ -64,21 +69,93 @@ public class PgxGenotypesValueMapper {
             pgxGeno_2001.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
-        pgxGeno_2001.setValue(new CodeableConcept().setText("DPYD *1/*1"));
+        pgxGeno_2001.setValue(new CodeableConcept().setText(pgxData.getDiplotype()));
+
+        //Component:gene-studied
+        pgxGeno_2001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                        .setCode("3012").setDisplay(pgxData.getGeneSymbol()))));
 
         return pgxGeno_2001;
+    }
+
+    public Observation pgxGeno_3001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation pgxGeno_3001 = new Observation();
+
+        PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "IFNL3");
+
+        //Profile
+        pgxGeno_3001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/genotype");
+        //Status
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            pgxGeno_3001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+        }
+        //Category
+        pgxGeno_3001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
+                .setCode("laboratory").setDisplay("Laboratory")));
+        //Code
+        pgxGeno_3001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                .setCode("84413-4").setDisplay("genotype display name")));
+        //Issued
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            pgxGeno_3001.setIssued(sdf.parse(hgscReport.getReportDate()));
+        }
+        //ValueCodeableConcept
+        pgxGeno_3001.setValue(new CodeableConcept().setText(pgxData.getDiplotype()));
+
+        //Component:gene-studied
+        pgxGeno_3001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                        .setCode("18365").setDisplay(pgxData.getGeneSymbol()))));
+
+        return pgxGeno_3001;
+    }
+
+    public Observation pgxGeno_4001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation pgxGeno_4001 = new Observation();
+
+        PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "SLCO1B1");
+
+        //Profile
+        pgxGeno_4001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/genotype");
+        //Status
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            pgxGeno_4001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+        }
+        //Category
+        pgxGeno_4001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
+                .setCode("laboratory").setDisplay("Laboratory")));
+        //Code
+        pgxGeno_4001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                .setCode("84413-4").setDisplay("genotype display name")));
+        //Issued
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            pgxGeno_4001.setIssued(sdf.parse(hgscReport.getReportDate()));
+        }
+        //ValueCodeableConcept
+        pgxGeno_4001.setValue(new CodeableConcept().setText(pgxData.getDiplotype()));
+
+        //Component:gene-studied
+        pgxGeno_4001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                        .setCode("10959").setDisplay(pgxData.getGeneSymbol()))));
+
+        return pgxGeno_4001;
     }
 
     public Observation pgxGeno_5001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxGeno_5001 = new Observation();
 
+        PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "TPMT");
+
         //Profile
         pgxGeno_5001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/genotype");
-        //extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType("This individual has a TPMT *1/*1 genotype."));
-        pgxGeno_5001.addExtension(ext);
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
             pgxGeno_5001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
@@ -94,7 +171,13 @@ public class PgxGenotypesValueMapper {
             pgxGeno_5001.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
-        pgxGeno_5001.setValue(new CodeableConcept().setText("TPMT *1/*1"));
+        pgxGeno_5001.setValue(new CodeableConcept().setText(pgxData.getDiplotype()));
+
+        //Component:gene-studied
+        pgxGeno_5001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                        .setCode("12014").setDisplay(pgxData.getGeneSymbol()))));
 
         return pgxGeno_5001;
     }
@@ -103,12 +186,10 @@ public class PgxGenotypesValueMapper {
 
         Observation pgxGeno_6001 = new Observation();
 
+        PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "CYP2C9");
+
         //Profile
         pgxGeno_6001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/genotype");
-        //extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType("This individual has a CYP2C9 *1/*1 genotype."));
-        pgxGeno_6001.addExtension(ext);
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
             pgxGeno_6001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
@@ -124,8 +205,48 @@ public class PgxGenotypesValueMapper {
             pgxGeno_6001.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
-        pgxGeno_6001.setValue(new CodeableConcept().setText("CYP2C9 *1/*1"));
+        pgxGeno_6001.setValue(new CodeableConcept().setText(pgxData.getDiplotype()));
+
+        //Component:gene-studied
+        pgxGeno_6001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                        .setCode("2623").setDisplay(pgxData.getGeneSymbol()))));
 
         return pgxGeno_6001;
+    }
+
+    public Observation pgxGeno_7001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+
+        Observation pgxGeno_7001 = new Observation();
+
+        PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "VKORC1");
+
+        //Profile
+        pgxGeno_7001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/genotype");
+        //Status
+        if (mappingConfig.containsKey("HgscReport.reportStatus")) {
+            pgxGeno_7001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+        }
+        //Category
+        pgxGeno_7001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
+                .setCode("laboratory").setDisplay("Laboratory")));
+        //Code
+        pgxGeno_7001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                .setCode("84413-4").setDisplay("genotype display name")));
+        //Issued
+        if (mappingConfig.containsKey("HgscReport.reportDate")) {
+            pgxGeno_7001.setIssued(sdf.parse(hgscReport.getReportDate()));
+        }
+        //ValueCodeableConcept
+        pgxGeno_7001.setValue(new CodeableConcept().setText(pgxData.getDiplotype()));
+
+        //Component:gene-studied
+        pgxGeno_7001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                        .setCode("23663").setDisplay(pgxData.getGeneSymbol()))));
+
+        return pgxGeno_7001;
     }
 }

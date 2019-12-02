@@ -61,7 +61,7 @@ public class DxSNPINDELVariantsValueMapper {
         dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("48002-0").setDisplay("Genomic source class [Type]")))
                 .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                        .setCode("LL378-1").setDisplay(hgscReport.getGenomicSource()))));
+                        .setCode("LA6683-2").setDisplay(hgscReport.getGenomicSource()))));
         //Component:dbSNP-id
         dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("81255-2").setDisplay("dbSNP [ID]")))
@@ -119,7 +119,7 @@ public class DxSNPINDELVariantsValueMapper {
             //Component:transcript-ref-seq
             temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("51958-7").setDisplay("Transcript reference sequence [ID]")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/")
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/nuccore")
                             .setCode(v.getTranscript()).setDisplay(v.getTranscript()))));
 
             //Component:dna-chg
@@ -130,8 +130,8 @@ public class DxSNPINDELVariantsValueMapper {
 
             //Component:variation-inheritance
             temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                    new Coding().setSystem("http://loinc.org").setCode("79742-3").setDisplay("Inheritance pattern based on family history")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://loinc.org/LL3731-8/")
+                    new Coding().setSystem("https://loinc.org").setCode("79742-3").setDisplay("Inheritance pattern based on family history")))
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://loinc.org")
                             .setCode(v.getInheritance()).setDisplay(v.getInheritance()))));
 
             //Component:amino-acid-chg
