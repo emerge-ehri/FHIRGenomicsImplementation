@@ -371,7 +371,7 @@ public class FileUploadServiceImpl {
                 .setResource(patient)
                 .getRequest()
                 .setUrl("Patient")
-                //.setIfNoneExist("identifier=22651339000")
+                .setIfNoneExist("identifier=" + patient.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -379,7 +379,7 @@ public class FileUploadServiceImpl {
                 .setResource(specimen)
                 .getRequest()
                 .setUrl("Specimen")
-                //.setIfNoneExist("name=Yan&identifier=1234567")
+                .setIfNoneExist("identifier=" + specimen.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -387,7 +387,7 @@ public class FileUploadServiceImpl {
                 .setResource(serviceRequest)
                 .getRequest()
                 .setUrl("ServiceRequest")
-                //.setIfNoneExist("name=Yan&identifier=1234567")
+                .setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -395,7 +395,7 @@ public class FileUploadServiceImpl {
                 .setResource(organizationHGSC)
                 .getRequest()
                 .setUrl("Organization")
-                //.setIfNoneExist("name=Yan&identifier=1234567")
+                .setIfNoneExist("identifier=" + organizationHGSC.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -403,7 +403,6 @@ public class FileUploadServiceImpl {
                 .setResource(organizationBCM)
                 .getRequest()
                 .setUrl("Organization")
-                //.setIfNoneExist("name=Baylor College of Medicine")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -411,7 +410,6 @@ public class FileUploadServiceImpl {
                 .setResource(organizationCHP)
                 .getRequest()
                 .setUrl("Organization")
-                //.setIfNoneExist("name=Baylor College of Medicine")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -569,7 +567,7 @@ public class FileUploadServiceImpl {
                 .setResource(geneticistOne)
                 .getRequest()
                 .setUrl("Practitioner")
-                //.setIfNoneExist("name=Yan&identifier=1234567")
+                .setIfNoneExist("identifier=" + geneticistOne.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -577,7 +575,7 @@ public class FileUploadServiceImpl {
                 .setResource(geneticistTwo)
                 .getRequest()
                 .setUrl("Practitioner")
-                //.setIfNoneExist("name=Yan&identifier=1234567")
+                .setIfNoneExist("identifier=" + geneticistTwo.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -613,14 +611,13 @@ public class FileUploadServiceImpl {
                 .setResource(planDefinition)
                 .getRequest()
                 .setUrl("PlanDefinition")
-                //.setIfNoneExist("name=Yan&identifier=1234567")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
                 .setResource(diagnosticReport)
                 .getRequest()
                 .setUrl("DiagnosticReport")
-                //.setIfNoneExist("name=Yan&identifier=1234567")
+                .setIfNoneExist("identifier=" + diagnosticReport.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         Bundle resp = client.transaction().withBundle(bundle).execute();
