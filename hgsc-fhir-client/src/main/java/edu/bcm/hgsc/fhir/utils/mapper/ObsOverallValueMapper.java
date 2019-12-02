@@ -14,7 +14,7 @@ public class ObsOverallValueMapper {
         Observation obsOverall = new Observation();
 
         //Profile
-        obsOverall.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/obs-overall");
+        obsOverall.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/overall-interpretation");
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
             obsOverall.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
@@ -39,12 +39,6 @@ public class ObsOverallValueMapper {
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
                 new StringType("Summary text for the overall interpretation if available"));
         obsOverall.addExtension(ext);
-
-        //BodySite
-//        if (mappingConfig.containsKey("HgscReport.sampleCollectionSource")) {
-//            obsOverall.setBodySite(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
-//                    .setCode("119297000").setDisplay(hgscReport.getSampleCollectionSource())));
-//        }
 
         return obsOverall;
     }

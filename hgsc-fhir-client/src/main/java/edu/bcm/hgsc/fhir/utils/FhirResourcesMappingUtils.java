@@ -5,6 +5,10 @@ import edu.bcm.hgsc.fhir.utils.mapper.*;
 import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -44,13 +48,17 @@ public class FhirResourcesMappingUtils {
                         ServiceRequest serviceRequest = new ServiceRequestValueMapper().serviceRequestValueMapping(mappingConfig, hgscReport, sdf);
                         results.put("ServiceRequest", serviceRequest);
                         break;
-                    case "Organization":
-                        Organization organization = new OrganizationValueMapper().organizationValueMapping(mappingConfig, hgscReport);
-                        results.put("Organization", organization);
+                    case "OrganizationHGSC":
+                        Organization organizationHGSC = new OrganizationValueMapper().organizationHGSCValueMapping(mappingConfig, hgscReport);
+                        results.put("OrganizationHGSC", organizationHGSC);
                         break;
                     case "OrganizationBCM":
-                        Organization organizationBCM = new OrganizationBCMValueMapper().organizationBCMValueMapping(mappingConfig, hgscReport);
+                        Organization organizationBCM = new OrganizationValueMapper().organizationBCMValueMapping(mappingConfig, hgscReport);
                         results.put("OrganizationBCM", organizationBCM);
+                        break;
+                    case "OrganizationCHP":
+                        Organization organizationCHP = new OrganizationValueMapper().organizationCHPValueMapping(mappingConfig, hgscReport);
+                        results.put("OrganizationCHP", organizationCHP);
                         break;
                     case "ObsOverall":
                         Observation obsOverall = new ObsOverallValueMapper().obsOverallValueMapping(mappingConfig, hgscReport, sdf);
@@ -61,7 +69,7 @@ public class FhirResourcesMappingUtils {
                         results.put("DxCNVVariants", dxCNVVariants);
                         break;
                     case "DxSNPINDELVariants":
-                        Observation dxSNPINDELVariants = new DxSNPINDELVariantsValueMapper().dxSNPINDELVariantsValueMapping(mappingConfig, hgscReport, sdf);
+                        HashMap<String, Observation> dxSNPINDELVariants = new DxSNPINDELVariantsValueMapper().dxSNPINDELVariantsValueMapping(mappingConfig, hgscReport, sdf);
                         results.put("DxSNPINDELVariants", dxSNPINDELVariants);
                         break;
                     case "ObsReportComment":
@@ -101,16 +109,20 @@ public class FhirResourcesMappingUtils {
                         results.put("PgxResult_6001", pgxResult_6001);
                         break;
                     case "ObsInhDisPaths":
-                        Observation obsInhDisPaths = new ObsInhDisPathsValueMapper().obsInhDisPathsValueMapping(mappingConfig, hgscReport, sdf);
+                        HashMap<String, Observation> obsInhDisPaths = new ObsInhDisPathsValueMapper().obsInhDisPathsValueMapping(mappingConfig, hgscReport, sdf);
                         results.put("ObsInhDisPaths", obsInhDisPaths);
                         break;
                     case "GeneticistOne":
-                        Practitioner geneticistOne = new GeneticistValueMapper().geneticistOneValueMapping(mappingConfig, hgscReport);
+                        Practitioner geneticistOne = new PractitionerValueMapper().geneticistOneValueMapping(mappingConfig, hgscReport);
                         results.put("GeneticistOne", geneticistOne);
                         break;
                     case "GeneticistTwo":
-                        Practitioner geneticistTwo = new GeneticistValueMapper().geneticistTwoValueMapping(mappingConfig, hgscReport);
+                        Practitioner geneticistTwo = new PractitionerValueMapper().geneticistTwoValueMapping(mappingConfig, hgscReport);
                         results.put("GeneticistTwo", geneticistTwo);
+                        break;
+                    case "PractitionerRole":
+                        PractitionerRole practitionerRole = new PractitionerRoleValueMapper().practitionerRoleValueMapping(mappingConfig, hgscReport);
+                        results.put("PractitionerRole", practitionerRole);
                         break;
                     case "PgxGeno_1001":
                         Observation pgxGeno_1001 = new PgxGenotypesValueMapper().pgxGeno_1001_ValueMapping(mappingConfig, hgscReport, sdf);
@@ -147,5 +159,37 @@ public class FhirResourcesMappingUtils {
         }
 
         return results;
+    }
+
+    public Object deepCopy(Object orig) {
+
+        Object obj = null;
+        ByteArrayOutputStream baos = null;
+        ObjectOutputStream out = null;
+        ByteArrayInputStream bais = null;
+        ObjectInputStream in = null;
+
+        try {
+            baos = new ByteArrayOutputStream();
+            out = new ObjectOutputStream(baos);
+            out.writeObject(orig);
+
+            bais = new ByteArrayInputStream(baos.toByteArray());
+            in = new ObjectInputStream(bais);
+            obj = in.readObject();
+        } catch(Exception e) {
+            logger.error("Failed to deep copy the object:", e);
+        } finally {
+            try {
+                if(in != null) in.close();
+                if(bais != null) bais.close();
+                if(out != null) out.close();
+                if(baos != null) baos.close();
+            } catch (Exception e2) {
+                logger.error("Failed to close resources during deep copying the object:", e2);
+            }
+        }
+
+        return obj;
     }
 }

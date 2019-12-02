@@ -32,6 +32,12 @@ public class PgxMedImplicationsValueMapper {
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
                 new StringType(pgxData.getInterpretation()));
+
+        //map; pgxData.summary???
+
+
+
+
         pgxResult_1001.addExtension(ext);
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
@@ -337,13 +343,14 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_6001 = new Observation();
 
-        PgxDatum pgxData = getPgxDataByGeneSymbol(hgscReport, "VKORC1");
+        PgxDatum pgxData1 = getPgxDataByGeneSymbol(hgscReport, "CYP2C9");
+        PgxDatum pgxData2 = getPgxDataByGeneSymbol(hgscReport, "VKORC1");
 
         //Profile
         pgxResult_6001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
         Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text", 
-        		new StringType(pgxData.getInterpretation()));
+        		new StringType(pgxData1.getInterpretation() + pgxData2.getInterpretation()));
         pgxResult_6001.addExtension(ext);
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
@@ -360,7 +367,7 @@ public class PgxMedImplicationsValueMapper {
             pgxResult_6001.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
         //ValueCodeableConcept
-        pgxResult_6001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+        pgxResult_6001.setValue(new CodeableConcept().setText(pgxData1.getPhenotype()));
         
         //Component:medication-assessed (warfarin)
         ObservationComponentComponent component_warfarin = new ObservationComponentComponent();

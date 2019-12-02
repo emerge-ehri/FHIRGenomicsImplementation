@@ -4,6 +4,7 @@ import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.model.primitive.IdDt;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import edu.bcm.hgsc.fhir.models.HgscReport;
+import edu.bcm.hgsc.fhir.models.Variant;
 import edu.bcm.hgsc.fhir.utils.FhirResourcesMappingUtils;
 import edu.bcm.hgsc.fhir.utils.FileUtils;
 import edu.bcm.hgsc.fhir.utils.JsonMappingUtil;
@@ -66,11 +67,14 @@ public class FileUploadServiceImpl {
         serviceRequest.setId(IdDt.newRandomUuid());
         serviceRequest.setSubject(new Reference(patient.getId()));
 
-        Organization organization = (Organization) fhirResources.get("Organization");
-        organization.setId(IdDt.newRandomUuid());
+        Organization organizationHGSC = (Organization) fhirResources.get("OrganizationHGSC");
+        organizationHGSC.setId(IdDt.newRandomUuid());
 
         Organization organizationBCM = (Organization) fhirResources.get("OrganizationBCM");
         organizationBCM.setId(IdDt.newRandomUuid());
+
+        Organization organizationCHP = (Organization) fhirResources.get("OrganizationCHP");
+        organizationCHP.setId(IdDt.newRandomUuid());
 
         Observation obsOverall = (Observation) fhirResources.get("ObsOverall");
         obsOverall.setId(IdDt.newRandomUuid());
@@ -78,8 +82,7 @@ public class FileUploadServiceImpl {
 //        Observation dxCNVVariants = (Observation) fhirResources.get("DxCNVVariants");
 //        dxCNVVariants.setId(IdDt.newRandomUuid());
 
-        Observation dxSNPINDELVariants = (Observation) fhirResources.get("DxSNPINDELVariants");
-        dxSNPINDELVariants.setId(IdDt.newRandomUuid());
+        HashMap<String, Observation> dxSNPINDELVariants = (HashMap<String, Observation>) fhirResources.get("DxSNPINDELVariants");
 
         Observation obsReportComment = (Observation) fhirResources.get("ObsReportComment");
         obsReportComment.setId(IdDt.newRandomUuid());
@@ -112,13 +115,15 @@ public class FileUploadServiceImpl {
         Observation pgxGeno_6001 = (Observation) fhirResources.get("PgxGeno_6001");
         pgxGeno_6001.setId(IdDt.newRandomUuid());
 
-        Observation obsInhDisPaths = (Observation) fhirResources.get("ObsInhDisPaths");
-        obsInhDisPaths.setId(IdDt.newRandomUuid());
+        HashMap<String, Observation> obsInhDisPaths = (HashMap<String, Observation>) fhirResources.get("ObsInhDisPaths");
 
         Practitioner geneticistOne = (Practitioner) fhirResources.get("GeneticistOne");
         geneticistOne.setId(IdDt.newRandomUuid());
         Practitioner geneticistTwo = (Practitioner) fhirResources.get("GeneticistTwo");
         geneticistTwo.setId(IdDt.newRandomUuid());
+
+        PractitionerRole practitionerRole = (PractitionerRole) fhirResources.get("PractitionerRole");
+        practitionerRole.setId(IdDt.newRandomUuid());
 
         Task task = (Task) fhirResources.get("Task");
         task.setId(IdDt.newRandomUuid());
@@ -126,66 +131,91 @@ public class FileUploadServiceImpl {
         PlanDefinition planDefinition = (PlanDefinition) fhirResources.get("PlanDefinition");
         planDefinition.setId(IdDt.newRandomUuid());
 
-        organization.setPartOf(new Reference(organizationBCM.getId()));
+        organizationHGSC.setPartOf(new Reference(organizationBCM.getId()));
         specimen.addRequest(new Reference(serviceRequest.getId()));
         serviceRequest.addSpecimen(new Reference(specimen.getId()));
-        serviceRequest.addPerformer(new Reference(organization.getId()));
+        serviceRequest.addPerformer(new Reference(organizationHGSC.getId()));
         serviceRequest.addInstantiatesCanonical(planDefinition.getId());
-        //serviceRequest.setRequester(new Reference(????));
+        practitionerRole.setPractitioner(new Reference(geneticistOne.getId()));
+        practitionerRole.setOrganization(new Reference(organizationCHP.getId()));
 
         dxPanel.addBasedOn(new Reference(serviceRequest.getId()));
         dxPanel.setSubject(new Reference(patient.getId()));
         dxPanel.setSpecimen(new Reference(specimen.getId()));
-        dxPanel.addPerformer(new Reference(organization.getId()));
+        dxPanel.addPerformer(new Reference(organizationHGSC.getId()));
 
         pgxPanel.addBasedOn(new Reference(serviceRequest.getId()));
         pgxPanel.setSubject(new Reference(patient.getId()));
         pgxPanel.setSpecimen(new Reference(specimen.getId()));
-        pgxPanel.addPerformer(new Reference(organization.getId()));
+        pgxPanel.addPerformer(new Reference(organizationHGSC.getId()));
 
         obsOverall.addBasedOn(new Reference(serviceRequest.getId()));
         obsOverall.setSubject(new Reference(patient.getId()));
         obsOverall.setSpecimen(new Reference(specimen.getId()));
-        obsOverall.addPerformer(new Reference(organization.getId()));
-        obsOverall.addDerivedFrom(new Reference(obsInhDisPaths.getId()));
+        obsOverall.addPerformer(new Reference(organizationHGSC.getId()));
 //        dxCNVVariants.addBasedOn(new Reference(serviceRequest.getId()));
 //        dxCNVVariants.setSubject(new Reference(patient.getId()));
 //        dxCNVVariants.setSpecimen(new Reference(specimen.getId()));
 //        dxCNVVariants.addPerformer(new Reference(organization.getId()));
 //        dxCNVVariants.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText("Comments"));
-        dxSNPINDELVariants.addBasedOn(new Reference(serviceRequest.getId()));
-        dxSNPINDELVariants.setSubject(new Reference(patient.getId()));
-        dxSNPINDELVariants.setSpecimen(new Reference(specimen.getId()));
-        dxSNPINDELVariants.addPerformer(new Reference(organization.getId()));
-        dxSNPINDELVariants.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText(hgscReport.getVariants().get(0).getNotes()));
+
+        for(Variant v : hgscReport.getVariants()) {
+            Observation snpVariant = dxSNPINDELVariants.get(v.getGene());
+            snpVariant.setId(IdDt.newRandomUuid());
+            snpVariant.addBasedOn(new Reference(serviceRequest.getId()));
+            snpVariant.setSubject(new Reference(patient.getId()));
+            snpVariant.setSpecimen(new Reference(specimen.getId()));
+            snpVariant.addPerformer(new Reference(organizationHGSC.getId()));
+            snpVariant.addNote(new Annotation().setAuthor(new Reference(organizationHGSC.getId())).setText(v.getNotes()));
+
+            Observation inhDisPath = obsInhDisPaths.get(v.getGene());
+            inhDisPath.setId(IdDt.newRandomUuid());
+            inhDisPath.addBasedOn(new Reference(serviceRequest.getId()));
+            inhDisPath.setSubject(new Reference(patient.getId()));
+            inhDisPath.addPerformer(new Reference(organizationHGSC.getId()));
+            inhDisPath.addNote(new Annotation().setText(v.getNotes()));
+            inhDisPath.setSpecimen(new Reference(specimen.getId()));
+
+            inhDisPath.addDerivedFrom(new Reference(snpVariant.getId()));
+            obsOverall.addDerivedFrom(new Reference(inhDisPath.getId()));
+            dxPanel.addHasMember(new Reference(snpVariant.getId()))
+                    .addHasMember(new Reference(inhDisPath.getId()));
+
+            dxSNPINDELVariants.put(v.getGene(), snpVariant);
+            obsInhDisPaths.put(v.getGene(), inhDisPath);
+        }
 
         pgxGeno_1001.setSubject(new Reference(patient.getId()));
-        pgxGeno_1001.addPerformer(new Reference(organization.getId()));
+        pgxGeno_1001.addPerformer(new Reference(organizationHGSC.getId()));
         pgxGeno_2001.setSubject(new Reference(patient.getId()));
-        pgxGeno_2001.addPerformer(new Reference(organization.getId()));
+        pgxGeno_2001.addPerformer(new Reference(organizationHGSC.getId()));
         pgxGeno_5001.setSubject(new Reference(patient.getId()));
-        pgxGeno_5001.addPerformer(new Reference(organization.getId()));
+        pgxGeno_5001.addPerformer(new Reference(organizationHGSC.getId()));
         pgxGeno_6001.setSubject(new Reference(patient.getId()));
-        pgxGeno_6001.addPerformer(new Reference(organization.getId()));
+        pgxGeno_6001.addPerformer(new Reference(organizationHGSC.getId()));
 
         obsReportComment.setSubject(new Reference(patient.getId()));
-        obsReportComment.addPerformer(new Reference(organization.getId()));
+        obsReportComment.addPerformer(new Reference(organizationHGSC.getId()));
         pgxResult_1001.setSubject(new Reference(patient.getId()));
-        pgxResult_1001.addPerformer(new Reference(organization.getId()));
+        pgxResult_1001.addPerformer(new Reference(organizationHGSC.getId()));
         pgxResult_1001.addDerivedFrom(new Reference(pgxGeno_1001.getId()));
         pgxResult_2001.setSubject(new Reference(patient.getId()));
-        pgxResult_2001.addPerformer(new Reference(organization.getId()));
+        pgxResult_2001.addPerformer(new Reference(organizationHGSC.getId()));
         pgxResult_2001.addDerivedFrom(new Reference(pgxGeno_2001.getId()));
         pgxResult_3001.setSubject(new Reference(patient.getId()));
-        pgxResult_3001.addPerformer(new Reference(organization.getId()));
+        pgxResult_3001.addPerformer(new Reference(organizationHGSC.getId()));
+        //pgxResult_3001.addDerivedFrom(new Reference(pgxGeno_3001.getId()));
         pgxResult_4001.setSubject(new Reference(patient.getId()));
-        pgxResult_4001.addPerformer(new Reference(organization.getId()));
+        pgxResult_4001.addPerformer(new Reference(organizationHGSC.getId()));
+        //pgxResult_4001.addDerivedFrom(new Reference(pgxGeno_4001.getId()));
         pgxResult_5001.setSubject(new Reference(patient.getId()));
-        pgxResult_5001.addPerformer(new Reference(organization.getId()));
+        pgxResult_5001.addPerformer(new Reference(organizationHGSC.getId()));
         pgxResult_5001.addDerivedFrom(new Reference(pgxGeno_5001.getId()));
         pgxResult_6001.setSubject(new Reference(patient.getId()));
-        pgxResult_6001.addPerformer(new Reference(organization.getId()));
+        pgxResult_6001.addPerformer(new Reference(organizationHGSC.getId()));
         pgxResult_6001.addDerivedFrom(new Reference(pgxGeno_6001.getId()));
+        //pgxResult_6001.addDerivedFrom(new Reference(pgxGeno_7001.getId()));
+
         pgxPanel.addHasMember(new Reference(pgxResult_1001.getId()))
                 .addHasMember(new Reference(pgxResult_2001.getId()))
                 .addHasMember(new Reference(pgxResult_3001.getId()))
@@ -193,22 +223,19 @@ public class FileUploadServiceImpl {
                 .addHasMember(new Reference(pgxResult_5001.getId()))
                 .addHasMember(new Reference(pgxResult_6001.getId()));
 
-        obsInhDisPaths.addBasedOn(new Reference(serviceRequest.getId()));
-        obsInhDisPaths.setSubject(new Reference(patient.getId()));
-        obsInhDisPaths.addPerformer(new Reference(organization.getId()));
-        obsInhDisPaths.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText(hgscReport.getVariants().get(0).getNotes()));
-        obsInhDisPaths.setSpecimen(new Reference(specimen.getId()));
-        obsInhDisPaths.addDerivedFrom(new Reference(dxSNPINDELVariants.getId()));
-
-        dxPanel.addHasMember(new Reference(obsOverall.getId()))
-                .addHasMember(new Reference(obsInhDisPaths.getId()))
-                .addHasMember(new Reference(dxSNPINDELVariants.getId()));
+        dxPanel.addHasMember(new Reference(obsOverall.getId()));
+                //.addHasMember(new Reference(dxCNVVariants.getId()));
 
         task.setFor(new Reference(patient.getId()));
+        //???task.setReasonReference(new Reference(obsInhDisPaths.get))
+
+
+
+        //serviceRequest.setRequester(new Reference(practitionerRole.getId()));
 
         DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
         diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
-        diagnosticReport.addPerformer(new Reference(organization.getId()));
+        diagnosticReport.addPerformer(new Reference(organizationHGSC.getId()));
         diagnosticReport.addResultsInterpreter(new Reference(geneticistOne.getId()))
                 .addResultsInterpreter(new Reference(geneticistTwo.getId()));
         diagnosticReport.addSpecimen(new Reference(specimen.getId()));
@@ -230,19 +257,19 @@ public class FileUploadServiceImpl {
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(specimen))));
         serviceRequest.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(serviceRequest))));
-        organization.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organization))));
+
         //hard code organization narrative
-        //organization.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-        //.setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>id</b>: Human Genome Sequencing Center Clinical Laboratory</p><p>One Baylor Plaza • Houston • TX 77030</p><p>Phone: 713.798.6539 • Fax: 713.798.5741 • www.hgsc.bcm.edu • email: questions@hgsc.bcm.edu</p><p>CAP# 8004250 / CLIA# 45D2027450</p></div>")));
+        organizationHGSC.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+        .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>id</b>: Human Genome Sequencing Center Clinical Laboratory</p><p>One Baylor Plaza • Houston • TX 77030</p><p>Phone: 713.798.6539 • Fax: 713.798.5741 • www.hgsc.bcm.edu • email: questions@hgsc.bcm.edu</p><p>CAP# 8004250 / CLIA# 45D2027450</p></div>")));
         organizationBCM.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organizationBCM))));
+                .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>id</b>: Baylor College of Medicine</p><p>One Baylor Plaza • Houston • TX 77030</p><p>Phone: (713) 798-4951 • https://www.bcm.edu/ </p></div>")));
+        organizationCHP.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>id</b>: Children's Hospital of Philadelphia</p><p>3401 Civic Center Blvd, Philadelphia, PA 19104</p></div>")));
+
         obsOverall.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsOverall))));
         //dxCNVVariants.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxCNVVariants))));
-        dxSNPINDELVariants.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxSNPINDELVariants))));
 
         obsReportComment.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsReportComment))));
@@ -272,16 +299,13 @@ public class FileUploadServiceImpl {
         pgxGeno_6001.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(pgxGeno_6001))));
 
-        obsInhDisPaths.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsInhDisPaths))));
-
         geneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistOne))));
         geneticistTwo.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistTwo))));
-        //hard code organization narrative
-        //geneticistOne.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                //.setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>Practitioner Name</b>: David Murdock, M.D., F.A.C.M.G.</p><p><b>Title</b>: ABMGG Certified Molecular Geneticist, Assistant Laboratory Director</p>")));
+
+        practitionerRole.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(practitionerRole))));
         task.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(task))));
         planDefinition.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
@@ -317,8 +341,8 @@ public class FileUploadServiceImpl {
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
-                .setFullUrl(organization.getId())
-                .setResource(organization)
+                .setFullUrl(organizationHGSC.getId())
+                .setResource(organizationHGSC)
                 .getRequest()
                 .setUrl("Organization")
                 .setMethod(Bundle.HTTPVerb.POST);
@@ -326,6 +350,14 @@ public class FileUploadServiceImpl {
         bundle.addEntry()
                 .setFullUrl(organizationBCM.getId())
                 .setResource(organizationBCM)
+                .getRequest()
+                .setUrl("Organization")
+                //.setIfNoneExist("name=Baylor College of Medicine")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
+                .setFullUrl(organizationCHP.getId())
+                .setResource(organizationCHP)
                 .getRequest()
                 .setUrl("Organization")
                 //.setIfNoneExist("name=Baylor College of Medicine")
@@ -345,12 +377,28 @@ public class FileUploadServiceImpl {
 //                .setUrl("Observation")
 //                .setMethod(Bundle.HTTPVerb.POST);
 
-        bundle.addEntry()
-                .setFullUrl(dxSNPINDELVariants.getId())
-                .setResource(dxSNPINDELVariants)
-                .getRequest()
-                .setUrl("Observation")
-                .setMethod(Bundle.HTTPVerb.POST);
+        for(Variant v : hgscReport.getVariants()) {
+            Observation snpV = dxSNPINDELVariants.get(v.getGene());
+            Observation inhDP = obsInhDisPaths.get(v.getGene());
+
+            snpV.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                    .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(snpV))));
+            inhDP.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                    .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(inhDP))));
+
+            bundle.addEntry()
+                    .setFullUrl(snpV.getId())
+                    .setResource(snpV)
+                    .getRequest()
+                    .setUrl("Observation")
+                    .setMethod(Bundle.HTTPVerb.POST);
+            bundle.addEntry()
+                    .setFullUrl(inhDP.getId())
+                    .setResource(inhDP)
+                    .getRequest()
+                    .setUrl("Observation")
+                    .setMethod(Bundle.HTTPVerb.POST);
+        }
 
         bundle.addEntry()
                 .setFullUrl(obsReportComment.getId())
@@ -440,14 +488,6 @@ public class FileUploadServiceImpl {
         bundle.addEntry()
                 .setFullUrl(pgxGeno_6001.getId())
                 .setResource(pgxGeno_6001)
-                .getRequest()
-                .setUrl("Observation")
-                .setMethod(Bundle.HTTPVerb.POST);
-
-
-        bundle.addEntry()
-                .setFullUrl(obsInhDisPaths.getId())
-                .setResource(obsInhDisPaths)
                 .getRequest()
                 .setUrl("Observation")
                 .setMethod(Bundle.HTTPVerb.POST);

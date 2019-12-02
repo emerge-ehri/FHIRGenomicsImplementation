@@ -27,9 +27,17 @@ public class DiagnosticReportValueMapper {
         Extension ext1 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/relatedArtifact",
                 new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.DOCUMENTATION).setLabel("Genetic Sequencing Coverage Information")
                         .setDisplay(hgscReport.getGeneCoverage().toString()
-                                //"The BED file attached includes sequencing coverage information for the genetic regions studied for the specimen the test is performed on."
+
+
+                        //hgscReport.getGeneCoverageText()
+
+
                         )
-                        .setDocument(new Attachment().setContentType("text/BED").setData(null)));
+                        .setDocument(new Attachment().setContentType("text/BED").setData(
+
+                                //fileUtils.readBytesFromFile("")
+
+                        null)));
         Extension ext3 = new Extension("http://hl7.org/fhir/StructureDefinition/test-disclaimer",
                 new StringType("This test was developed ..... (disclaimer text from report footer)"));
         diagnosticReport.addExtension(ext1);

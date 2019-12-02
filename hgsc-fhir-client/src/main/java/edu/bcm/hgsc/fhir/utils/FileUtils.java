@@ -56,4 +56,45 @@ public class FileUtils {
 
       return null;
    }
+
+//   public byte[] getS3ObjectAsByteArray(String key){
+//
+//      logger.info("Downloading %s from S3 bucket %s...\n", key, s3bucket);
+//
+//      final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
+//
+//      byte[] s3ObjectBytes = null;
+//      S3ObjectInputStream s3is = null;
+//      try {
+//         S3Object o = s3.getObject(s3bucket, key);
+//         s3is = o.getObjectContent();
+//         s3ObjectBytes = generateByteArray(s3is);
+//      } catch (AmazonServiceException e) {
+//         logger.error("GetS3ObjectAsByteArray Failed:" + e.getMessage());
+//      } finally {
+//         try {
+//            if (s3is!=null) s3is.close();
+//         } catch (Exception e2){
+//            logger.error("S3ObjectInputStream Closing Failed:" + e2.getMessage());
+//         }
+//      }
+//      return s3ObjectBytes;
+//   }
+
+//   private byte[] generateByteArray(InputStream is) {
+//
+//      byte[] pdfBytes = null;
+//      try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+//         byte[] buffer = new byte[1024];
+//         int len;
+//         while ((len = is.read(buffer)) != -1) {
+//            bos.write(buffer, 0, len);
+//         }
+//         pdfBytes = bos.toByteArray();
+//      } catch (Exception e) {
+//         logger.error("ConvertPdftoBase64String Failed:" + e.getMessage());
+//      }
+//
+//      return pdfBytes;
+//   }
 }

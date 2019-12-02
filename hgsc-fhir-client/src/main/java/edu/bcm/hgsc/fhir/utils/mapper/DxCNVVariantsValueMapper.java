@@ -17,7 +17,7 @@ public class DxCNVVariantsValueMapper {
         Observation dxCNVVariants = new Observation();
 
         //Profile
-        dxCNVVariants.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/obs-variant");
+        dxCNVVariants.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/variant");
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
             dxCNVVariants.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));

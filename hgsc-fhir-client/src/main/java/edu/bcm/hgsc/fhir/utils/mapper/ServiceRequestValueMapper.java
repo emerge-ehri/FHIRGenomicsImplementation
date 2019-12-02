@@ -24,8 +24,6 @@ public class ServiceRequestValueMapper {
                     .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                             .setCode("ACSN").setDisplay("Accession ID"))));
         }
-        //InstantiatesCanonical
-        //serviceRequest.addInstantiatesCanonical("http://amc1.edu/lab-sc1/fhir/PlanDefinition/emerge-chop-pnl");
         //Status
         serviceRequest.setStatus(ServiceRequest.ServiceRequestStatus.COMPLETED);
         //Intent

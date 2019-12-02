@@ -1,6 +1,8 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
 import edu.bcm.hgsc.fhir.models.HgscReport;
+import edu.bcm.hgsc.fhir.models.Variant;
+import edu.bcm.hgsc.fhir.utils.FhirResourcesMappingUtils;
 import org.hl7.fhir.r4.model.*;
 
 import java.text.ParseException;
@@ -9,57 +11,64 @@ import java.util.HashMap;
 
 public class ObsInhDisPathsValueMapper {
 
-    public Observation obsInhDisPathsValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+    public HashMap<String, Observation> obsInhDisPathsValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
-        Observation obsInhDisPaths = new Observation();
+        FhirResourcesMappingUtils util = new FhirResourcesMappingUtils();
+
+        HashMap<String, Observation> obsInhDisPaths = new HashMap<String, Observation>();
+
+        Observation obsInhDisPath = new Observation();
 
         //Observation-secondaryFinding
         if (mappingConfig.containsKey("HgscReport.secondaryFinding")) {
             Extension secondaryFinding = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/inherited-disease-pathogenicity",
                     new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/special-values").setCode("true").setDisplay("true")));
-            obsInhDisPaths.addExtension(secondaryFinding);
+            obsInhDisPath.addExtension(secondaryFinding);
         }
 
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            obsInhDisPaths.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            obsInhDisPath.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
         }
         //Category
-        obsInhDisPaths.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
+        obsInhDisPath.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
                 .setCode("laboratory").setDisplay("Laboratory")));
         //Code
-        obsInhDisPaths.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+        obsInhDisPath.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("53037-8").setDisplay("Genetic variation clinical significance")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            obsInhDisPaths.setIssued(sdf.parse(hgscReport.getReportDate()));
+            obsInhDisPath.setIssued(sdf.parse(hgscReport.getReportDate()));
         }
-
-        //ValueCodeableConcept
-        if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
-            obsInhDisPaths.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org/LL4034-6")
-                    .setCode("LA6668-3").setDisplay(hgscReport.getVariants().get(0).getInterpretation())));
-        }
-
-        //extensions
-        Extension ext = new Extension("http:/xxx/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType(hgscReport.getVariants().get(0).getInterpretation()));
-        obsInhDisPaths.addExtension(ext);
 
         //Component:associated-phenotype
-        obsInhDisPaths.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+        obsInhDisPath.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("81259-4").setDisplay("Associated Phenotype")))
                 .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://omim.org/")
                         .setCode("192500").setDisplay("Long QT syndrome 1"))));
-        obsInhDisPaths.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+        obsInhDisPath.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("81259-4").setDisplay("Associated Phenotype")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://omim.org/")
-                        .setCode("map; variant.diseases[].code?").setDisplay("map; variant.diseases[].text?"))));
-        //Component:mode-of-inheritance
-        obsInhDisPaths.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                new Coding().setSystem("http://loinc.org").setCode("TBD-mode-of-inheritance").setDisplay("Mode of Inheritance")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org/LL3731-8")
-                        .setCode("LA24640-7").setDisplay(hgscReport.getVariants().get(0).getInheritance()))));
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://registry.identifiers.org/registry/mim")
+                        .setCode("252900").setDisplay("Lange-Nielsen syndrome 1"))));
+
+        //Create multiple obsInhDisPaths if there is multiple variants
+        for(Variant v : hgscReport.getVariants()) {
+
+            Observation temp = (Observation)(util.deepCopy(obsInhDisPath));
+
+            //ValueCodeableConcept
+            if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
+                temp.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org/LL4034-6")
+                        .setCode("LA6668-3").setDisplay(v.getInterpretation())));
+            }
+
+            //extensions
+            Extension ext = new Extension("http:/xxx/fhir/StructureDefinition/interpretation-summary-text",
+                    new StringType(v.getInterpretation()));
+            temp.addExtension(ext);
+
+            obsInhDisPaths.put(v.getGene(), temp);
+        }
 
         return obsInhDisPaths;
     }
