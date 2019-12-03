@@ -58,7 +58,7 @@ public class ObsInhDisPathsValueMapper {
 
             //ValueCodeableConcept
             if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
-                temp.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org/LL4034-6")
+                temp.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                         .setCode("LA6668-3").setDisplay(v.getInterpretation())));
             }
 
