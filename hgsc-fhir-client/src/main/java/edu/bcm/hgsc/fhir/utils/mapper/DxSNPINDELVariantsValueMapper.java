@@ -81,7 +81,7 @@ public class DxSNPINDELVariantsValueMapper {
             //Component:chromosome (extension)
             dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("48000-4").setDisplay("Chromosome, Blood or Tissue Specimen")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://loinc.org/LL2938-0/")
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                             .setCode("LA21263-1").setDisplay("Chromosome " + v.getChromosome()))));
 
             //Component:ref-allele
@@ -101,7 +101,7 @@ public class DxSNPINDELVariantsValueMapper {
             //Component:allelic-state
             temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("53034-5").setDisplay("Allelic state")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org/LL381-5")
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                             .setCode("LA6706-1").setDisplay(v.getZygosity()))));
 
             //Component:gene-studied
@@ -130,8 +130,8 @@ public class DxSNPINDELVariantsValueMapper {
 
             //Component:variation-inheritance
             temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                    new Coding().setSystem("https://loinc.org").setCode("79742-3").setDisplay("Inheritance pattern based on family history")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://loinc.org")
+                    new Coding().setSystem("http://loinc.org").setCode("79742-3").setDisplay("Inheritance pattern based on family history")))
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                             .setCode(v.getInheritance()).setDisplay(v.getInheritance()))));
 
             //Component:amino-acid-chg

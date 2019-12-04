@@ -31,7 +31,7 @@ public class ObsOverallValueMapper {
         }
         //ValueCodeableConcept
         if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
-            obsOverall.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org/LL541-4")
+            obsOverall.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                     .setCode("LA6576-8").setDisplay(hgscReport.getOverallInterpretation())));
         }
 
