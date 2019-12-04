@@ -25,8 +25,8 @@ public class DxPanelValueMapper {
         dxPanel.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
                 .setCode("laboratory").setDisplay("Laboratory")));
         //Code
-        dxPanel.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                .setCode("TBD-grouper")));
+        dxPanel.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://hl7.org/fhir/uv/genomics-reporting/CodeSystem/tbd-codes")
+                .setCode("grouper")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
             dxPanel.setIssued(sdf.parse(hgscReport.getReportDate()));

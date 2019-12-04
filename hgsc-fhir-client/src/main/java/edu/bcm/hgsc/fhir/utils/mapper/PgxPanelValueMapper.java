@@ -25,8 +25,8 @@ public class PgxPanelValueMapper {
         pgxPanel.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
                 .setCode("laboratory").setDisplay("Laboratory")));
         //Code
-        pgxPanel.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                .setCode("TBD-grouper")));
+        pgxPanel.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://hl7.org/fhir/uv/genomics-reporting/CodeSystem/tbd-codes")
+                .setCode("grouper")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
             pgxPanel.setIssued(sdf.parse(hgscReport.getReportDate()));

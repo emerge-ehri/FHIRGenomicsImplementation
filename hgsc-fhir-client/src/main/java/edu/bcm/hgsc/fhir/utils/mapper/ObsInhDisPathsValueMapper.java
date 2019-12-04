@@ -22,7 +22,7 @@ public class ObsInhDisPathsValueMapper {
         //Observation-secondaryFinding
         if (mappingConfig.containsKey("HgscReport.secondaryFinding")) {
             Extension secondaryFinding = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/inherited-disease-pathogenicity",
-                    new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/special-values").setCode("true").setDisplay("true")));
+                    new CodeableConcept().setText("See methodology for details."));
             obsInhDisPath.addExtension(secondaryFinding);
         }
 
@@ -64,7 +64,7 @@ public class ObsInhDisPathsValueMapper {
 
             //extensions
             Extension ext = new Extension("http:/xxx/fhir/StructureDefinition/interpretation-summary-text",
-                    new StringType(v.getInterpretation()));
+                    new StringType(v.getVariantInterpretation()));
             temp.addExtension(ext);
 
             obsInhDisPaths.put(v.getGene(), temp);

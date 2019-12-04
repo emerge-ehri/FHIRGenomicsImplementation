@@ -254,8 +254,8 @@ public class PgxMedImplicationsValueMapper {
         pgxResult_4001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
                 .setCode("laboratory").setDisplay("Laboratory")));
         //Code
-        pgxResult_4001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                .setCode("TBD???").setDisplay("Genetic variation's effect on drug transporter function")));
+        pgxResult_4001.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://hl7.org/fhir/uv/genomics-reporting/CodeSystem/tbd-codes")
+                .setCode("effect-transporter-function").setDisplay("effect-transporter-function")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
             pgxResult_4001.setIssued(sdf.parse(hgscReport.getReportDate()));

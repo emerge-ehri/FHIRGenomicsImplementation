@@ -62,10 +62,6 @@ public class DxSNPINDELVariantsValueMapper {
                 new Coding().setSystem("http://loinc.org").setCode("48002-0").setDisplay("Genomic source class [Type]")))
                 .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                         .setCode("LA6683-2").setDisplay(hgscReport.getGenomicSource()))));
-        //Component:dbSNP-id
-        dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                new Coding().setSystem("http://loinc.org").setCode("81255-2").setDisplay("dbSNP [ID]")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/snp/").setCode("???").setDisplay("???"))));
 
         //Component:amino-acid-chg-type
         dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
@@ -139,6 +135,13 @@ public class DxSNPINDELVariantsValueMapper {
                     new Coding().setSystem("http://loinc.org").setCode("48005-3").setDisplay("Amino acid change (pHGVS)")))
                     .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org/")
                             .setCode(v.getProteinChange()).setDisplay(v.getProteinChange()))));
+
+            //Component:dbSNP-id
+//            if(v.getdbSNPID() != null) {
+//                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+//                        new Coding().setSystem("http://loinc.org").setCode("81255-2").setDisplay("dbSNP [ID]")))
+//                        .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/snp/").setCode(v.getdbSNPID()).setDisplay(v.getdbSNPID()))));
+//            }
 
             dxSNPINDELVariants.put(v.getGene(), temp);
         }
