@@ -42,7 +42,7 @@ public class ObsOverallValueMapper {
         }
 
         //extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
+        Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
                 new StringType("Summary text for the overall interpretation if available"
 
                         //map; panelSummary
