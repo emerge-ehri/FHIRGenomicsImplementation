@@ -19,7 +19,9 @@ public class DxPanelValueMapper {
         dxPanel.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/grouper");
     	//Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            dxPanel.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if (hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                dxPanel.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Category
         dxPanel.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -29,7 +31,9 @@ public class DxPanelValueMapper {
                 .setCode("grouper")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            dxPanel.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                dxPanel.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
 
         return dxPanel;

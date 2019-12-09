@@ -173,31 +173,33 @@ public class FileUploadServiceImpl {
 //        dxCNVVariants.addPerformer(new Reference(organization.getId()));
 //        dxCNVVariants.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText("Comments"));
 
-        for(Variant v : hgscReport.getVariants()) {
-            Observation snpVariant = dxSNPINDELVariants.get(v.getGene());
-            snpVariant.setId(IdDt.newRandomUuid());
-            snpVariant.addBasedOn(new Reference(serviceRequest.getId()));
-            snpVariant.setSubject(new Reference(patient.getId()));
-            snpVariant.setSpecimen(new Reference(specimen.getId()));
-            snpVariant.addPerformer(new Reference(organizationHGSC.getId()));
-            snpVariant.addNote(new Annotation().setAuthor(new Reference(organizationHGSC.getId())).setText(v.getNotes()));
+        if(hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
+            for(Variant v : hgscReport.getVariants()) {
+                Observation snpVariant = dxSNPINDELVariants.get(v.getGene());
+                snpVariant.setId(IdDt.newRandomUuid());
+                snpVariant.addBasedOn(new Reference(serviceRequest.getId()));
+                snpVariant.setSubject(new Reference(patient.getId()));
+                snpVariant.setSpecimen(new Reference(specimen.getId()));
+                snpVariant.addPerformer(new Reference(organizationHGSC.getId()));
+                snpVariant.addNote(new Annotation().setAuthor(new Reference(organizationHGSC.getId())).setText(v.getNotes()));
 
-            Observation inhDisPath = obsInhDisPaths.get(v.getGene());
-            inhDisPath.setId(IdDt.newRandomUuid());
-            inhDisPath.addBasedOn(new Reference(serviceRequest.getId()));
-            inhDisPath.setSubject(new Reference(patient.getId()));
-            inhDisPath.addPerformer(new Reference(organizationHGSC.getId()));
-            inhDisPath.addNote(new Annotation().setText(v.getNotes()));
-            inhDisPath.setSpecimen(new Reference(specimen.getId()));
+                Observation inhDisPath = obsInhDisPaths.get(v.getGene());
+                inhDisPath.setId(IdDt.newRandomUuid());
+                inhDisPath.addBasedOn(new Reference(serviceRequest.getId()));
+                inhDisPath.setSubject(new Reference(patient.getId()));
+                inhDisPath.addPerformer(new Reference(organizationHGSC.getId()));
+                inhDisPath.addNote(new Annotation().setText(v.getNotes()));
+                inhDisPath.setSpecimen(new Reference(specimen.getId()));
 
-            inhDisPath.addDerivedFrom(new Reference(snpVariant.getId()));
-            obsOverall.addDerivedFrom(new Reference(inhDisPath.getId()));
-            dxPanel.addHasMember(new Reference(snpVariant.getId()))
-                    .addHasMember(new Reference(inhDisPath.getId()));
-            //task.setReasonReference(new Reference(inhDisPath.getId()));
+                inhDisPath.addDerivedFrom(new Reference(snpVariant.getId()));
+                obsOverall.addDerivedFrom(new Reference(inhDisPath.getId()));
+                dxPanel.addHasMember(new Reference(snpVariant.getId()))
+                        .addHasMember(new Reference(inhDisPath.getId()));
+                //task.setReasonReference(new Reference(inhDisPath.getId()));
 
-            dxSNPINDELVariants.put(v.getGene(), snpVariant);
-            obsInhDisPaths.put(v.getGene(), inhDisPath);
+                dxSNPINDELVariants.put(v.getGene(), snpVariant);
+                obsInhDisPaths.put(v.getGene(), inhDisPath);
+            }
         }
 
         pgxGeno_1001.setSubject(new Reference(patient.getId()));
@@ -426,27 +428,29 @@ public class FileUploadServiceImpl {
 //                .setUrl("Observation")
 //                .setMethod(Bundle.HTTPVerb.POST);
 
-        for(Variant v : hgscReport.getVariants()) {
-            Observation snpV = dxSNPINDELVariants.get(v.getGene());
-            Observation inhDP = obsInhDisPaths.get(v.getGene());
+        if(hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
+            for(Variant v : hgscReport.getVariants()) {
+                Observation snpV = dxSNPINDELVariants.get(v.getGene());
+                Observation inhDP = obsInhDisPaths.get(v.getGene());
 
-            snpV.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                    .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(snpV))));
-            inhDP.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                    .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(inhDP))));
+                snpV.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                        .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(snpV))));
+                inhDP.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                        .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(inhDP))));
 
-            bundle.addEntry()
-                    .setFullUrl(snpV.getId())
-                    .setResource(snpV)
-                    .getRequest()
-                    .setUrl("Observation")
-                    .setMethod(Bundle.HTTPVerb.POST);
-            bundle.addEntry()
-                    .setFullUrl(inhDP.getId())
-                    .setResource(inhDP)
-                    .getRequest()
-                    .setUrl("Observation")
-                    .setMethod(Bundle.HTTPVerb.POST);
+                bundle.addEntry()
+                        .setFullUrl(snpV.getId())
+                        .setResource(snpV)
+                        .getRequest()
+                        .setUrl("Observation")
+                        .setMethod(Bundle.HTTPVerb.POST);
+                bundle.addEntry()
+                        .setFullUrl(inhDP.getId())
+                        .setResource(inhDP)
+                        .getRequest()
+                        .setUrl("Observation")
+                        .setMethod(Bundle.HTTPVerb.POST);
+            }
         }
 
         bundle.addEntry()

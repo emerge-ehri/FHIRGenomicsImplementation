@@ -20,7 +20,9 @@ public class DxCNVVariantsValueMapper {
         dxCNVVariants.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/variant");
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            dxCNVVariants.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if(hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                dxCNVVariants.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Category
         dxCNVVariants.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -30,7 +32,9 @@ public class DxCNVVariantsValueMapper {
                 .setCode("69548-6").setDisplay("Genetic variant assessment")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            dxCNVVariants.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                dxCNVVariants.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
         //ValueCodeableConcept
         dxCNVVariants.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")

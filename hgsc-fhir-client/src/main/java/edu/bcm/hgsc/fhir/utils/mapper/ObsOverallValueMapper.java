@@ -17,7 +17,9 @@ public class ObsOverallValueMapper {
         obsOverall.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/overall-interpretation");
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            obsOverall.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if (hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                obsOverall.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Category
         obsOverall.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -27,12 +29,16 @@ public class ObsOverallValueMapper {
                 .setCode("51968-6").setDisplay("Genetic disease analysis overall interpretation")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            obsOverall.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                obsOverall.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
         //ValueCodeableConcept
         if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
-            obsOverall.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                    .setCode("LA6576-8").setDisplay(hgscReport.getOverallInterpretation())));
+            if(hgscReport.getOverallInterpretation() != null && !hgscReport.getOverallInterpretation().equals("")) {
+                obsOverall.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode("LA6576-8").setDisplay(hgscReport.getOverallInterpretation())));
+            }
         }
 
         //extensions

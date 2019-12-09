@@ -20,9 +20,11 @@ public class ServiceRequestValueMapper {
         serviceRequest.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/servicerequest");
         //Identifier
         if (mappingConfig.containsKey("HgscReport.accessionNumber")) {
-            serviceRequest.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getAccessionNumber())
-                    .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
-                            .setCode("ACSN").setDisplay("Accession ID"))));
+            if(hgscReport.getAccessionNumber() != null && !hgscReport.getAccessionNumber().equals("")) {
+                serviceRequest.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getAccessionNumber())
+                        .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                                .setCode("ACSN").setDisplay("Accession ID"))));
+            }
         }
         //Status
         serviceRequest.setStatus(ServiceRequest.ServiceRequestStatus.COMPLETED);
@@ -33,20 +35,26 @@ public class ServiceRequestValueMapper {
                 .setCode("108252007").setDisplay("Laboratory procedure")));
         //Code
         if (mappingConfig.containsKey("HgscReport.testname")) {
-            serviceRequest.setCode(new CodeableConcept().addCoding(new Coding().setSystem("https://hgsc.bcm.edu/lab-test-codes/")
-                    .setCode("emerge-seq-ngs-pnl").setDisplay("eMERGE-Seq NGS Panel")).setText(hgscReport.getTestName()));
+            if(hgscReport.getTestName() != null && !hgscReport.getTestName().equals("")) {
+                serviceRequest.setCode(new CodeableConcept().addCoding(new Coding().setSystem("https://hgsc.bcm.edu/lab-test-codes/")
+                        .setCode("emerge-seq-ngs-pnl").setDisplay("eMERGE-Seq NGS Panel")).setText(hgscReport.getTestName()));
+            }
         }
         //AuthoredOn
         if (mappingConfig.containsKey("HgscReport.onDate")) {
-            serviceRequest.setAuthoredOn(sdf.parse(hgscReport.getOnDate()));
+            if(hgscReport.getOnDate() != null && !hgscReport.getOnDate().equals("")) {
+                serviceRequest.setAuthoredOn(sdf.parse(hgscReport.getOnDate()));
+            }
         }
         //PerformerType
         serviceRequest.setPerformerType(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
                 .setCode("310049001").setDisplay("Clinical genetics service")));
         //ReasonCode
         if (mappingConfig.containsKey("HgscReport.indicationForTesting")) {
-            serviceRequest.addReasonCode(new CodeableConcept().addCoding(new Coding().setSystem("https://emerge.geneinsight.com")
-                    .setCode("10093-7").setDisplay(hgscReport.getIndicationForTesting())));
+            if(hgscReport.getIndicationForTesting() != null && !hgscReport.getIndicationForTesting().equals("")) {
+                serviceRequest.addReasonCode(new CodeableConcept().addCoding(new Coding().setSystem("https://emerge.geneinsight.com")
+                        .setCode("10093-7").setDisplay(hgscReport.getIndicationForTesting())));
+            }
         }
 
         return serviceRequest;

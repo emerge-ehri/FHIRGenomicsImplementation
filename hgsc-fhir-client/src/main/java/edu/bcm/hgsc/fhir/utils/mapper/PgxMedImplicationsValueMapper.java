@@ -13,11 +13,14 @@ public class PgxMedImplicationsValueMapper {
 
     public PgxDatum getPgxDataByGeneSymbol(HgscReport hgscReport, String geneSymbol) {
 
-        for(PgxDatum pgxDatum : hgscReport.getPgxData()) {
-            if(pgxDatum.getGeneSymbol().equals(geneSymbol)) {
-                return pgxDatum;
+        if(hgscReport.getPgxData() != null && hgscReport.getPgxData().size() > 0) {
+            for(PgxDatum pgxDatum : hgscReport.getPgxData()) {
+                if(pgxDatum.getGeneSymbol().equals(geneSymbol)) {
+                    return pgxDatum;
+                }
             }
         }
+
         return null;
     }
 
@@ -30,18 +33,22 @@ public class PgxMedImplicationsValueMapper {
         //Profile
         pgxResult_1001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType(pgxData.getInterpretation()));
+        if(pgxData != null && pgxData.getInterpretation() != null && !pgxData.getInterpretation().equals("")) {
+            Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
+                    new StringType(pgxData.getInterpretation()));
+            pgxResult_1001.addExtension(ext);
+        }
 
         //map; pgxData.summary???
 
 
 
 
-        pgxResult_1001.addExtension(ext);
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            pgxResult_1001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if (hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                pgxResult_1001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Category
         pgxResult_1001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -51,11 +58,15 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            pgxResult_1001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                pgxResult_1001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
         //ValueCodeableConcept
-        pgxResult_1001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-        		.setCode("LA9657-3").setDisplay(pgxData.getPhenotype())));
+        if(pgxData != null && pgxData.getPhenotype() != null && !pgxData.getPhenotype().equals("")) {
+            pgxResult_1001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                    .setCode("LA9657-3").setDisplay(pgxData.getPhenotype())));
+        }
         
         //Component:medication-assessed (clopidogrel)
         ObservationComponentComponent component_clopidogrel = new ObservationComponentComponent();
@@ -122,12 +133,16 @@ public class PgxMedImplicationsValueMapper {
         //Profile
         pgxResult_2001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType(pgxData.getInterpretation()));
-        pgxResult_2001.addExtension(ext);
+        if(pgxData != null && pgxData.getInterpretation() != null && !pgxData.getInterpretation().equals("")) {
+            Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
+                    new StringType(pgxData.getInterpretation()));
+            pgxResult_2001.addExtension(ext);
+        }
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            pgxResult_2001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if (hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                pgxResult_2001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Category
         pgxResult_2001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -138,10 +153,14 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            pgxResult_2001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                pgxResult_2001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
         //ValueCodeableConcept
-        pgxResult_2001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+        if(pgxData != null && pgxData.getPhenotype() != null && !pgxData.getPhenotype().equals("")) {
+            pgxResult_2001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+        }
         
         //Component:medication-assessed (capecitabine)
         ObservationComponentComponent component_capecitabine = new ObservationComponentComponent();
@@ -183,12 +202,16 @@ public class PgxMedImplicationsValueMapper {
         //Profile
         pgxResult_3001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-efficacy");
         //extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text", 
-        		new StringType(pgxData.getInterpretation()));
-        pgxResult_3001.addExtension(ext);
+        if(pgxData != null && pgxData.getInterpretation() != null && !pgxData.getInterpretation().equals("")) {
+            Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
+                    new StringType(pgxData.getInterpretation()));
+            pgxResult_3001.addExtension(ext);
+        }
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            pgxResult_3001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if (hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                pgxResult_3001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Category
         pgxResult_3001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -198,10 +221,14 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("51961-1").setDisplay("Genetic variation's effect on drug efficacy")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            pgxResult_3001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                pgxResult_3001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
         //ValueCodeableConcept
-        pgxResult_3001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+        if(pgxData != null && pgxData.getPhenotype() != null && !pgxData.getPhenotype().equals("")) {
+            pgxResult_3001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+        }
         
         //Component:medication-assessed (peginterferon alfa-2a)				
         ObservationComponentComponent component_peginterferon_2a = new ObservationComponentComponent();
@@ -243,12 +270,16 @@ public class PgxMedImplicationsValueMapper {
         //Profile
         pgxResult_4001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-transporter");
         //extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text", 
-        		new StringType(pgxData.getInterpretation()));
-        pgxResult_4001.addExtension(ext);
+        if(pgxData != null && pgxData.getInterpretation() != null && !pgxData.getInterpretation().equals("")) {
+            Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
+                    new StringType(pgxData.getInterpretation()));
+            pgxResult_4001.addExtension(ext);
+        }
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            pgxResult_4001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if (hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                pgxResult_4001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Category
         pgxResult_4001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -258,10 +289,14 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("effect-transporter-function").setDisplay("effect-transporter-function")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            pgxResult_4001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                pgxResult_4001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
         //ValueCodeableConcept
-        pgxResult_4001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+        if(pgxData != null && pgxData.getPhenotype() != null && !pgxData.getPhenotype().equals("")) {
+            pgxResult_4001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+        }
         
         //Component:medication-assessed (simvastatin)
         ObservationComponentComponent component_simvastatin = new ObservationComponentComponent();
@@ -287,12 +322,16 @@ public class PgxMedImplicationsValueMapper {
         //Profile
         pgxResult_5001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text", 
-        		new StringType(pgxData.getInterpretation()));
-        pgxResult_5001.addExtension(ext);
+        if(pgxData != null && pgxData.getInterpretation() != null && !pgxData.getInterpretation().equals("")) {
+            Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
+                    new StringType(pgxData.getInterpretation()));
+            pgxResult_5001.addExtension(ext);
+        }
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            pgxResult_5001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if (hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                pgxResult_5001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Category
         pgxResult_5001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -303,10 +342,14 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            pgxResult_5001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                pgxResult_5001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
         //ValueCodeableConcept
-        pgxResult_5001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+        if(pgxData != null && pgxData.getPhenotype() != null && !pgxData.getPhenotype().equals("")) {
+            pgxResult_5001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+        }
         
         //Component:medication-assessed (azathioprine)
         ObservationComponentComponent component_azathioprine = new ObservationComponentComponent();
@@ -349,12 +392,17 @@ public class PgxMedImplicationsValueMapper {
         //Profile
         pgxResult_6001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
-        Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text", 
-        		new StringType(pgxData1.getInterpretation() + pgxData2.getInterpretation()));
-        pgxResult_6001.addExtension(ext);
+        if(pgxData1 != null && pgxData1.getInterpretation() != null && !pgxData1.getInterpretation().equals("")
+                && pgxData2 != null && pgxData2.getInterpretation() != null && !pgxData2.getInterpretation().equals("")) {
+            Extension ext = new Extension("http://hl7.org/fhir/StructureDefinition/interpretation-summary-text",
+                    new StringType(pgxData1.getInterpretation() + pgxData2.getInterpretation()));
+            pgxResult_6001.addExtension(ext);
+        }
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            pgxResult_6001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if (hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                pgxResult_6001.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Category
         pgxResult_6001.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -364,10 +412,14 @@ public class PgxMedImplicationsValueMapper {
                 .setCode("53040-2").setDisplay("Genetic variation's effect on drug metabolism")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            pgxResult_6001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                pgxResult_6001.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
         //ValueCodeableConcept
-        pgxResult_6001.setValue(new CodeableConcept().setText(pgxData1.getPhenotype()));
+        if(pgxData1 != null && pgxData1.getPhenotype() != null && !pgxData1.getPhenotype().equals("")) {
+            pgxResult_6001.setValue(new CodeableConcept().setText(pgxData1.getPhenotype()));
+        }
         
         //Component:medication-assessed (warfarin)
         ObservationComponentComponent component_warfarin = new ObservationComponentComponent();

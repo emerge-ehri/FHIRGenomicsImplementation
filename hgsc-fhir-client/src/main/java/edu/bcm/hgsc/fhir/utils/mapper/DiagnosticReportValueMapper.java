@@ -18,34 +18,42 @@ public class DiagnosticReportValueMapper {
         diagnosticReport.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/diagnosticreport");
         //Identifier
         if (mappingConfig.containsKey("HgscReport.reportIdentifier")) {
-            diagnosticReport.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getReportIdentifier())
-                    .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
-                            .setCode("FILL").setDisplay("Filler Identifier"))));
+            if(hgscReport.getReportIdentifier() != null && !hgscReport.getReportIdentifier().equals("")) {
+                diagnosticReport.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getReportIdentifier())
+                        .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                                .setCode("FILL").setDisplay("Filler Identifier"))));
+            }
         }
 
         //extensions
-        Extension ext1 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/relatedArtifact",
-                new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.DOCUMENTATION).setLabel("Genetic Sequencing Coverage Information")
-                        .setDisplay(hgscReport.getGeneCoverage().toString()
+        if(hgscReport.getGeneCoverage() != null && hgscReport.getGeneCoverage().size() > 0) {
+            Extension ext1 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/relatedArtifact",
+                    new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.DOCUMENTATION).setLabel("Genetic Sequencing Coverage Information")
+                            .setDisplay(hgscReport.getGeneCoverage().toString()
 
 
-                        //hgscReport.getGeneCoverageText()
+                                    //hgscReport.getGeneCoverageText()
 
 
-                        )
-                        .setDocument(new Attachment().setContentType("text/BED").setData(
+                            )
+                            .setDocument(new Attachment().setContentType("text/BED").setData(
 
-                                //fileUtils.readBytesFromFile("")
+                                    //fileUtils.readBytesFromFile("")
 
-                        null)));
+                                    null)));
+
+            diagnosticReport.addExtension(ext1);
+        }
+
         Extension ext3 = new Extension("http://hl7.org/fhir/StructureDefinition/test-disclaimer",
                 new StringType("This test was developed ..... (disclaimer text from report footer)"));
-        diagnosticReport.addExtension(ext1);
         diagnosticReport.addExtension(ext3);
 
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            diagnosticReport.setStatus(DiagnosticReport.DiagnosticReportStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if(hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                diagnosticReport.setStatus(DiagnosticReport.DiagnosticReportStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Category
         diagnosticReport.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0074")
@@ -57,7 +65,9 @@ public class DiagnosticReportValueMapper {
                 .setCode("81247-9").setDisplay("Master HL7 genetic variant reporting panel")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            diagnosticReport.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                diagnosticReport.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
 //        if (mappingConfig.containsKey("HgscReport.attachedReport")) {
 //            Attachment attachedReport = new Attachment();

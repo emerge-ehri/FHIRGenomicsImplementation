@@ -15,18 +15,24 @@ public class ObsReportCommentValueMapper {
 
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            obsReportComment.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if (hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                obsReportComment.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Code
         obsReportComment.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                 .setCode("86467-8").setDisplay("Report comment")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            obsReportComment.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                obsReportComment.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
         //ValueString
         if (mappingConfig.containsKey("HgscReport.reportComment")) {
-            obsReportComment.setValue(new StringType(hgscReport.getReportComment()));
+            if(hgscReport.getReportComment() != null && !hgscReport.getReportComment().equals("")) {
+                obsReportComment.setValue(new StringType(hgscReport.getReportComment()));
+            }
         }
 
         return obsReportComment;

@@ -28,7 +28,9 @@ public class ObsInhDisPathsValueMapper {
 
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
-            obsInhDisPath.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            if (hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {
+                obsInhDisPath.setStatus(Observation.ObservationStatus.fromCode(hgscReport.getReportStatus().toLowerCase()));
+            }
         }
         //Category
         obsInhDisPath.addCategory(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/observation-category")
@@ -38,7 +40,9 @@ public class ObsInhDisPathsValueMapper {
                 .setCode("53037-8").setDisplay("Genetic variation clinical significance")));
         //Issued
         if (mappingConfig.containsKey("HgscReport.reportDate")) {
-            obsInhDisPath.setIssued(sdf.parse(hgscReport.getReportDate()));
+            if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+                obsInhDisPath.setIssued(sdf.parse(hgscReport.getReportDate()));
+            }
         }
 
         //Component:associated-phenotype
@@ -52,22 +56,24 @@ public class ObsInhDisPathsValueMapper {
                         .setCode("252900").setDisplay("Lange-Nielsen syndrome 1"))));
 
         //Create multiple obsInhDisPaths if there is multiple variants
-        for(Variant v : hgscReport.getVariants()) {
+        if(hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
+            for(Variant v : hgscReport.getVariants()) {
 
-            Observation temp = (Observation)(util.deepCopy(obsInhDisPath));
+                Observation temp = (Observation)(util.deepCopy(obsInhDisPath));
 
-            //ValueCodeableConcept
-            if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
-                temp.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                        .setCode("LA6668-3").setDisplay(v.getInterpretation())));
+                //ValueCodeableConcept
+                if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
+                    temp.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                            .setCode("LA6668-3").setDisplay(v.getInterpretation())));
+                }
+
+                //extensions
+                Extension ext = new Extension("http:/xxx/fhir/StructureDefinition/interpretation-summary-text",
+                        new StringType(v.getVariantInterpretation()));
+                temp.addExtension(ext);
+
+                obsInhDisPaths.put(v.getGene(), temp);
             }
-
-            //extensions
-            Extension ext = new Extension("http:/xxx/fhir/StructureDefinition/interpretation-summary-text",
-                    new StringType(v.getVariantInterpretation()));
-            temp.addExtension(ext);
-
-            obsInhDisPaths.put(v.getGene(), temp);
         }
 
         return obsInhDisPaths;
