@@ -127,6 +127,8 @@ public class FileUploadServiceImpl {
         geneticistOne.setId(IdDt.newRandomUuid());
         Practitioner geneticistTwo = (Practitioner) fhirResources.get("GeneticistTwo");
         geneticistTwo.setId(IdDt.newRandomUuid());
+        Practitioner orderingPhysician = (Practitioner) fhirResources.get("OrderingPhysician");
+        orderingPhysician.setId(IdDt.newRandomUuid());
 
         PractitionerRole practitionerRole = (PractitionerRole) fhirResources.get("PractitionerRole");
         practitionerRole.setId(IdDt.newRandomUuid());
@@ -348,6 +350,8 @@ public class FileUploadServiceImpl {
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistOne))));
         geneticistTwo.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(geneticistTwo))));
+        orderingPhysician.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(orderingPhysician))));
 
         practitionerRole.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(practitionerRole))));
@@ -580,6 +584,14 @@ public class FileUploadServiceImpl {
                 .getRequest()
                 .setUrl("Practitioner")
                 .setIfNoneExist("identifier=" + geneticistTwo.getIdentifier().get(0).getValue())
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
+                .setFullUrl(orderingPhysician.getId())
+                .setResource(orderingPhysician)
+                .getRequest()
+                .setUrl("Practitioner")
+                .setIfNoneExist("identifier=" + orderingPhysician.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()

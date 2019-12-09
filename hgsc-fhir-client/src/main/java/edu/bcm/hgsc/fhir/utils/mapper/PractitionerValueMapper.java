@@ -7,12 +7,28 @@ import java.util.HashMap;
 
 public class PractitionerValueMapper {
 
+    public Practitioner orderingPhysicianValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport) {
+
+        Practitioner orderingPhysician = new Practitioner();
+
+        //Identifier
+        orderingPhysician.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("p101")
+                .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                        .setCode("NPI").setDisplay("National provider identifier"))));
+        //Name
+        orderingPhysician.addName(new HumanName().setText("map.orderingPhysicianName"));
+        //Address
+        orderingPhysician.addAddress(new Address().setText("map.orderingPhysicianAddress"));
+
+        return orderingPhysician;
+    }
+
     public Practitioner geneticistOneValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport) {
 
         Practitioner geneticistOne = new Practitioner();
 
         //Identifier
-        geneticistOne.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI???")
+        geneticistOne.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI101")
                 .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                         .setCode("NPI").setDisplay("National provider identifier"))));
         //Name
@@ -37,7 +53,7 @@ public class PractitionerValueMapper {
         Practitioner geneticistTwo = new Practitioner();
 
         //Identifier
-        geneticistTwo.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI???")
+        geneticistTwo.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI102")
                 .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                         .setCode("NPI").setDisplay("National provider identifier"))));
         //Name

@@ -120,6 +120,10 @@ public class FhirResourcesMappingUtils {
                         Practitioner geneticistTwo = new PractitionerValueMapper().geneticistTwoValueMapping(mappingConfig, hgscReport);
                         results.put("GeneticistTwo", geneticistTwo);
                         break;
+                    case "OrderingPhysician":
+                        Practitioner orderingPhysician = new PractitionerValueMapper().orderingPhysicianValueMapping(mappingConfig, hgscReport);
+                        results.put("OrderingPhysician", orderingPhysician);
+                        break;
                     case "PractitionerRole":
                         PractitionerRole practitionerRole = new PractitionerRoleValueMapper().practitionerRoleValueMapping(mappingConfig, hgscReport);
                         results.put("PractitionerRole", practitionerRole);
