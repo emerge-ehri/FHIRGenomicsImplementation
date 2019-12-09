@@ -67,46 +67,6 @@ public class PlanDefinitionValueMapper {
         planDefinition.getRelatedArtifact().add(relatedArtifact);
 
 
-
-
-
-
-
-
-
-
-
-
-        if (mappingConfig.containsKey("HgscReport.organizationHGSC")) {}
-        if (mappingConfig.containsKey("HgscReport.organizationBCM")) {}
-        if (mappingConfig.containsKey("HgscReport.OrganizationCHP")) {}
-        if (mappingConfig.containsKey("HgscReport.geneticistOne")) {}
-        if (mappingConfig.containsKey("HgscReport.geneticistTwo")) {}
-        if (mappingConfig.containsKey("HgscReport.practitionerRole")) {}
-        if (mappingConfig.containsKey("HgscReport.practitionerRoleGeneticistOne")) {}
-        if (mappingConfig.containsKey("HgscReport.practitionerRoleGeneticistTwo")) {}
-        if (mappingConfig.containsKey("HgscReport.dxSNPINDELVariants")) {}
-        if (mappingConfig.containsKey("HgscReport.obsReportComment")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxPanel")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxResult_1001")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxResult_2001")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxResult_3001")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxResult_4001")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxResult_5001")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxResult_6001")) {}
-        if (mappingConfig.containsKey("HgscReport.obsInhDisPaths")) {}
-        if (mappingConfig.containsKey("HgscReport.dxPanel")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxGeno_1001")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxGeno_2001")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxGeno_3001")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxGeno_4001")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxGeno_5001")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxGeno_6001")) {}
-        if (mappingConfig.containsKey("HgscReport.pgxGeno_7001")) {}
-        if (mappingConfig.containsKey("HgscReport.task")) {}
-
-
-
         return  planDefinition;
     }
 }
