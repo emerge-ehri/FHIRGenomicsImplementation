@@ -37,7 +37,12 @@ import java.util.*;
         "notInterpreted",
         "interrogatedButNotFound",
         "variantInterpretation",
-        "endPosition"
+        "endPosition",
+        "dbSNPID",
+        "hgncID",
+        "type",
+        "reportable",
+        "isIncidentalFinding"
 })
 public class Variant {
 
@@ -403,7 +408,7 @@ public class Variant {
     @JsonProperty("notes")
     private String notes;
     @JsonProperty("diseases")
-    private List<String> diseases;
+    private List<Disease> diseases;
     @JsonProperty("proteinChange")
     private String proteinChange;
     @JsonProperty("geneDiseaseText")
@@ -448,6 +453,17 @@ public class Variant {
     private String variantInterpretation;
     @JsonProperty("endPosition")
     private String endPosition;
+
+    @JsonProperty("dbSNPID")
+    private String dbSNPID;
+    @JsonProperty("hgncID")
+    private String hgncID;
+    @JsonProperty("type")
+    private String type;
+    @JsonProperty("reportable")
+    private String reportable;
+    @JsonProperty("isIncidentalFinding")
+    private String isIncidentalFinding;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -503,15 +519,15 @@ public class Variant {
     }
 
     @JsonProperty("diseases")
-    public List<String> getDiseases() {
+    public List<Disease> getDiseases() {
         if (diseases == null) {
-            diseases = new ArrayList<String>();
+            diseases = new ArrayList<Disease>();
         }
         return diseases;
     }
 
     @JsonProperty("diseases")
-    public void setDiseases(List<String> diseases) {
+    public void setDiseases(List<Disease> diseases) {
         this.diseases = diseases;
     }
 
@@ -686,6 +702,56 @@ public class Variant {
 
     @JsonProperty("endPosition")
     public void setEndPosition(String endPosition) { this.endPosition = endPosition; }
+
+    @JsonProperty("dbSNPID")
+    public String getDbSNPID() {
+        return dbSNPID;
+    }
+
+    @JsonProperty("dbSNPID")
+    public void setDbSNPID(String dbSNPID) {
+        this.dbSNPID = dbSNPID;
+    }
+
+    @JsonProperty("hgncID")
+    public String getHgncID() {
+        return hgncID;
+    }
+
+    @JsonProperty("hgncID")
+    public void setHgncID(String hgncID) {
+        this.hgncID = hgncID;
+    }
+
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @JsonProperty("reportable")
+    public String getReportable() {
+        return reportable;
+    }
+
+    @JsonProperty("reportable")
+    public void setReportable(String reportable) {
+        this.reportable = reportable;
+    }
+
+    @JsonProperty("isIncidentalFinding")
+    public String getIsIncidentalFinding() {
+        return isIncidentalFinding;
+    }
+
+    @JsonProperty("isIncidentalFinding")
+    public void setIsIncidentalFinding(String isIncidentalFinding) {
+        this.isIncidentalFinding = isIncidentalFinding;
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

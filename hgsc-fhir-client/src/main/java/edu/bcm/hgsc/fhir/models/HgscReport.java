@@ -58,8 +58,45 @@ import java.util.*;
         "background",
         "clinicalCorelation",
         "pgxDescription",
-        "cnvsFailed"
-        
+        "cnvsFailed",
+        "prsRecommendation",
+        "comments",
+        "siteMethodology",
+        "panelSummary",
+        "lpaFinding",
+        "dnaVariationCode",
+        "familyScreening",
+        "references",
+        "polygenicRiskScore",
+        "lpaDisclaimer",
+        "lpaRecommendationDetail",
+        "cnvsFailedText",
+        "genomicCoordinateSystem",
+        "lpaRecommendation",
+        "testInfoSummary",
+        "testInfoDetail",
+        "panelRecommendation",
+        "jsonCreatedDate",
+        "humanReferenceSequenceAssemblyVersion",
+        "testCode",
+        "prsDisclaimer",
+        "pgxDisclaimer",
+        "overallInterpretationText",
+        "geneCoverageText",
+        "testParams",
+        "lpaSummary",
+        "prsFinding",
+        "panelManagementRecommendation",
+        "language",
+        "pgxSummaryRecommendation",
+        "footer",
+        "prsSummary",
+        "prsRecommendationDetail",
+        "pgxFinding",
+        "vusDisclaimer",
+        "panelFinding",
+        "panelRecommendationDetail",
+        "practitionerData"
 })
 public class HgscReport {
 
@@ -729,7 +766,7 @@ public class HgscReport {
     @JsonProperty("genomicSource")
     private String genomicSource;
     @JsonProperty("geneCoverage")
-    private List<List<String>> geneCoverage = null;
+    private List<SingleGeneCoverage> geneCoverage;
     @JsonProperty("overallInterpretation")
     private String overallInterpretation;
     @JsonProperty("reportIdentifier")
@@ -811,7 +848,7 @@ public class HgscReport {
     @JsonProperty("reportComment")
     private String reportComment;
     @JsonProperty("methodology")
-    private String methodology;
+    private List<String> methodology;
     @JsonProperty("background")
     private String background;
     @JsonProperty("clinicalCorrelation")
@@ -820,7 +857,83 @@ public class HgscReport {
     private String pgxDescription;
     @JsonProperty("cnvsFailed")
     private String cnvsFailed;
-    
+    @JsonProperty("prsRecommendation")
+    private String prsRecommendation;
+    @JsonProperty("comments")
+    private String comments;
+    @JsonProperty("siteMethodology")
+    private List<String> siteMethodology;
+    @JsonProperty("panelSummary")
+    private String panelSummary;
+    @JsonProperty("lpaFinding")
+    private String lpaFinding;
+    @JsonProperty("dnaVariationCode")
+    private String dnaVariationCode;
+    @JsonProperty("familyScreening")
+    private String familyScreening;
+    @JsonProperty("references")
+    private List<String> references;
+    @JsonProperty("polygenicRiskScore")
+    private String polygenicRiskScore;
+    @JsonProperty("lpaDisclaimer")
+    private String lpaDisclaimer;
+    @JsonProperty("lpaRecommendationDetail")
+    private String lpaRecommendationDetail;
+    @JsonProperty("cnvsFailedText")
+    private String cnvsFailedText;
+    @JsonProperty("genomicCoordinateSystem")
+    private String genomicCoordinateSystem;
+    @JsonProperty("lpaRecommendation")
+    private String lpaRecommendation;
+    @JsonProperty("testInfoSummary")
+    private String testInfoSummary;
+    @JsonProperty("testInfoDetail")
+    private String testInfoDetail;
+    @JsonProperty("panelRecommendation")
+    private String panelRecommendation;
+    @JsonProperty("jsonCreatedDate")
+    private String jsonCreatedDate;
+    @JsonProperty("humanReferenceSequenceAssemblyVersion")
+    private String humanReferenceSequenceAssemblyVersion;
+    @JsonProperty("testCode")
+    private String testCode;
+    @JsonProperty("prsDisclaimer")
+    private String prsDisclaimer;
+    @JsonProperty("pgxDisclaimer")
+    private String pgxDisclaimer;
+    @JsonProperty("overallInterpretationText")
+    private String overallInterpretationText;
+    @JsonProperty("geneCoverageText")
+    private String geneCoverageText;
+    @JsonProperty("testParams")
+    private String testParams;
+    @JsonProperty("lpaSummary")
+    private String lpaSummary;
+    @JsonProperty("prsFinding")
+    private String prsFinding;
+    @JsonProperty("panelManagementRecommendation")
+    private String panelManagementRecommendation;
+    @JsonProperty("language")
+    private String language;
+    @JsonProperty("pgxSummaryRecommendation")
+    private List<String> pgxSummaryRecommendation;
+    @JsonProperty("footer")
+    private String footer;
+    @JsonProperty("prsSummary")
+    private String prsSummary;
+    @JsonProperty("prsRecommendationDetail")
+    private String prsRecommendationDetail;
+    @JsonProperty("pgxFinding")
+    private String pgxFinding;
+    @JsonProperty("vusDisclaimer")
+    private String vusDisclaimer;
+    @JsonProperty("panelFinding")
+    private String panelFinding;
+    @JsonProperty("panelRecommendationDetail")
+    private String panelRecommendationDetail;
+    @JsonProperty("practitionerData")
+    private List<PractitionerDatum> practitionerData;
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -854,15 +967,15 @@ public class HgscReport {
         this.genomicSource = genomicSource;
     }
     @JsonProperty("geneCoverage")
-    public List<List<String>> getGeneCoverage() {
+    public List<SingleGeneCoverage> getGeneCoverage() {
         if (geneCoverage == null) {
-            geneCoverage = new ArrayList<List<String>>();
+            geneCoverage = new ArrayList<SingleGeneCoverage>();
         }
         return geneCoverage;
     }
 
     @JsonProperty("geneCoverage")
-    public void setGeneCoverage(List<List<String>> geneCoverage) {
+    public void setGeneCoverage(List<SingleGeneCoverage> geneCoverage) {
         this.geneCoverage = geneCoverage;
     }
 
@@ -1278,10 +1391,14 @@ public class HgscReport {
     }
 
     @JsonProperty("methodology")
-    public String getMethodology() { return methodology; }
+    public List<String> getMethodology() {
+        return methodology;
+    }
 
     @JsonProperty("methodology")
-    public void setMethodology(String methodology) { this.methodology = methodology; }
+    public void setMethodology(List<String> methodology) {
+        this.methodology = methodology;
+    }
 
     @JsonProperty("background")
     public String getBackground() { return background; }
@@ -1306,7 +1423,387 @@ public class HgscReport {
 
     @JsonProperty("cnvsFailed")
     public void setCnvsFailed(String cnvsFailed) { this.cnvsFailed = cnvsFailed; }
-    
+
+    @JsonProperty("prsRecommendation")
+    public String getPrsRecommendation() {
+        return prsRecommendation;
+    }
+
+    @JsonProperty("prsRecommendation")
+    public void setPrsRecommendation(String prsRecommendation) {
+        this.prsRecommendation = prsRecommendation;
+    }
+
+    @JsonProperty("comments")
+    public String getComments() {
+        return comments;
+    }
+
+    @JsonProperty("comments")
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    @JsonProperty("siteMethodology")
+    public List<String> getSiteMethodology() {
+        return siteMethodology;
+    }
+
+    @JsonProperty("siteMethodology")
+    public void setSiteMethodology(List<String> siteMethodology) {
+        this.siteMethodology = siteMethodology;
+    }
+
+    @JsonProperty("panelSummary")
+    public String getPanelSummary() {
+        return panelSummary;
+    }
+
+    @JsonProperty("panelSummary")
+    public void setPanelSummary(String panelSummary) {
+        this.panelSummary = panelSummary;
+    }
+
+    @JsonProperty("lpaFinding")
+    public String getLpaFinding() {
+        return lpaFinding;
+    }
+
+    @JsonProperty("lpaFinding")
+    public void setLpaFinding(String lpaFinding) {
+        this.lpaFinding = lpaFinding;
+    }
+
+    @JsonProperty("dnaVariationCode")
+    public String getDnaVariationCode() {
+        return dnaVariationCode;
+    }
+
+    @JsonProperty("dnaVariationCode")
+    public void setDnaVariationCode(String dnaVariationCode) {
+        this.dnaVariationCode = dnaVariationCode;
+    }
+
+    @JsonProperty("familyScreening")
+    public String getFamilyScreening() {
+        return familyScreening;
+    }
+
+    @JsonProperty("familyScreening")
+    public void setFamilyScreening(String familyScreening) {
+        this.familyScreening = familyScreening;
+    }
+
+    @JsonProperty("references")
+    public List<String> getReferences() {
+        return references;
+    }
+
+    @JsonProperty("references")
+    public void setReferences(List<String> references) {
+        this.references = references;
+    }
+
+    @JsonProperty("polygenicRiskScore")
+    public String getPolygenicRiskScore() {
+        return polygenicRiskScore;
+    }
+
+    @JsonProperty("polygenicRiskScore")
+    public void setPolygenicRiskScore(String polygenicRiskScore) {
+        this.polygenicRiskScore = polygenicRiskScore;
+    }
+
+    @JsonProperty("lpaDisclaimer")
+    public String getLpaDisclaimer() {
+        return lpaDisclaimer;
+    }
+
+    @JsonProperty("lpaDisclaimer")
+    public void setLpaDisclaimer(String lpaDisclaimer) {
+        this.lpaDisclaimer = lpaDisclaimer;
+    }
+
+    @JsonProperty("lpaRecommendationDetail")
+    public String getLpaRecommendationDetail() {
+        return lpaRecommendationDetail;
+    }
+
+    @JsonProperty("lpaRecommendationDetail")
+    public void setLpaRecommendationDetail(String lpaRecommendationDetail) {
+        this.lpaRecommendationDetail = lpaRecommendationDetail;
+    }
+
+    @JsonProperty("cnvsFailedText")
+    public String getCnvsFailedText() {
+        return cnvsFailedText;
+    }
+
+    @JsonProperty("cnvsFailedText")
+    public void setCnvsFailedText(String cnvsFailedText) {
+        this.cnvsFailedText = cnvsFailedText;
+    }
+
+    @JsonProperty("genomicCoordinateSystem")
+    public String getGenomicCoordinateSystem() {
+        return genomicCoordinateSystem;
+    }
+
+    @JsonProperty("genomicCoordinateSystem")
+    public void setGenomicCoordinateSystem(String genomicCoordinateSystem) {
+        this.genomicCoordinateSystem = genomicCoordinateSystem;
+    }
+
+    @JsonProperty("lpaRecommendation")
+    public String getLpaRecommendation() {
+        return lpaRecommendation;
+    }
+
+    @JsonProperty("lpaRecommendation")
+    public void setLpaRecommendation(String lpaRecommendation) {
+        this.lpaRecommendation = lpaRecommendation;
+    }
+
+    @JsonProperty("testInfoSummary")
+    public String getTestInfoSummary() {
+        return testInfoSummary;
+    }
+
+    @JsonProperty("testInfoSummary")
+    public void setTestInfoSummary(String testInfoSummary) {
+        this.testInfoSummary = testInfoSummary;
+    }
+
+    @JsonProperty("testInfoDetail")
+    public String getTestInfoDetail() {
+        return testInfoDetail;
+    }
+
+    @JsonProperty("testInfoDetail")
+    public void setTestInfoDetail(String testInfoDetail) {
+        this.testInfoDetail = testInfoDetail;
+    }
+
+    @JsonProperty("panelRecommendation")
+    public String getPanelRecommendation() {
+        return panelRecommendation;
+    }
+
+    @JsonProperty("panelRecommendation")
+    public void setPanelRecommendation(String panelRecommendation) {
+        this.panelRecommendation = panelRecommendation;
+    }
+
+    @JsonProperty("jsonCreatedDate")
+    public String getJsonCreatedDate() {
+        return jsonCreatedDate;
+    }
+
+    @JsonProperty("jsonCreatedDate")
+    public void setJsonCreatedDate(String jsonCreatedDate) {
+        this.jsonCreatedDate = jsonCreatedDate;
+    }
+
+    @JsonProperty("humanReferenceSequenceAssemblyVersion")
+    public String getHumanReferenceSequenceAssemblyVersion() {
+        return humanReferenceSequenceAssemblyVersion;
+    }
+
+    @JsonProperty("humanReferenceSequenceAssemblyVersion")
+    public void setHumanReferenceSequenceAssemblyVersion(String humanReferenceSequenceAssemblyVersion) {
+        this.humanReferenceSequenceAssemblyVersion = humanReferenceSequenceAssemblyVersion;
+    }
+
+    @JsonProperty("testCode")
+    public String getTestCode() {
+        return testCode;
+    }
+
+    @JsonProperty("testCode")
+    public void setTestCode(String testCode) {
+        this.testCode = testCode;
+    }
+
+    @JsonProperty("prsDisclaimer")
+    public String getPrsDisclaimer() {
+        return prsDisclaimer;
+    }
+
+    @JsonProperty("prsDisclaimer")
+    public void setPrsDisclaimer(String prsDisclaimer) {
+        this.prsDisclaimer = prsDisclaimer;
+    }
+
+    @JsonProperty("pgxDisclaimer")
+    public String getPgxDisclaimer() {
+        return pgxDisclaimer;
+    }
+
+    @JsonProperty("pgxDisclaimer")
+    public void setPgxDisclaimer(String pgxDisclaimer) {
+        this.pgxDisclaimer = pgxDisclaimer;
+    }
+
+    @JsonProperty("overallInterpretationText")
+    public String getOverallInterpretationText() {
+        return overallInterpretationText;
+    }
+
+    @JsonProperty("overallInterpretationText")
+    public void setOverallInterpretationText(String overallInterpretationText) {
+        this.overallInterpretationText = overallInterpretationText;
+    }
+
+    @JsonProperty("geneCoverageText")
+    public String getGeneCoverageText() {
+        return geneCoverageText;
+    }
+
+    @JsonProperty("geneCoverageText")
+    public void setGeneCoverageText(String geneCoverageText) {
+        this.geneCoverageText = geneCoverageText;
+    }
+
+    @JsonProperty("testParams")
+    public String getTestParams() {
+        return testParams;
+    }
+
+    @JsonProperty("testParams")
+    public void setTestParams(String testParams) {
+        this.testParams = testParams;
+    }
+
+    @JsonProperty("lpaSummary")
+    public String getLpaSummary() {
+        return lpaSummary;
+    }
+
+    @JsonProperty("lpaSummary")
+    public void setLpaSummary(String lpaSummary) {
+        this.lpaSummary = lpaSummary;
+    }
+
+    @JsonProperty("prsFinding")
+    public String getPrsFinding() {
+        return prsFinding;
+    }
+
+    @JsonProperty("prsFinding")
+    public void setPrsFinding(String prsFinding) {
+        this.prsFinding = prsFinding;
+    }
+
+    @JsonProperty("panelManagementRecommendation")
+    public String getPanelManagementRecommendation() {
+        return panelManagementRecommendation;
+    }
+
+    @JsonProperty("panelManagementRecommendation")
+    public void setPanelManagementRecommendation(String panelManagementRecommendation) {
+        this.panelManagementRecommendation = panelManagementRecommendation;
+    }
+
+    @JsonProperty("language")
+    public String getLanguage() {
+        return language;
+    }
+
+    @JsonProperty("language")
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    @JsonProperty("pgxSummaryRecommendation")
+    public List<String> getPgxSummaryRecommendation() {
+        return pgxSummaryRecommendation;
+    }
+
+    @JsonProperty("pgxSummaryRecommendation")
+    public void setPgxSummaryRecommendation(List<String> pgxSummaryRecommendation) {
+        this.pgxSummaryRecommendation = pgxSummaryRecommendation;
+    }
+
+    @JsonProperty("footer")
+    public String getFooter() {
+        return footer;
+    }
+
+    @JsonProperty("footer")
+    public void setFooter(String footer) {
+        this.footer = footer;
+    }
+
+    @JsonProperty("prsSummary")
+    public String getPrsSummary() {
+        return prsSummary;
+    }
+
+    @JsonProperty("prsSummary")
+    public void setPrsSummary(String prsSummary) {
+        this.prsSummary = prsSummary;
+    }
+
+    @JsonProperty("prsRecommendationDetail")
+    public String getPrsRecommendationDetail() {
+        return prsRecommendationDetail;
+    }
+
+    @JsonProperty("prsRecommendationDetail")
+    public void setPrsRecommendationDetail(String prsRecommendationDetail) {
+        this.prsRecommendationDetail = prsRecommendationDetail;
+    }
+
+    @JsonProperty("pgxFinding")
+    public String getPgxFinding() {
+        return pgxFinding;
+    }
+
+    @JsonProperty("pgxFinding")
+    public void setPgxFinding(String pgxFinding) {
+        this.pgxFinding = pgxFinding;
+    }
+
+    @JsonProperty("vusDisclaimer")
+    public String getVusDisclaimer() {
+        return vusDisclaimer;
+    }
+
+    @JsonProperty("vusDisclaimer")
+    public void setVusDisclaimer(String vusDisclaimer) {
+        this.vusDisclaimer = vusDisclaimer;
+    }
+
+    @JsonProperty("panelFinding")
+    public String getPanelFinding() {
+        return panelFinding;
+    }
+
+    @JsonProperty("panelFinding")
+    public void setPanelFinding(String panelFinding) {
+        this.panelFinding = panelFinding;
+    }
+
+    @JsonProperty("panelRecommendationDetail")
+    public String getPanelRecommendationDetail() {
+        return panelRecommendationDetail;
+    }
+
+    @JsonProperty("panelRecommendationDetail")
+    public void setPanelRecommendationDetail(String panelRecommendationDetail) {
+        this.panelRecommendationDetail = panelRecommendationDetail;
+    }
+
+    @JsonProperty("practitionerData")
+    public List<PractitionerDatum> getPractitionerData() {
+        return practitionerData;
+    }
+
+    @JsonProperty("practitionerData")
+    public void setPractitionerData(List<PractitionerDatum> practitionerData) {
+        this.practitionerData = practitionerData;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;

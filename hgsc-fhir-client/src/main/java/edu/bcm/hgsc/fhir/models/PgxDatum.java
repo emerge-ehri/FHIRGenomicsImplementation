@@ -17,7 +17,9 @@ import java.util.Map;
         "phenotype",
         "recommendation",
         "geneSymbol",
-        "diplotype"
+        "diplotype",
+        "summary",
+        "pgxDrugRecommendation"
 })
 public class PgxDatum {
 
@@ -28,11 +30,16 @@ public class PgxDatum {
     @JsonProperty("phenotype")
     private String phenotype;
     @JsonProperty("recommendation")
-    private List<String> recommendation;
+    private String recommendation;
     @JsonProperty("geneSymbol")
     private String geneSymbol;
     @JsonProperty("diplotype")
     private String diplotype;
+    @JsonProperty("summary")
+    private String summary;
+    @JsonProperty("pgxDrugRecommendation")
+    private List<PgxDrugRec> pgxDrugRecommendation;
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -67,12 +74,12 @@ public class PgxDatum {
     }
 
     @JsonProperty("recommendation")
-    public List<String> getRecommendation() {
+    public String getRecommendation() {
         return recommendation;
     }
 
     @JsonProperty("recommendation")
-    public void setRecommendation(List<String> recommendation) {
+    public void setRecommendation(String recommendation) {
         this.recommendation = recommendation;
     }
 
@@ -94,6 +101,26 @@ public class PgxDatum {
     @JsonProperty("diplotype")
     public void setDiplotype(String diplotype) {
         this.diplotype = diplotype;
+    }
+
+    @JsonProperty("summary")
+    public String getSummary() {
+        return summary;
+    }
+
+    @JsonProperty("summary")
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    @JsonProperty("pgxDrugRecommendation")
+    public List<PgxDrugRec> getPgxDrugRecommendation() {
+        return pgxDrugRecommendation;
+    }
+
+    @JsonProperty("pgxDrugRecommendation")
+    public void setPgxDrugRecommendation(List<PgxDrugRec> pgxDrugRecommendation) {
+        this.pgxDrugRecommendation = pgxDrugRecommendation;
     }
 
     @JsonAnyGetter

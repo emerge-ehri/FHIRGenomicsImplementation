@@ -393,7 +393,7 @@ public class FileUploadServiceImpl {
                 .setResource(serviceRequest)
                 .getRequest()
                 .setUrl("ServiceRequest")
-                .setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
+                //.setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
