@@ -42,13 +42,11 @@ public class ObsOverallValueMapper {
         }
 
         //extensions
-        Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
-                new StringType("Summary text for the overall interpretation if available"
-
-                        //map; panelSummary
-
-                ));
-        obsOverall.addExtension(ext);
+        if(hgscReport.getPanelSummary() != null && !hgscReport.getPanelSummary().equals("")) {
+            Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
+                    new StringType(hgscReport.getPanelSummary()));
+            obsOverall.addExtension(ext);
+        }
 
         return obsOverall;
     }

@@ -24,7 +24,14 @@ public class PractitionerRoleValueMapper {
 
         //Code
         practitionerRoleGeneticistOne.addCode(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
-                .setCode("159141008").setDisplay("Geneticist")).setText("ABMGG Certified Molecular Geneticist").setText("Assistant Laboratory Director"));
+                .setCode("159141008").setDisplay("Geneticist")).setText(
+
+
+                        //missing mapping info from JSON, others same within this java class
+
+
+                        "ABMGG Certified Molecular Geneticist"
+        ).setText("Assistant Laboratory Director"));
 
         return practitionerRoleGeneticistOne;
     }

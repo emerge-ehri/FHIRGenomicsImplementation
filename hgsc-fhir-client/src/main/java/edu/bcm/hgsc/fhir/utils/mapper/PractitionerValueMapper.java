@@ -12,13 +12,33 @@ public class PractitionerValueMapper {
         Practitioner orderingPhysician = new Practitioner();
 
         //Identifier
-        orderingPhysician.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("p101")
+        orderingPhysician.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue(
+
+
+                //TBD
+
+
+
+                "p101"
+        )
                 .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                         .setCode("NPI").setDisplay("National provider identifier"))));
         //Name
-        orderingPhysician.addName(new HumanName().setText("map.orderingPhysicianName"));
+        orderingPhysician.addName(new HumanName().setText(
+
+
+                //TBD
+
+
+                "map.orderingPhysicianName"));
         //Address
-        orderingPhysician.addAddress(new Address().setText("map.orderingPhysicianAddress"));
+        orderingPhysician.addAddress(new Address().setText(
+
+
+                //TBD
+
+
+                "map.orderingPhysicianAddress"));
 
         return orderingPhysician;
     }
@@ -27,23 +47,37 @@ public class PractitionerValueMapper {
 
         Practitioner geneticistOne = new Practitioner();
 
-        //Identifier
-        geneticistOne.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI101")
-                .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
-                        .setCode("NPI").setDisplay("National provider identifier"))));
-        //Name
-        geneticistOne.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily("Murdock").addGiven("David")
-                .addSuffix("M.D., F.A.C.M.G.").setText("David Murdock, M.D., F.A.C.M.G."));
-        //Qualification
-        geneticistOne.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept().addCoding(new Coding()
-                .setSystem("http://terminology.hl7.org/CodeSystem/v2-2.7-0360").setCode("MD").setDisplay("Doctor of Medicine")))
-                .addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI???")
-                        .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
-                                .setCode("NPI").setDisplay("National provider identifier")))));
-        geneticistOne.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept()
-                .setText("ABMGG Certified Molecular Geneticist, Assistant Laboratory Director")));
-        //Address
-        geneticistOne.addAddress(new Address().addLine("One Baylor Plaza").setCity("Houston").setState("TX").setPostalCode("77030").setCountry("USA"));
+        if(hgscReport.getPractitionerData().get(0) != null) {
+            //Identifier
+            geneticistOne.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue(hgscReport.getPractitionerData().get(0).getNPI())
+                    .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                            .setCode("NPI").setDisplay("National provider identifier"))));
+            //Name
+            geneticistOne.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily(hgscReport.getPractitionerData().get(0).getLastName())
+                    .addGiven(hgscReport.getPractitionerData().get(0).getFirstName() + hgscReport.getPractitionerData().get(0).getMiddleName())
+                    .addSuffix(hgscReport.getPractitionerData().get(0).getSuffix()));
+            //Qualification
+            geneticistOne.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept().addCoding(new Coding()
+                    .setSystem("http://terminology.hl7.org/CodeSystem/v2-2.7-0360").setCode(
+
+
+                            //TBD
+                            "MD").setDisplay(
+
+
+                                    //TBD
+                                    "Doctor of Medicine")))
+                    .addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue(hgscReport.getPractitionerData().get(0).getNPI())
+                            .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                                    .setCode("NPI").setDisplay("National provider identifier")))));
+            geneticistOne.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept()
+                    .setText(
+
+                            //TBD
+                            "ABMGG Certified Molecular Geneticist, Assistant Laboratory Director")));
+            //Address
+            geneticistOne.addAddress(new Address().addLine("One Baylor Plaza").setCity("Houston").setState("TX").setPostalCode("77030").setCountry("USA"));
+        }
 
         return geneticistOne;
     }
@@ -52,23 +86,38 @@ public class PractitionerValueMapper {
 
         Practitioner geneticistTwo = new Practitioner();
 
-        //Identifier
-        geneticistTwo.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI102")
-                .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
-                        .setCode("NPI").setDisplay("National provider identifier"))));
-        //Name
-        geneticistTwo.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily("Eng").addGiven("Christine")
-                .addSuffix("M.D.").setText("Christine Eng, M.D."));
-        //Qualification
-        geneticistTwo.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept().addCoding(new Coding()
-                .setSystem("http://terminology.hl7.org/CodeSystem/v2-2.7-0360").setCode("MD").setDisplay("Doctor of Medicine")))
-                .addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue("NPI???")
-                        .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
-                                .setCode("NPI").setDisplay("National provider identifier")))));
-        geneticistTwo.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept()
-                .setText("ABMGG Certified Molecular Geneticist, Chief Quality Officer, Vice President, Chief Medical Officer")));
-        //Address
-        geneticistTwo.addAddress(new Address().addLine("One Baylor Plaza").setCity("Houston").setState("TX").setPostalCode("77030").setCountry("USA"));
+        if(hgscReport.getPractitionerData().get(1) != null) {
+            //Identifier
+            geneticistTwo.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue(hgscReport.getPractitionerData().get(1).getNPI())
+                    .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                            .setCode("NPI").setDisplay("National provider identifier"))));
+            //Name
+            geneticistTwo.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily(hgscReport.getPractitionerData().get(1).getLastName())
+                    .addGiven(hgscReport.getPractitionerData().get(1).getFirstName() + hgscReport.getPractitionerData().get(1).getMiddleName())
+                    .addSuffix(hgscReport.getPractitionerData().get(1).getSuffix()));
+            //Qualification
+            geneticistTwo.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept().addCoding(new Coding()
+                    .setSystem("http://terminology.hl7.org/CodeSystem/v2-2.7-0360").setCode(
+
+
+                            //TBD
+                            "MD").setDisplay(
+
+
+                                    //TBD
+                                    "Doctor of Medicine")))
+                    .addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue(hgscReport.getPractitionerData().get(1).getNPI())
+                            .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                                    .setCode("NPI").setDisplay("National provider identifier")))));
+            geneticistTwo.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept()
+                    .setText(
+
+
+                            //TBD
+                            "ABMGG Certified Molecular Geneticist, Chief Quality Officer, Vice President, Chief Medical Officer")));
+            //Address
+            geneticistTwo.addAddress(new Address().addLine("One Baylor Plaza").setCity("Houston").setState("TX").setPostalCode("77030").setCountry("USA"));
+        }
 
         return geneticistTwo;
     }

@@ -29,9 +29,9 @@ public class ObsReportCommentValueMapper {
             }
         }
         //ValueString
-        if (mappingConfig.containsKey("HgscReport.reportComment")) {
-            if(hgscReport.getReportComment() != null && !hgscReport.getReportComment().equals("")) {
-                obsReportComment.setValue(new StringType(hgscReport.getReportComment()));
+        if (mappingConfig.containsKey("HgscReport.obsReportComment")) {
+            if(hgscReport.getComments() != null && !hgscReport.getComments().equals("")) {
+                obsReportComment.setValue(new StringType(hgscReport.getComments()));
             }
         }
 

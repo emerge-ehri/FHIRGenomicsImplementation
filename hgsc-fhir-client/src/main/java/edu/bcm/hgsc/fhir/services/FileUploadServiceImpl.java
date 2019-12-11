@@ -37,16 +37,16 @@ public class FileUploadServiceImpl {
         JsonMappingUtil util = new JsonMappingUtil();
         HgscReport report = util.readFromHgscReportJsonFile(file);
 
-        Map<String, Object> fhirResources = this.createIndividualFhirResources(report);
+        Map<String, Object> fhirResources = this.createIndividualFhirResources(report, file);
         return this.createBundle(fhirResources, report);
     }
 
-    private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport) {
+    private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport, File hgscReportFile) {
 
         HashMap<String, String> mappingConfig = fileUtils.readMapperConfig(getClass().getClassLoader().getResource("mapping.properties").getPath());
         Map<String, Object> newResources = null;
         try {
-            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscReport);
+            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscReport, hgscReportFile);
         } catch (java.text.ParseException e) {
             logger.error("Failed to Parse Date data type:", e);
         }
@@ -401,7 +401,7 @@ public class FileUploadServiceImpl {
                 .setResource(organizationHGSC)
                 .getRequest()
                 .setUrl("Organization")
-                .setIfNoneExist("identifier=" + organizationHGSC.getIdentifier().get(0).getValue())
+                //.setIfNoneExist("identifier=" + organizationHGSC.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()

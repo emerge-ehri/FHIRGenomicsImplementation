@@ -31,8 +31,7 @@ public class FileUtils {
       return mappingConfig;
    }
 
-   public byte[] readBytesFromFile(String fileName) {
-      File file = new File(fileName);
+   public byte[] readBytesFromFile(File file) {
       byte[] bytesArray = null;
 
       try (FileInputStream fileInputStream = new FileInputStream(file)) {

@@ -5,10 +5,7 @@ import edu.bcm.hgsc.fhir.utils.mapper.*;
 import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -21,7 +18,7 @@ public class FhirResourcesMappingUtils {
 
     FileUtils fileUtils = new FileUtils();
 
-    public Map<String, Object> mapping(HashMap<String, String> mappingConfig, HgscReport hgscReport) throws ParseException {
+    public Map<String, Object> mapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, File hgscReportFile) throws ParseException {
 
         Map<String, Object> results = new HashMap<String, Object>();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -173,7 +170,7 @@ public class FhirResourcesMappingUtils {
                         results.put("PlanDefinition", planDefinition);
                         break;
                     case "DiagnosticReport":
-                        DiagnosticReport diagnosticReport = new DiagnosticReportValueMapper().diagnosticReportValueMapping(mappingConfig, hgscReport, fileUtils, sdf);
+                        DiagnosticReport diagnosticReport = new DiagnosticReportValueMapper().diagnosticReportValueMapping(mappingConfig, hgscReport, fileUtils, hgscReportFile, sdf);
                         results.put("DiagnosticReport", diagnosticReport);
                         break;
                 }

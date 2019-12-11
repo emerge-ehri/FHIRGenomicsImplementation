@@ -1,5 +1,6 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
+import edu.bcm.hgsc.fhir.models.Disease;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
 import edu.bcm.hgsc.fhir.utils.FhirResourcesMappingUtils;
@@ -21,6 +22,11 @@ public class ObsInhDisPathsValueMapper {
 
         //Observation-secondaryFinding
         if (mappingConfig.containsKey("HgscReport.secondaryFinding")) {
+
+
+            //TBD
+
+
             Extension secondaryFinding = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/inherited-disease-pathogenicity",
                     new CodeableConcept().setText("See methodology for details."));
             obsInhDisPath.addExtension(secondaryFinding);
@@ -45,16 +51,6 @@ public class ObsInhDisPathsValueMapper {
             }
         }
 
-        //Component:associated-phenotype
-        obsInhDisPath.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                new Coding().setSystem("http://loinc.org").setCode("81259-4").setDisplay("Associated Phenotype")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://omim.org/")
-                        .setCode("192500").setDisplay("Long QT syndrome 1"))));
-        obsInhDisPath.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                new Coding().setSystem("http://loinc.org").setCode("81259-4").setDisplay("Associated Phenotype")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://registry.identifiers.org/registry/mim")
-                        .setCode("252900").setDisplay("Lange-Nielsen syndrome 1"))));
-
         //Create multiple obsInhDisPaths if there is multiple variants
         if(hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
             for(Variant v : hgscReport.getVariants()) {
@@ -71,6 +67,16 @@ public class ObsInhDisPathsValueMapper {
                 Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
                         new StringType(v.getVariantInterpretation()));
                 temp.addExtension(ext);
+
+                //Component:associated-phenotype
+                if(v.getDiseases() != null && v.getDiseases().size() > 0) {
+                    for(Disease d : v.getDiseases()) {
+                        temp.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                                new Coding().setSystem("http://loinc.org").setCode("81259-4").setDisplay("Associated Phenotype")))
+                                .setValue(new CodeableConcept().addCoding(new Coding().setSystem(d.getOntology())
+                                        .setCode(d.getCode()).setDisplay(d.getText()))));
+                    }
+                }
 
                 obsInhDisPaths.put(v.getGene(), temp);
             }

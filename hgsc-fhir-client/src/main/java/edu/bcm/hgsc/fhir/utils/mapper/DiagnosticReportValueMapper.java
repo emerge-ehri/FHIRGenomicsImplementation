@@ -4,13 +4,14 @@ import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.utils.FileUtils;
 import org.hl7.fhir.r4.model.*;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 public class DiagnosticReportValueMapper {
 
-    public DiagnosticReport diagnosticReportValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, FileUtils fileUtils, SimpleDateFormat sdf) throws ParseException {
+    public DiagnosticReport diagnosticReportValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, FileUtils fileUtils, File hgscReportFile, SimpleDateFormat sdf) throws ParseException {
 
         DiagnosticReport diagnosticReport = new DiagnosticReport();
 
@@ -26,27 +27,18 @@ public class DiagnosticReportValueMapper {
         }
 
         //extensions
-        if(hgscReport.getGeneCoverage() != null && hgscReport.getGeneCoverage().size() > 0) {
-            Extension ext1 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/relatedArtifact",
-                    new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.DOCUMENTATION).setLabel("Genetic Sequencing Coverage Information")
-                            .setDisplay(hgscReport.getGeneCoverage().toString()
-
-
-                                    //hgscReport.getGeneCoverageText()
-
-
-                            )
-                            .setDocument(new Attachment().setContentType("text/BED").setData(
-
-                                    //fileUtils.readBytesFromFile("")
-
-                                    null)));
-
-            diagnosticReport.addExtension(ext1);
+        if (mappingConfig.containsKey("HgscReport.geneCoverageText")) {
+            if(hgscReport.getGeneCoverageText() != null && !hgscReport.getGeneCoverageText().equals("")) {
+                Extension ext1 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/relatedArtifact",
+                        new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.DOCUMENTATION).setLabel("Genetic Sequencing Coverage Information")
+                                .setDisplay(hgscReport.getGeneCoverageText()).setDocument(new Attachment().setContentType("text/BED")
+                                .setData(fileUtils.readBytesFromFile(hgscReportFile))));
+                diagnosticReport.addExtension(ext1);
+            }
         }
 
         Extension ext3 = new Extension("http://hl7.org/fhir/StructureDefinition/test-disclaimer",
-                new StringType("This test was developed ..... (disclaimer text from report footer)"));
+                new StringType(hgscReport.getFooter()));
         diagnosticReport.addExtension(ext3);
 
         //Status
@@ -69,9 +61,11 @@ public class DiagnosticReportValueMapper {
                 diagnosticReport.setIssued(sdf.parse(hgscReport.getReportDate()));
             }
         }
+        //PresentedForm
 //        if (mappingConfig.containsKey("HgscReport.attachedReport")) {
+//        if(...!=null){}
 //            Attachment attachedReport = new Attachment();
-//            attachedReport.setData(fileUtils.readBytesFromFile(FileUtils.PROJECT_DIRECTORY + "Consent.pdf"));
+//            attachedReport.setContentType("application/pdf").setData(fileUtils.readBytesFromFile(hgscReportPDFFile from S3));
 //            diagnosticReport.addPresentedForm(attachedReport);
 //        }
 

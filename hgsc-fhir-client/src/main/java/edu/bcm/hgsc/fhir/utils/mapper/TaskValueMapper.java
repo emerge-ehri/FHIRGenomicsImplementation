@@ -18,17 +18,16 @@ public class TaskValueMapper {
         //Intent
         task.setIntent(Task.TaskIntent.PROPOSAL);
         //Code
-        task.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                .setCode("LL1037-2").setDisplay("Genetic counseling recommended"))
-                .setText(
-                        //map;panelRecommendation
-                        "It is recommended that correlation of these findings with the clinical phenotype be performed. Genetic counseling for the patient and at-risk family members is recommended."
-                ));
+        if(hgscReport.getPanelRecommendation() != null && !hgscReport.getPanelRecommendation().equals("")) {
+            task.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                    .setCode("LL1037-2").setDisplay("Genetic counseling recommended"))
+                    .setText(hgscReport.getPanelRecommendation()));
+        }
+
         //Description
-        task.setDescription(
-                //map;panelRecommendationDetail
-                "It is recommended that correlation of these findings with the clinical phenotype be performed. Genetic counseling for the patient and at-risk family members is recommended."
-        );
+        if(hgscReport.getPanelRecommendationDetail() != null && !hgscReport.getPanelRecommendationDetail().equals("")) {
+            task.setDescription(hgscReport.getPanelRecommendationDetail());
+        }
 
         return task;
     }
