@@ -169,11 +169,6 @@ public class FileUploadServiceImpl {
         obsOverall.setSubject(new Reference(patient.getId()));
         obsOverall.setSpecimen(new Reference(specimen.getId()));
         obsOverall.addPerformer(new Reference(organizationHGSC.getId()));
-//        dxCNVVariants.addBasedOn(new Reference(serviceRequest.getId()));
-//        dxCNVVariants.setSubject(new Reference(patient.getId()));
-//        dxCNVVariants.setSpecimen(new Reference(specimen.getId()));
-//        dxCNVVariants.addPerformer(new Reference(organization.getId()));
-//        dxCNVVariants.addNote(new Annotation().setAuthor(new Reference(organization.getId())).setText("Comments"));
 
         if(hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
             for(Variant v : hgscReport.getVariants()) {
@@ -184,6 +179,12 @@ public class FileUploadServiceImpl {
                 snpVariant.setSpecimen(new Reference(specimen.getId()));
                 snpVariant.addPerformer(new Reference(organizationHGSC.getId()));
                 snpVariant.addNote(new Annotation().setAuthor(new Reference(organizationHGSC.getId())).setText(v.getNotes()));
+
+//                dxCNVVariants.addBasedOn(new Reference(serviceRequest.getId()));
+//                dxCNVVariants.setSubject(new Reference(patient.getId()));
+//                dxCNVVariants.setSpecimen(new Reference(specimen.getId()));
+//                dxCNVVariants.addPerformer(new Reference(organization.getId()));
+//                dxCNVVariants.addNote(new Annotation().setAuthor(new Reference(organizationHGSC.getId())).setText(v.getNotes()));
 
                 Observation inhDisPath = obsInhDisPaths.get(v.getGene());
                 inhDisPath.setId(IdDt.newRandomUuid());

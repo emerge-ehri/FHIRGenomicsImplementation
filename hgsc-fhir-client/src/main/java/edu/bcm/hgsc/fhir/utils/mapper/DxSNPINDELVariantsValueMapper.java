@@ -51,27 +51,27 @@ public class DxSNPINDELVariantsValueMapper {
         }
 
         //Component:ref-sequence-assembly
-        dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                new Coding().setSystem("http://loinc.org").setCode("62374-4").setDisplay("Human reference sequence assembly version")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                        .setCode("LA14029-5").setDisplay("GRCH37"))));
+        if(hgscReport.getHumanReferenceSequenceAssemblyVersion() != null && !hgscReport.getHumanReferenceSequenceAssemblyVersion().equals("")) {
+            dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                    new Coding().setSystem("http://loinc.org").setCode("62374-4").setDisplay("Human reference sequence assembly version")))
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                            .setCode("LA14029-5").setDisplay(hgscReport.getHumanReferenceSequenceAssemblyVersion()))));
+        }
 
         //Component:coordinate-system
-        dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                new Coding().setSystem("http://loinc.org").setCode("92822-6").setDisplay("Genomic coordinate system [Type]")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                        .setCode("LA30102-0").setDisplay("1-based character counting"))));
+        if(hgscReport.getGenomicCoordinateSystem() != null && !hgscReport.getGenomicCoordinateSystem().equals("")) {
+            dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                    new Coding().setSystem("http://loinc.org").setCode("92822-6").setDisplay("Genomic coordinate system [Type]")))
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                            .setCode("LA30102-0").setDisplay(hgscReport.getGenomicCoordinateSystem()))));
+        }
+
         //Component:genomic-source-class
         if(hgscReport.getGenomicSource() != null && !hgscReport.getGenomicSource().equals("")) {
             dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("48002-0").setDisplay("Genomic source class [Type]")))
                     .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                             .setCode("LA6683-2").setDisplay(hgscReport.getGenomicSource()))));
-        } else {
-            dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                    new Coding().setSystem("http://loinc.org").setCode("48002-0").setDisplay("Genomic source class [Type]")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                            .setCode("LA6683-2").setDisplay("???"))));
         }
 
         //Component:amino-acid-chg-type
@@ -92,73 +92,97 @@ public class DxSNPINDELVariantsValueMapper {
                 Observation temp = (Observation)(util.deepCopy(dxSNPINDELVariant));
 
                 //Component:chromosome (extension)
-                dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                        new Coding().setSystem("http://loinc.org").setCode("48000-4").setDisplay("Chromosome, Blood or Tissue Specimen")))
-                        .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                                .setCode("LA21263-1").setDisplay("Chromosome " + v.getChromosome()))));
+                if(v.getChromosome() != null && !v.getChromosome().equals("")) {
+                    dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("48000-4").setDisplay("Chromosome, Blood or Tissue Specimen")))
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                                    .setCode("LA21263-1").setDisplay("Chromosome " + v.getChromosome()))));
+                }
 
                 //Component:ref-allele
-                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                        new Coding().setSystem("http://loinc.org").setCode("69547-8").setDisplay("Genomic ref allele [ID]")))
-                        .setValue(new StringType(v.getRef())));
+                if(v.getRef() != null && !v.getRef().equals("")) {
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("69547-8").setDisplay("Genomic ref allele [ID]")))
+                            .setValue(new StringType(v.getRef())));
+                }
+
                 //Component:alt-allele
-                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                        new Coding().setSystem("http://loinc.org").setCode("69551-0").setDisplay("Genomic alt allele [ID]")))
-                        .setValue(new StringType(v.getAlt())));
+                if(v.getAlt() != null && !v.getAlt().equals("")) {
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("69551-0").setDisplay("Genomic alt allele [ID]")))
+                            .setValue(new StringType(v.getAlt())));
+                }
 
                 //Component:allele-start-end
-                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                        new Coding().setSystem("http://loinc.org").setCode("81254-5").setDisplay("Genomic allele start-end")))
-                        .setValue(new Range().setLow(new Quantity(Long.parseLong(v.getPosition())))));
+                if(v.getPosition() != null && !v.getPosition().equals("")) {
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("81254-5").setDisplay("Genomic allele start-end")))
+                            .setValue(new Range().setLow(new Quantity(Long.parseLong(v.getPosition())))));
+                }
 
                 //Component:allelic-state
-                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                        new Coding().setSystem("http://loinc.org").setCode("53034-5").setDisplay("Allelic state")))
-                        .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                                .setCode("LA6706-1").setDisplay(v.getZygosity()))));
+                if(v.getZygosity() != null && !v.getZygosity().equals("")) {
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("53034-5").setDisplay("Allelic state")))
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                                    .setCode("LA6706-1").setDisplay(v.getZygosity()))));
+                }
 
                 //Component:gene-studied
-                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                        new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
-                        .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://genenames.org")
-                                .setCode("HGNC:6294").setDisplay(v.getGene()))));
+                if(v.getHgncID() != null && !v.getHgncID().equals("") && v.getGene() != null && !v.getGene().equals("")) {
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://genenames.org")
+                                    .setCode(v.getHgncID()).setDisplay(v.getGene()))));
+                }
 
                 //Component:genomic-dna-chg
-                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                        new Coding().setSystem("http://loinc.org").setCode("81290-9").setDisplay("Genomic DNA change (gHGVS)")))
-                        .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org/")
-                                .setCode(v.getGenomic()).setDisplay(v.getGenomic()))));
+                if(v.getGenomic() != null && !v.getGenomic().equals("")) {
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("81290-9").setDisplay("Genomic DNA change (gHGVS)")))
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org/")
+                                    .setCode(v.getGenomic()).setDisplay(v.getGenomic()))));
+                }
 
                 //Component:transcript-ref-seq
-                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                        new Coding().setSystem("http://loinc.org").setCode("51958-7").setDisplay("Transcript reference sequence [ID]")))
-                        .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/nuccore")
-                                .setCode(v.getTranscript()).setDisplay(v.getTranscript()))));
+                if(v.getTranscript() != null && !v.getTranscript().equals("")) {
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("51958-7").setDisplay("Transcript reference sequence [ID]")))
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/nuccore")
+                                    .setCode(v.getTranscript()).setDisplay(v.getTranscript()))));
+                }
 
                 //Component:dna-chg
-                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                        new Coding().setSystem("http://loinc.org").setCode("48004-6").setDisplay("DNA change (c.HGVS)")))
-                        .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org")
-                                .setCode(v.getCDNA()).setDisplay(v.getCDNA()))));
+                if(v.getCDNA() != null && !v.getCDNA().equals("")) {
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("48004-6").setDisplay("DNA change (c.HGVS)")))
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org")
+                                    .setCode(v.getCDNA()).setDisplay(v.getCDNA()))));
+                }
 
                 //Component:variation-inheritance
-                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                        new Coding().setSystem("http://loinc.org").setCode("79742-3").setDisplay("Inheritance pattern based on family history")))
-                        .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                                .setCode(v.getInheritance()).setDisplay(v.getInheritance()))));
+                if(v.getInheritance() != null && !v.getInheritance().equals("")) {
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("79742-3").setDisplay("Inheritance pattern based on family history")))
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                                    .setCode(v.getInheritance()).setDisplay(v.getInheritance()))));
+                }
 
                 //Component:amino-acid-chg
-                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                        new Coding().setSystem("http://loinc.org").setCode("48005-3").setDisplay("Amino acid change (pHGVS)")))
-                        .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org/")
-                                .setCode(v.getProteinChange()).setDisplay(v.getProteinChange()))));
+                if(v.getProteinChange() != null && !v.getProteinChange().equals("")) {
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("48005-3").setDisplay("Amino acid change (pHGVS)")))
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org/")
+                                    .setCode(v.getProteinChange()).setDisplay(v.getProteinChange()))));
+                }
 
                 //Component:dbSNP-id
-//            if(v.getdbSNPID() != null) {
-//                temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-//                        new Coding().setSystem("http://loinc.org").setCode("81255-2").setDisplay("dbSNP [ID]")))
-//                        .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/snp/").setCode(v.getdbSNPID()).setDisplay(v.getdbSNPID()))));
-//            }
+                if(v.getDbSNPID() != null && !v.getDbSNPID().equals("")) {
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                            new Coding().setSystem("http://loinc.org").setCode("81255-2").setDisplay("dbSNP [ID]")))
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.ncbi.nlm.nih.gov/snp/")
+                                    .setCode(v.getDbSNPID()).setDisplay(v.getDbSNPID()))));
+                }
 
                 dxSNPINDELVariants.put(v.getGene(), temp);
             }

@@ -59,22 +59,30 @@ public class ObsInhDisPathsValueMapper {
 
                 //ValueCodeableConcept
                 if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
-                    temp.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                            .setCode("LA6668-3").setDisplay(v.getInterpretation())));
+                    if(v.getInterpretation() != null && !v.getInterpretation().equals("")) {
+                        temp.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                                .setCode("LA6668-3").setDisplay(v.getInterpretation())));
+                    }
                 }
 
                 //extensions
-                Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
-                        new StringType(v.getVariantInterpretation()));
-                temp.addExtension(ext);
+                if(v.getVariantInterpretation() != null && !v.getVariantInterpretation().equals("")) {
+                    Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
+                            new StringType(v.getVariantInterpretation()));
+                    temp.addExtension(ext);
+                }
 
                 //Component:associated-phenotype
                 if(v.getDiseases() != null && v.getDiseases().size() > 0) {
                     for(Disease d : v.getDiseases()) {
-                        temp.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                                new Coding().setSystem("http://loinc.org").setCode("81259-4").setDisplay("Associated Phenotype")))
-                                .setValue(new CodeableConcept().addCoding(new Coding().setSystem(d.getOntology())
-                                        .setCode(d.getCode()).setDisplay(d.getText()))));
+                        if(d.getOntology() != null && !d.getOntology().equals("")
+                                && d.getCode() != null && !d.getCode().equals("")
+                                && d.getText() != null && !d.getText().equals("")) {
+                            temp.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                                    new Coding().setSystem("http://loinc.org").setCode("81259-4").setDisplay("Associated Phenotype")))
+                                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem(d.getOntology())
+                                            .setCode(d.getCode()).setDisplay(d.getText()))));
+                        }
                     }
                 }
 
