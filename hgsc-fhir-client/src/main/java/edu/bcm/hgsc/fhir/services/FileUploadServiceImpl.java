@@ -154,6 +154,7 @@ public class FileUploadServiceImpl {
 
         Task task = (Task) fhirResources.get("Task");
         task.setId(IdDt.newRandomUuid());
+        task.setFor(new Reference(patient.getId()));
 
         PlanDefinition planDefinition = (PlanDefinition) fhirResources.get("PlanDefinition");
         planDefinition.setId(IdDt.newRandomUuid());
@@ -185,7 +186,8 @@ public class FileUploadServiceImpl {
         obsOverall.setSpecimen(new Reference(specimen.getId()));
         obsOverall.addPerformer(new Reference(organizationHGSC.getId()));
 
-        if(hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
+        if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")
+                && hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
             for(Variant v : hgscReport.getVariants()) {
                 Observation snpVariant = dxSNPINDELVariants.get(v.getGene());
                 snpVariant.setId(IdDt.newRandomUuid());
@@ -287,7 +289,6 @@ public class FileUploadServiceImpl {
         dxPanel.addHasMember(new Reference(obsOverall.getId()));
                 //.addHasMember(new Reference(dxCNVVariants.getId()));
 
-        task.setFor(new Reference(patient.getId()));
         serviceRequest.setRequester(new Reference(practitionerRole.getId()));
 
         DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
@@ -298,11 +299,6 @@ public class FileUploadServiceImpl {
         diagnosticReport.addSpecimen(new Reference(specimen.getId()));
         diagnosticReport.setSubject(new Reference(patient.getId()));
         //Extension
-
-
-
-
-
         if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")) {
             Extension ext2 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/recommendedAction",
                     new Reference(task.getId()));
@@ -456,7 +452,8 @@ public class FileUploadServiceImpl {
 //                .setUrl("Observation")
 //                .setMethod(Bundle.HTTPVerb.POST);
 
-        if(hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
+        if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")
+                && hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
             for(Variant v : hgscReport.getVariants()) {
                 Observation snpV = dxSNPINDELVariants.get(v.getGene());
                 Observation inhDP = obsInhDisPaths.get(v.getGene());
@@ -639,12 +636,14 @@ public class FileUploadServiceImpl {
                 .setUrl("PractitionerRole")
                 .setMethod(Bundle.HTTPVerb.POST);
 
-        bundle.addEntry()
-                .setFullUrl(task.getId())
-                .setResource(task)
-                .getRequest()
-                .setUrl("Task")
-                .setMethod(Bundle.HTTPVerb.POST);
+        if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")) {
+            bundle.addEntry()
+                    .setFullUrl(task.getId())
+                    .setResource(task)
+                    .getRequest()
+                    .setUrl("Task")
+                    .setMethod(Bundle.HTTPVerb.POST);
+        }
 
         bundle.addEntry()
                 .setFullUrl(planDefinition.getId())
