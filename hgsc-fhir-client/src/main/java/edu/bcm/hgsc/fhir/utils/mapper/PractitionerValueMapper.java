@@ -11,6 +11,8 @@ public class PractitionerValueMapper {
 
         Practitioner orderingPhysician = new Practitioner();
 
+        orderingPhysician.setLanguage("en-US");
+
         //Identifier
         orderingPhysician.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue(
 
@@ -47,6 +49,8 @@ public class PractitionerValueMapper {
 
         Practitioner geneticistOne = new Practitioner();
 
+        geneticistOne.setLanguage("en-US");
+
         if(hgscReport.getPractitionerData().get(0) != null) {
             //Identifier
             geneticistOne.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue(hgscReport.getPractitionerData().get(0).getNPI())
@@ -54,7 +58,7 @@ public class PractitionerValueMapper {
                             .setCode("NPI").setDisplay("National provider identifier"))));
             //Name
             geneticistOne.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily(hgscReport.getPractitionerData().get(0).getLastName())
-                    .addGiven(hgscReport.getPractitionerData().get(0).getFirstName() + hgscReport.getPractitionerData().get(0).getMiddleName())
+                    .addGiven(hgscReport.getPractitionerData().get(0).getFirstName() + " " + hgscReport.getPractitionerData().get(0).getMiddleName())
                     .addSuffix(hgscReport.getPractitionerData().get(0).getSuffix()));
             //Qualification
             geneticistOne.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept().addCoding(new Coding()
@@ -86,6 +90,8 @@ public class PractitionerValueMapper {
 
         Practitioner geneticistTwo = new Practitioner();
 
+        geneticistTwo.setLanguage("en-US");
+
         if(hgscReport.getPractitionerData().get(1) != null) {
             //Identifier
             geneticistTwo.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue(hgscReport.getPractitionerData().get(1).getNPI())
@@ -93,7 +99,7 @@ public class PractitionerValueMapper {
                             .setCode("NPI").setDisplay("National provider identifier"))));
             //Name
             geneticistTwo.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily(hgscReport.getPractitionerData().get(1).getLastName())
-                    .addGiven(hgscReport.getPractitionerData().get(1).getFirstName() + hgscReport.getPractitionerData().get(1).getMiddleName())
+                    .addGiven(hgscReport.getPractitionerData().get(1).getFirstName() + " " + hgscReport.getPractitionerData().get(1).getMiddleName())
                     .addSuffix(hgscReport.getPractitionerData().get(1).getSuffix()));
             //Qualification
             geneticistTwo.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept().addCoding(new Coding()

@@ -15,6 +15,8 @@ public class DxPanelValueMapper {
 
         Observation dxPanel = new Observation();
 
+        dxPanel.setLanguage("en-US");
+
         //Profile
         dxPanel.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/grouper");
     	//Status

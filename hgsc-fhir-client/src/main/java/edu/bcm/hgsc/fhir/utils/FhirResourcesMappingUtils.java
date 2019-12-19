@@ -16,9 +16,7 @@ public class FhirResourcesMappingUtils {
 
     private static Logger logger = Logger.getLogger(FhirResourcesMappingUtils.class);
 
-    FileUtils fileUtils = new FileUtils();
-
-    public Map<String, Object> mapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, File hgscReportFile) throws ParseException {
+    public Map<String, Object> mapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, String pdfFileKey, String excidFileKey) throws ParseException {
 
         Map<String, Object> results = new HashMap<String, Object>();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -170,7 +168,7 @@ public class FhirResourcesMappingUtils {
                         results.put("PlanDefinition", planDefinition);
                         break;
                     case "DiagnosticReport":
-                        DiagnosticReport diagnosticReport = new DiagnosticReportValueMapper().diagnosticReportValueMapping(mappingConfig, hgscReport, fileUtils, hgscReportFile, sdf);
+                        DiagnosticReport diagnosticReport = new DiagnosticReportValueMapper().diagnosticReportValueMapping(mappingConfig, hgscReport, sdf, pdfFileKey, excidFileKey);
                         results.put("DiagnosticReport", diagnosticReport);
                         break;
                 }

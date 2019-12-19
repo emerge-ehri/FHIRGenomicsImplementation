@@ -15,6 +15,8 @@ public class PgxPanelValueMapper {
 
         Observation pgxPanel = new Observation();
 
+        pgxPanel.setLanguage("en-US");
+
         //Profile
         pgxPanel.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/grouper");
     	//Status

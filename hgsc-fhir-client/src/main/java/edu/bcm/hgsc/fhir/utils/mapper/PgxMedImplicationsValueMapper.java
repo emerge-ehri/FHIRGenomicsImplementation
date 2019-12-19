@@ -29,14 +29,16 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_1001 = new Observation();
 
+        pgxResult_1001.setLanguage("en-US");
+
         PgxDatum pgxData = getPgxDataByGeneSymbol(hgscReport, "CYP2C19");
 
         //Profile
         pgxResult_1001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
-        if(pgxData != null && pgxData.getSummary() != null && !pgxData.getSummary().equals("")) {
+        if(pgxData != null && pgxData.getInterpretation() != null && !pgxData.getInterpretation().equals("")) {
             Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
-                    new StringType(pgxData.getSummary()));
+                    new StringType(pgxData.getInterpretation()));
             pgxResult_1001.addExtension(ext);
         }
 
@@ -91,14 +93,16 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_2001 = new Observation();
 
+        pgxResult_2001.setLanguage("en-US");
+
         PgxDatum pgxData = getPgxDataByGeneSymbol(hgscReport, "DPYD");
 
         //Profile
         pgxResult_2001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
-        if(pgxData != null && pgxData.getSummary() != null && !pgxData.getSummary().equals("")) {
+        if(pgxData != null && pgxData.getInterpretation() != null && !pgxData.getInterpretation().equals("")) {
             Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
-                    new StringType(pgxData.getSummary()));
+                    new StringType(pgxData.getInterpretation()));
             pgxResult_2001.addExtension(ext);
         }
         //Status
@@ -151,14 +155,16 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_3001 = new Observation();
 
+        pgxResult_3001.setLanguage("en-US");
+
         PgxDatum pgxData = getPgxDataByGeneSymbol(hgscReport, "IFNL3");
 
         //Profile
         pgxResult_3001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-efficacy");
         //extensions
-        if(pgxData != null && pgxData.getSummary() != null && !pgxData.getSummary().equals("")) {
+        if(pgxData != null && pgxData.getInterpretation() != null && !pgxData.getInterpretation().equals("")) {
             Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
-                    new StringType(pgxData.getSummary()));
+                    new StringType(pgxData.getInterpretation()));
             pgxResult_3001.addExtension(ext);
         }
         //Status
@@ -210,14 +216,16 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_4001 = new Observation();
 
+        pgxResult_4001.setLanguage("en-US");
+
         PgxDatum pgxData = getPgxDataByGeneSymbol(hgscReport, "SLCO1B1");
 
         //Profile
         pgxResult_4001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-transporter");
         //extensions
-        if(pgxData != null && pgxData.getSummary() != null && !pgxData.getSummary().equals("")) {
+        if(pgxData != null && pgxData.getInterpretation() != null && !pgxData.getInterpretation().equals("")) {
             Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
-                    new StringType(pgxData.getSummary()));
+                    new StringType(pgxData.getInterpretation()));
             pgxResult_4001.addExtension(ext);
         }
         //Status
@@ -267,14 +275,16 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_5001 = new Observation();
 
+        pgxResult_5001.setLanguage("en-US");
+
         PgxDatum pgxData = getPgxDataByGeneSymbol(hgscReport, "TPMT");
 
         //Profile
         pgxResult_5001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
-        if(pgxData != null && pgxData.getSummary() != null && !pgxData.getSummary().equals("")) {
+        if(pgxData != null && pgxData.getInterpretation() != null && !pgxData.getInterpretation().equals("")) {
             Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
-                    new StringType(pgxData.getSummary()));
+                    new StringType(pgxData.getInterpretation()));
             pgxResult_5001.addExtension(ext);
         }
         //Status
@@ -327,16 +337,18 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_6001 = new Observation();
 
+        pgxResult_6001.setLanguage("en-US");
+
         PgxDatum pgxData1 = getPgxDataByGeneSymbol(hgscReport, "CYP2C9");
         PgxDatum pgxData2 = getPgxDataByGeneSymbol(hgscReport, "VKORC1");
 
         //Profile
         pgxResult_6001.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/medication-metabolism");
         //extensions
-        if(pgxData1 != null && pgxData1.getSummary() != null && !pgxData1.getSummary().equals("")
-                && pgxData2 != null && pgxData2.getSummary() != null && !pgxData2.getSummary().equals("")) {
+        if(pgxData1 != null && pgxData1.getInterpretation() != null && !pgxData1.getInterpretation().equals("")
+                && pgxData2 != null && pgxData2.getInterpretation() != null && !pgxData2.getInterpretation().equals("")) {
             Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
-                    new StringType(pgxData1.getSummary() + pgxData2.getSummary()));
+                    new StringType(pgxData1.getInterpretation() + pgxData2.getInterpretation()));
             pgxResult_6001.addExtension(ext);
         }
         //Status

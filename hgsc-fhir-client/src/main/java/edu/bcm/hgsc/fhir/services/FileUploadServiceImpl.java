@@ -32,21 +32,36 @@ public class FileUploadServiceImpl {
     FhirContext ctx = FhirContext.forR4();
     IGenericClient client = ctx.newRestfulGenericClient(fileUtils.loadPropertyValue("application.properties", "jpaserver.url"));
 
-    public ArrayList<String> createFhirResources(File file) {
+    public ArrayList<String> createFhirResourcesInProd() {
 
-        JsonMappingUtil util = new JsonMappingUtil();
-        HgscReport report = util.readFromHgscReportJsonFile(file);
+        for(String key : fileUtils.getJSONFileListFromS3()) {
+            byte[] bytes = fileUtils.getS3ObjectAsByteArray(key);
+            HgscReport report = new JsonMappingUtil().readHgscReportJson(bytes);
 
-        Map<String, Object> fhirResources = this.createIndividualFhirResources(report, file);
+            String pdfFileKey = key.replace(".json", ".pdf");
+            String excidFileKey = key.replace(".json", ".csv");
+            Map<String, Object> fhirResources = this.createIndividualFhirResources(report, pdfFileKey, excidFileKey);
+            return this.createBundle(fhirResources, report);
+        }
+
+        return null;
+    }
+
+    public ArrayList<String> createFhirResourcesInTest(File file) {
+
+        byte[] bytes = fileUtils.readBytesFromFile(file);
+        HgscReport report = new JsonMappingUtil().readHgscReportJson(bytes);
+
+        Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "Reports//feilocaldev/fhir-eMerge-Test.pdf", "Reports//feilocaldev/fhir-eMerge-Test.csv");
         return this.createBundle(fhirResources, report);
     }
 
-    private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport, File hgscReportFile) {
+    private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport, String pdfFileKey, String excidFileKey) {
 
         HashMap<String, String> mappingConfig = fileUtils.readMapperConfig(getClass().getClassLoader().getResource("mapping.properties").getPath());
         Map<String, Object> newResources = null;
         try {
-            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscReport, hgscReportFile);
+            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscReport, pdfFileKey, excidFileKey);
         } catch (java.text.ParseException e) {
             logger.error("Failed to Parse Date data type:", e);
         }
@@ -283,9 +298,17 @@ public class FileUploadServiceImpl {
         diagnosticReport.addSpecimen(new Reference(specimen.getId()));
         diagnosticReport.setSubject(new Reference(patient.getId()));
         //Extension
-        Extension ext2 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/recommendedAction",
-                new Reference(task.getId()));
-        diagnosticReport.addExtension(ext2);
+
+
+
+
+
+        if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")) {
+            Extension ext2 = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/recommendedAction",
+                    new Reference(task.getId()));
+            diagnosticReport.addExtension(ext2);
+        }
+
         diagnosticReport.addResult(new Reference(obsOverall.getId()))
                 .addResult(new Reference(dxPanel.getId()))
                 .addResult(new Reference(pgxPanel.getId()))

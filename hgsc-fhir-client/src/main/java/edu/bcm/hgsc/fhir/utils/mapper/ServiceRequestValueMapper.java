@@ -16,6 +16,8 @@ public class ServiceRequestValueMapper {
 
         ServiceRequest serviceRequest = new ServiceRequest();
 
+        serviceRequest.setLanguage("en-US");
+
         //Profile
         serviceRequest.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/servicerequest");
         //Identifier

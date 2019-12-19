@@ -16,6 +16,8 @@ public class PgxGenotypesValueMapper {
 
         Observation pgxGeno_1001 = new Observation();
 
+        pgxGeno_1001.setLanguage("en-US");
+
         PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "CYP2C19");
 
         //Profile
@@ -48,8 +50,12 @@ public class PgxGenotypesValueMapper {
         if(pgxData != null && pgxData.getGeneSymbol() != null && !pgxData.getGeneSymbol().equals("")) {
             pgxGeno_1001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
-                            .setCode("2621").setDisplay(pgxData.getGeneSymbol()))));
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://www.genenames.org/geneId")
+                            .setCode(
+
+
+                                    //will add hgncid
+                                    "2621").setDisplay(pgxData.getGeneSymbol()))));
         }
 
         return pgxGeno_1001;
@@ -58,6 +64,8 @@ public class PgxGenotypesValueMapper {
     public Observation pgxGeno_2001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxGeno_2001 = new Observation();
+
+        pgxGeno_2001.setLanguage("en-US");
 
         PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "DPYD");
 
@@ -91,7 +99,7 @@ public class PgxGenotypesValueMapper {
         if(pgxData != null && pgxData.getGeneSymbol() != null && !pgxData.getGeneSymbol().equals("")) {
             pgxGeno_2001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://www.genenames.org/geneId")
                             .setCode("3012").setDisplay(pgxData.getGeneSymbol()))));
         }
 
@@ -101,6 +109,8 @@ public class PgxGenotypesValueMapper {
     public Observation pgxGeno_3001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxGeno_3001 = new Observation();
+
+        pgxGeno_3001.setLanguage("en-US");
 
         PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "IFNL3");
 
@@ -134,7 +144,7 @@ public class PgxGenotypesValueMapper {
         if(pgxData != null && pgxData.getGeneSymbol() != null && !pgxData.getGeneSymbol().equals("")) {
             pgxGeno_3001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://www.genenames.org/geneId")
                             .setCode("18365").setDisplay(pgxData.getGeneSymbol()))));
         }
 
@@ -144,6 +154,8 @@ public class PgxGenotypesValueMapper {
     public Observation pgxGeno_4001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxGeno_4001 = new Observation();
+
+        pgxGeno_4001.setLanguage("en-US");
 
         PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "SLCO1B1");
 
@@ -177,7 +189,7 @@ public class PgxGenotypesValueMapper {
         if(pgxData != null && pgxData.getGeneSymbol() != null && !pgxData.getGeneSymbol().equals("")) {
             pgxGeno_4001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://www.genenames.org/geneId")
                             .setCode("10959").setDisplay(pgxData.getGeneSymbol()))));
         }
 
@@ -187,6 +199,8 @@ public class PgxGenotypesValueMapper {
     public Observation pgxGeno_5001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxGeno_5001 = new Observation();
+
+        pgxGeno_5001.setLanguage("en-US");
 
         PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "TPMT");
 
@@ -220,7 +234,7 @@ public class PgxGenotypesValueMapper {
         if(pgxData != null && pgxData.getGeneSymbol() != null && !pgxData.getGeneSymbol().equals("")) {
             pgxGeno_5001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://www.genenames.org/geneId")
                             .setCode("12014").setDisplay(pgxData.getGeneSymbol()))));
         }
 
@@ -230,6 +244,8 @@ public class PgxGenotypesValueMapper {
     public Observation pgxGeno_6001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxGeno_6001 = new Observation();
+
+        pgxGeno_6001.setLanguage("en-US");
 
         PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "CYP2C9");
 
@@ -263,7 +279,7 @@ public class PgxGenotypesValueMapper {
         if(pgxData != null && pgxData.getGeneSymbol() != null && !pgxData.getGeneSymbol().equals("")) {
             pgxGeno_6001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://www.genenames.org/geneId")
                             .setCode("2623").setDisplay(pgxData.getGeneSymbol()))));
         }
 
@@ -273,6 +289,8 @@ public class PgxGenotypesValueMapper {
     public Observation pgxGeno_7001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
 
         Observation pgxGeno_7001 = new Observation();
+
+        pgxGeno_7001.setLanguage("en-US");
 
         PgxDatum pgxData = pgxMedImplicationsValueMapper.getPgxDataByGeneSymbol(hgscReport, "VKORC1");
 
@@ -305,7 +323,7 @@ public class PgxGenotypesValueMapper {
         if(pgxData != null && pgxData.getGeneSymbol() != null && !pgxData.getGeneSymbol().equals("")) {
             pgxGeno_7001.addComponent(new Observation.ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
-                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id")
+                    .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://www.genenames.org/geneId")
                             .setCode("23663").setDisplay(pgxData.getGeneSymbol()))));
         }
 

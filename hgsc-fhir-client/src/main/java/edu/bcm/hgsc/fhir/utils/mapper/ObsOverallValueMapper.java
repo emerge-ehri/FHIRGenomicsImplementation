@@ -13,6 +13,8 @@ public class ObsOverallValueMapper {
 
         Observation obsOverall = new Observation();
 
+        obsOverall.setLanguage("en-US");
+
         //Profile
         obsOverall.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/overall-interpretation");
         //Status

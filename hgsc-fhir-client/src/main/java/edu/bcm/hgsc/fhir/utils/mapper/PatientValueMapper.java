@@ -20,6 +20,8 @@ public class PatientValueMapper {
 
         Patient patient = new Patient();
 
+        patient.setLanguage("en-US");
+
         //Identifier
         //The code PI creates warnings during validation but until the HL7 Vocabulary group resolves this, we will be ignoring the warnings.
         if (mappingConfig.containsKey("HgscReport.patientID")) {

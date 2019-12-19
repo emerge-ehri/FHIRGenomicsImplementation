@@ -13,6 +13,8 @@ public class SpecimenValueMapper {
 
         Specimen specimen = new Specimen();
 
+        specimen.setLanguage("en-US");
+
         //Profile
         specimen.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/specimen");
         //Identifier

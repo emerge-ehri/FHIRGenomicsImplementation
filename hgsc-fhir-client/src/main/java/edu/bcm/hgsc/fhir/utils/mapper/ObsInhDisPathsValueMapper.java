@@ -20,6 +20,8 @@ public class ObsInhDisPathsValueMapper {
 
         Observation obsInhDisPath = new Observation();
 
+        obsInhDisPath.setLanguage("en-US");
+
         //Observation-secondaryFinding
         if (mappingConfig.containsKey("HgscReport.secondaryFinding")) {
 

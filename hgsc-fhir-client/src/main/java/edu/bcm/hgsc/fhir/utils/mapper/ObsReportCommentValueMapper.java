@@ -13,6 +13,8 @@ public class ObsReportCommentValueMapper {
 
         Observation obsReportComment = new Observation();
 
+        obsReportComment.setLanguage("en-US");
+
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {
             if (hgscReport.getReportStatus() != null && !hgscReport.getReportStatus().equals("")) {

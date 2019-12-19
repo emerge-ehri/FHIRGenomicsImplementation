@@ -16,6 +16,8 @@ public class DxCNVVariantsValueMapper {
 
         Observation dxCNVVariants = new Observation();
 
+        dxCNVVariants.setLanguage("en-US");
+
         //Profile
         dxCNVVariants.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/variant");
         //Status

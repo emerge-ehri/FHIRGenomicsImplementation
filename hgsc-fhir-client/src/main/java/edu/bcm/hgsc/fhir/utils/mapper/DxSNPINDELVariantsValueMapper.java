@@ -20,6 +20,8 @@ public class DxSNPINDELVariantsValueMapper {
 
         Observation dxSNPINDELVariant = new Observation();
 
+        dxSNPINDELVariant.setLanguage("en-US");
+
         //Profile
         dxSNPINDELVariant.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/variant");
         //Status
@@ -74,18 +76,6 @@ public class DxSNPINDELVariantsValueMapper {
                             .setCode("LA6683-2").setDisplay(hgscReport.getGenomicSource()))));
         }
 
-        //Component:amino-acid-chg-type
-        dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                new Coding().setSystem("http://loinc.org").setCode("48006-1").setDisplay("Amino acid change [Type]")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                        .setCode("???"
-                                //map - variant.??
-                        )
-                        .setDisplay("???"
-                                //map - variant.??
-                        ))));
-
-
         //Create multiple dxSNPINDELVariants if there is multiple variants
         if(hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
             for(Variant v : hgscReport.getVariants()) {
@@ -113,7 +103,7 @@ public class DxSNPINDELVariantsValueMapper {
                             .setValue(new StringType(v.getAlt())));
                 }
 
-                //Component:allele-start-end
+                //Component:exact-start-end
                 if(v.getPosition() != null && !v.getPosition().equals("")) {
                     temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                             new Coding().setSystem("http://loinc.org").setCode("81254-5").setDisplay("Genomic allele start-end")))
@@ -132,7 +122,7 @@ public class DxSNPINDELVariantsValueMapper {
                 if(v.getHgncID() != null && !v.getHgncID().equals("") && v.getGene() != null && !v.getGene().equals("")) {
                     temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                             new Coding().setSystem("http://loinc.org").setCode("48018-6").setDisplay("Gene studied [ID]")))
-                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://genenames.org")
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://www.genenames.org/geneId")
                                     .setCode(v.getHgncID()).setDisplay(v.getGene()))));
                 }
 
