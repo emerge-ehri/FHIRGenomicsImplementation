@@ -382,8 +382,8 @@ public class FileUploadServiceImpl {
 
         task.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(task))));
-        planDefinition.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(planDefinition))));
+        //planDefinition.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(planDefinition))));
         diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport))));
 
@@ -413,7 +413,7 @@ public class FileUploadServiceImpl {
                 .setResource(serviceRequest)
                 .getRequest()
                 .setUrl("ServiceRequest")
-                //.setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
+                .setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()

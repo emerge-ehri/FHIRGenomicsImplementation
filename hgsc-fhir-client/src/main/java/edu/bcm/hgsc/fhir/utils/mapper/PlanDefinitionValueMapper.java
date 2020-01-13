@@ -1,7 +1,9 @@
 package edu.bcm.hgsc.fhir.utils.mapper;
 
+import ca.uhn.fhir.context.FhirContext;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.util.HashMap;
 
@@ -44,6 +46,9 @@ public class PlanDefinitionValueMapper {
                 planDefinition.setDescription(hgscReport.getTestInfoSummary());
             }
         }
+
+        planDefinition.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
+                .setDiv(new XhtmlNode().setValue(FhirContext.forR4().newJsonParser().setPrettyPrint(true).encodeResourceToString(planDefinition))));
 
         //Action
         if (mappingConfig.containsKey("HgscReport.methodology")) {

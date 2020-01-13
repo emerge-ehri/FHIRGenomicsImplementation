@@ -1706,6 +1706,7 @@ public class HgscReport {
         this.geneCoverageText = geneCoverageText;
     }
 
+    @JsonProperty("testParams")
     public String getTestParams() {
         return testParams;
     }
