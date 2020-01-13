@@ -20,7 +20,7 @@ public class DxSNPINDELVariantsValueMapper {
 
         Observation dxSNPINDELVariant = new Observation();
 
-        dxSNPINDELVariant.setLanguage("en-US");
+        dxSNPINDELVariant.setLanguage(hgscReport.getLanguage());
 
         //Profile
         dxSNPINDELVariant.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/variant");

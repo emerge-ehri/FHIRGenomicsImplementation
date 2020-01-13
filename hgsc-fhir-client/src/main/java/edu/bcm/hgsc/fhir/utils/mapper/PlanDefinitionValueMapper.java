@@ -5,68 +5,65 @@ import org.hl7.fhir.r4.model.*;
 
 import java.util.HashMap;
 
-/**
- * Created by sl9 on 10/16/19.
- */
 public class PlanDefinitionValueMapper {
 
     public PlanDefinition planDefinitionValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport) {
 
         PlanDefinition planDefinition = new PlanDefinition();
 
-        // Profile
-        planDefinition.getMeta().addProfile("") ;
+        planDefinition.setLanguage(hgscReport.getLanguage());
 
-        // Identifier
+        //Identifier
         if (mappingConfig.containsKey("HgscReport.testName")) {
-            planDefinition.addIdentifier(new Identifier().setSystem("https://hgsc.bcm.edu/lab-test-codes/").setValue(hgscReport.getTestName())
-                    .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
-                            .setCode("FILL").setDisplay("Filler Identifier"))));
+            if(hgscReport.getTestName() != null && !hgscReport.getTestName().equals("")) {
+                planDefinition.addIdentifier(new Identifier().setSystem("https://hgsc.bcm.edu/lab-test-codes/").setValue(hgscReport.getTestName())
+                        .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                                .setCode("FILL").setDisplay("Filler Identifier"))));
+            }
         }
-
-        // Version
-
-
-        // Name
+        //Version
+        if (mappingConfig.containsKey("HgscReport.testCode")) {
+            if(hgscReport.getTestCode() != null && !hgscReport.getTestCode().equals("")) {
+                planDefinition.setVersion(hgscReport.getTestCode());
+            }
+        }
+        //Title
         if (mappingConfig.containsKey("HgscReport.testName")) {
-            planDefinition.setName(hgscReport.getTestName());
+            if(hgscReport.getTestName() != null && !hgscReport.getTestName().equals("")) {
+                planDefinition.setTitle(hgscReport.getTestName());
+            }
         }
-
-        // Title
-        if (mappingConfig.containsKey("HgscReport.reportName")) {
-            //planDefinition.setTitle(hgscReport.getReportName); // Does not exist right now but should be added to JSON
-        }
-
-        // Subtitle
-        if (mappingConfig.containsKey("HgscReport.clinicalSite")) {
-            planDefinition.setSubtitle(hgscReport.getClinicalSite());
-        }
-
-        // Type
+        //Type
         planDefinition.setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/plan-definition-type")
-                        .setCode("protocol").setDisplay("Protocol")));
-
-        // Status
+                .setCode("protocol").setDisplay("Protocol")));
+        //Status
         planDefinition.setStatus(Enumerations.PublicationStatus.ACTIVE);
-
-        // Description
-        if (mappingConfig.containsKey("HgscReport.background")) {
-            planDefinition.setDescription(hgscReport.getBackground());
+        //Description
+        if (mappingConfig.containsKey("HgscReport.testinfosummary")) {
+            if(hgscReport.getTestInfoSummary() != null && !hgscReport.getTestInfoSummary().equals("")) {
+                planDefinition.setDescription(hgscReport.getTestInfoSummary());
+            }
         }
 
-        // Action
+        //Action
         if (mappingConfig.containsKey("HgscReport.methodology")) {
-            PlanDefinition.PlanDefinitionActionComponent planDefinitionActionComponent = new PlanDefinition.PlanDefinitionActionComponent();
-            planDefinitionActionComponent.setPrefix("5");
-            planDefinitionActionComponent.setDescription("");
-            planDefinition.getAction().add(planDefinitionActionComponent);
+            if(hgscReport.getMethodology() != null && hgscReport.getMethodology().size() > 0) {
+                for(int i = 0; i < hgscReport.getMethodology().size(); i++) {
+                    planDefinition.addAction(new PlanDefinition.PlanDefinitionActionComponent().setPrefix(String.valueOf(i + 1))
+                            .setDescription(hgscReport.getMethodology().get(i)));
+                }
+            }
         }
 
-        // RelatedArtifact
-        RelatedArtifact relatedArtifact = new RelatedArtifact();
-        planDefinition.getRelatedArtifact().add(relatedArtifact);
+        //RelatedArtifact
+        if (mappingConfig.containsKey("HgscReport.references")) {
+            if(hgscReport.getReferences() != null && hgscReport.getReferences().size() > 0) {
+                for(String citation: hgscReport.getReferences()) {
+                    planDefinition.addRelatedArtifact(new RelatedArtifact().setType(RelatedArtifact.RelatedArtifactType.CITATION).setCitation(citation));
+                }
+            }
+        }
 
-
-        return  planDefinition;
+        return planDefinition;
     }
 }

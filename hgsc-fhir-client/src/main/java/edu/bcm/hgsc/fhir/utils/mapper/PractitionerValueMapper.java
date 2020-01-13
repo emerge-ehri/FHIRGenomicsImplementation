@@ -11,36 +11,24 @@ public class PractitionerValueMapper {
 
         Practitioner orderingPhysician = new Practitioner();
 
-        orderingPhysician.setLanguage("en-US");
+        orderingPhysician.setLanguage(hgscReport.getLanguage());
 
         //Identifier
-        orderingPhysician.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue(
+        if (hgscReport.getOrderingPhysicianNPI() != null && !hgscReport.getOrderingPhysicianNPI().equals("")) {
+            orderingPhysician.addIdentifier(new Identifier().setSystem("http://hl7.org/fhir/sid/us-npi").setValue(hgscReport.getOrderingPhysicianNPI())
+                    .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
+                            .setCode("NPI").setDisplay("National provider identifier"))));
+        }
 
-
-                //TBD
-
-
-
-                "p101"
-        )
-                .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
-                        .setCode("NPI").setDisplay("National provider identifier"))));
         //Name
-        orderingPhysician.addName(new HumanName().setText(
+        if (hgscReport.getOrderingPhysicianName() != null && !hgscReport.getOrderingPhysicianName().equals("")) {
+            orderingPhysician.addName(new HumanName().setText(hgscReport.getOrderingPhysicianName()));
+        }
 
-
-                //TBD
-
-
-                "map.orderingPhysicianName"));
         //Address
-        orderingPhysician.addAddress(new Address().setText(
-
-
-                //TBD
-
-
-                "map.orderingPhysicianAddress"));
+        if (hgscReport.getOrderingPhysicianAddress() != null && !hgscReport.getOrderingPhysicianAddress().equals("")) {
+            orderingPhysician.addAddress(new Address().setText(hgscReport.getOrderingPhysicianAddress()));
+        }
 
         return orderingPhysician;
     }
@@ -49,7 +37,7 @@ public class PractitionerValueMapper {
 
         Practitioner geneticistOne = new Practitioner();
 
-        geneticistOne.setLanguage("en-US");
+        geneticistOne.setLanguage(hgscReport.getLanguage());
 
         if(hgscReport.getPractitionerData().get(0) != null) {
             //Identifier
@@ -90,7 +78,7 @@ public class PractitionerValueMapper {
 
         Practitioner geneticistTwo = new Practitioner();
 
-        geneticistTwo.setLanguage("en-US");
+        geneticistTwo.setLanguage(hgscReport.getLanguage());
 
         if(hgscReport.getPractitionerData().get(1) != null) {
             //Identifier

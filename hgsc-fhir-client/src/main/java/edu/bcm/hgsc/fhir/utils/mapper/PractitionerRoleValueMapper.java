@@ -11,7 +11,7 @@ public class PractitionerRoleValueMapper {
 
         PractitionerRole practitionerRole = new PractitionerRole();
 
-        practitionerRole.setLanguage("en-US");
+        practitionerRole.setLanguage(hgscReport.getLanguage());
 
         //Code
         practitionerRole.addCode(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/practitioner-role")
@@ -24,7 +24,7 @@ public class PractitionerRoleValueMapper {
 
         PractitionerRole practitionerRoleGeneticistOne = new PractitionerRole();
 
-        practitionerRoleGeneticistOne.setLanguage("en-US");
+        practitionerRoleGeneticistOne.setLanguage(hgscReport.getLanguage());
 
         //Code
         practitionerRoleGeneticistOne.addCode(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
@@ -44,7 +44,7 @@ public class PractitionerRoleValueMapper {
 
         PractitionerRole practitionerRoleGeneticistTwo = new PractitionerRole();
 
-        practitionerRoleGeneticistTwo.setLanguage("en-US");
+        practitionerRoleGeneticistTwo.setLanguage(hgscReport.getLanguage());
 
         //Code
         practitionerRoleGeneticistTwo.addCode(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")

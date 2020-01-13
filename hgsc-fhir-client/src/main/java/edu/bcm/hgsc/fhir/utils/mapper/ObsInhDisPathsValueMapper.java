@@ -20,19 +20,12 @@ public class ObsInhDisPathsValueMapper {
 
         Observation obsInhDisPath = new Observation();
 
-        obsInhDisPath.setLanguage("en-US");
+        obsInhDisPath.setLanguage(hgscReport.getLanguage());
 
         //Observation-secondaryFinding
-        if (mappingConfig.containsKey("HgscReport.secondaryFinding")) {
-
-
-            //TBD
-
-
-            Extension secondaryFinding = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/inherited-disease-pathogenicity",
-                    new CodeableConcept().setText("See methodology for details."));
-            obsInhDisPath.addExtension(secondaryFinding);
-        }
+        Extension secondaryFinding = new Extension("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/inherited-disease-pathogenicity",
+                new CodeableConcept().setText("See methodology for details."));
+        obsInhDisPath.addExtension(secondaryFinding);
 
         //Status
         if (mappingConfig.containsKey("HgscReport.reportStatus")) {

@@ -6,27 +6,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by sl9 on 10/6/17.
- */
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "interpretation",
-        "drugs",
         "phenotype",
         "recommendation",
         "geneSymbol",
         "diplotype",
         "summary",
+        "hgncID",
         "pgxDrugRecommendation"
 })
 public class PgxDatum {
 
     @JsonProperty("interpretation")
     private String interpretation;
-    @JsonProperty("drugs")
-    private List<String> drugs;
     @JsonProperty("phenotype")
     private String phenotype;
     @JsonProperty("recommendation")
@@ -37,6 +31,8 @@ public class PgxDatum {
     private String diplotype;
     @JsonProperty("summary")
     private String summary;
+    @JsonProperty("hgncID")
+    private String hgncID;
     @JsonProperty("pgxDrugRecommendation")
     private List<PgxDrugRec> pgxDrugRecommendation;
 
@@ -51,16 +47,6 @@ public class PgxDatum {
     @JsonProperty("interpretation")
     public void setInterpretation(String interpretation) {
         this.interpretation = interpretation;
-    }
-
-    @JsonProperty("drugs")
-    public List<String> getDrugs() {
-        return drugs;
-    }
-
-    @JsonProperty("drugs")
-    public void setDrugs(List<String> drugs) {
-        this.drugs = drugs;
     }
 
     @JsonProperty("phenotype")
@@ -111,6 +97,16 @@ public class PgxDatum {
     @JsonProperty("summary")
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    @JsonProperty("hgncID")
+    public String getHgncID() {
+        return hgncID;
+    }
+
+    @JsonProperty("hgncID")
+    public void setHgncID(String hgncID) {
+        this.hgncID = hgncID;
     }
 
     @JsonProperty("pgxDrugRecommendation")

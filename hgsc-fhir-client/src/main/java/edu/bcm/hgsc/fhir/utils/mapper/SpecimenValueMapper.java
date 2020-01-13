@@ -13,7 +13,7 @@ public class SpecimenValueMapper {
 
         Specimen specimen = new Specimen();
 
-        specimen.setLanguage("en-US");
+        specimen.setLanguage(hgscReport.getLanguage());
 
         //Profile
         specimen.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/specimen");
@@ -27,7 +27,7 @@ public class SpecimenValueMapper {
             }
         }
         //AccessionIdentifier
-        if (mappingConfig.containsKey("HgscReport.accessionNumber")) {
+        if (mappingConfig.containsKey("HgscReport.localID")) {
             if(hgscReport.getLocalID() != null && !hgscReport.getLocalID().equals("")) {
                 specimen.setAccessionIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getLocalID())
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")

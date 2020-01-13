@@ -11,7 +11,7 @@ public class TaskValueMapper {
 
         Task task = new Task();
 
-        task.setLanguage("en-US");
+        task.setLanguage(hgscReport.getLanguage());
 
         //Profile
         task.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/task-rec-followup");

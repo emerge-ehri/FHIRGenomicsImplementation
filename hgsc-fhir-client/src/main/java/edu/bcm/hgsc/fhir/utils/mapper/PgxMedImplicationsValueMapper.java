@@ -29,7 +29,7 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_1001 = new Observation();
 
-        pgxResult_1001.setLanguage("en-US");
+        pgxResult_1001.setLanguage(hgscReport.getLanguage());
 
         PgxDatum pgxData = getPgxDataByGeneSymbol(hgscReport, "CYP2C19");
 
@@ -93,7 +93,7 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_2001 = new Observation();
 
-        pgxResult_2001.setLanguage("en-US");
+        pgxResult_2001.setLanguage(hgscReport.getLanguage());
 
         PgxDatum pgxData = getPgxDataByGeneSymbol(hgscReport, "DPYD");
 
@@ -155,7 +155,7 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_3001 = new Observation();
 
-        pgxResult_3001.setLanguage("en-US");
+        pgxResult_3001.setLanguage(hgscReport.getLanguage());
 
         PgxDatum pgxData = getPgxDataByGeneSymbol(hgscReport, "IFNL3");
 
@@ -216,7 +216,7 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_4001 = new Observation();
 
-        pgxResult_4001.setLanguage("en-US");
+        pgxResult_4001.setLanguage(hgscReport.getLanguage());
 
         PgxDatum pgxData = getPgxDataByGeneSymbol(hgscReport, "SLCO1B1");
 
@@ -275,7 +275,7 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_5001 = new Observation();
 
-        pgxResult_5001.setLanguage("en-US");
+        pgxResult_5001.setLanguage(hgscReport.getLanguage());
 
         PgxDatum pgxData = getPgxDataByGeneSymbol(hgscReport, "TPMT");
 
@@ -337,7 +337,7 @@ public class PgxMedImplicationsValueMapper {
 
         Observation pgxResult_6001 = new Observation();
 
-        pgxResult_6001.setLanguage("en-US");
+        pgxResult_6001.setLanguage(hgscReport.getLanguage());
 
         PgxDatum pgxData1 = getPgxDataByGeneSymbol(hgscReport, "CYP2C9");
         PgxDatum pgxData2 = getPgxDataByGeneSymbol(hgscReport, "VKORC1");

@@ -16,14 +16,14 @@ public class ServiceRequestValueMapper {
 
         ServiceRequest serviceRequest = new ServiceRequest();
 
-        serviceRequest.setLanguage("en-US");
+        serviceRequest.setLanguage(hgscReport.getLanguage());
 
         //Profile
         serviceRequest.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/servicerequest");
         //Identifier
-        if (mappingConfig.containsKey("HgscReport.accessionNumber")) {
-            if(hgscReport.getAccessionNumber() != null && !hgscReport.getAccessionNumber().equals("")) {
-                serviceRequest.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getAccessionNumber())
+        if (mappingConfig.containsKey("HgscReport.localID")) {
+            if(hgscReport.getLocalID() != null && !hgscReport.getLocalID().equals("")) {
+                serviceRequest.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getLocalID())
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                                 .setCode("ACSN").setDisplay("Accession ID"))));
             }

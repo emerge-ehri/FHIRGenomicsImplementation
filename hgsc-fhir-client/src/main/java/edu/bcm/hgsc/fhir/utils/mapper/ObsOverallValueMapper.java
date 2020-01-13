@@ -13,7 +13,7 @@ public class ObsOverallValueMapper {
 
         Observation obsOverall = new Observation();
 
-        obsOverall.setLanguage("en-US");
+        obsOverall.setLanguage(hgscReport.getLanguage());
 
         //Profile
         obsOverall.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/overall-interpretation");

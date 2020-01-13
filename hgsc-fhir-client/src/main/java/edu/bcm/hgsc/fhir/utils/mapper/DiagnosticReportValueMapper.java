@@ -16,7 +16,7 @@ public class DiagnosticReportValueMapper {
 
         DiagnosticReport diagnosticReport = new DiagnosticReport();
 
-        diagnosticReport.setLanguage("en-US");
+        diagnosticReport.setLanguage(hgscReport.getLanguage());
 
         //Profile
         diagnosticReport.getMeta().addProfile("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/diagnosticreport");

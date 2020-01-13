@@ -96,7 +96,21 @@ import java.util.*;
         "vusDisclaimer",
         "panelFinding",
         "panelRecommendationDetail",
-        "practitionerData"
+        "practitionerData",
+        "patientName",
+        "familyID",
+        "noReportableVariantsText",
+        "phenotypeTerms",
+        "concentation",
+        "familyRelationship",
+        "totalDNA",
+        "barcode",
+        "clinicalNotes",
+        "rackLocation",
+        "orderingPhysicianAddress",
+        "neptuneVersion",
+        "initialVolume",
+        "orderingPhysicianNPI"
 })
 public class HgscReport {
 
@@ -933,6 +947,34 @@ public class HgscReport {
     private String panelRecommendationDetail;
     @JsonProperty("practitionerData")
     private List<PractitionerDatum> practitionerData;
+    @JsonProperty("patientName")
+    private String patientName;
+    @JsonProperty("familyID")
+    private String familyID;
+    @JsonProperty("noReportableVariantsText")
+    private String noReportableVariantsText;
+    @JsonProperty("phenotypeTerms")
+    private String phenotypeTerms;
+    @JsonProperty("concentation")
+    private String concentation;
+    @JsonProperty("familyRelationship")
+    private String familyRelationship;
+    @JsonProperty("totalDNA")
+    private String totalDNA;
+    @JsonProperty("barcode")
+    private String barcode;
+    @JsonProperty("clinicalNotes")
+    private String clinicalNotes;
+    @JsonProperty("rackLocation")
+    private String rackLocation;
+    @JsonProperty("orderingPhysicianAddress")
+    private String orderingPhysicianAddress;
+    @JsonProperty("neptuneVersion")
+    private String neptuneVersion;
+    @JsonProperty("initialVolume")
+    private String initialVolume;
+    @JsonProperty("orderingPhysicianNPI")
+    private String orderingPhysicianNPI;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -1664,7 +1706,6 @@ public class HgscReport {
         this.geneCoverageText = geneCoverageText;
     }
 
-    @JsonProperty("testParams")
     public String getTestParams() {
         return testParams;
     }
@@ -1802,6 +1843,146 @@ public class HgscReport {
     @JsonProperty("practitionerData")
     public void setPractitionerData(List<PractitionerDatum> practitionerData) {
         this.practitionerData = practitionerData;
+    }
+
+    @JsonProperty("patientName")
+    public String getPatientName() {
+        return patientName;
+    }
+
+    @JsonProperty("patientName")
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    @JsonProperty("familyID")
+    public String getFamilyID() {
+        return familyID;
+    }
+
+    @JsonProperty("familyID")
+    public void setFamilyID(String familyID) {
+        this.familyID = familyID;
+    }
+
+    @JsonProperty("noReportableVariantsText")
+    public String getNoReportableVariantsText() {
+        return noReportableVariantsText;
+    }
+
+    @JsonProperty("noReportableVariantsText")
+    public void setNoReportableVariantsText(String noReportableVariantsText) {
+        this.noReportableVariantsText = noReportableVariantsText;
+    }
+
+    @JsonProperty("phenotypeTerms")
+    public String getPhenotypeTerms() {
+        return phenotypeTerms;
+    }
+
+    @JsonProperty("phenotypeTerms")
+    public void setPhenotypeTerms(String phenotypeTerms) {
+        this.phenotypeTerms = phenotypeTerms;
+    }
+
+    @JsonProperty("concentation")
+    public String getConcentation() {
+        return concentation;
+    }
+
+    @JsonProperty("concentation")
+    public void setConcentation(String concentation) {
+        this.concentation = concentation;
+    }
+
+    @JsonProperty("familyRelationship")
+    public String getFamilyRelationship() {
+        return familyRelationship;
+    }
+
+    @JsonProperty("familyRelationship")
+    public void setFamilyRelationship(String familyRelationship) {
+        this.familyRelationship = familyRelationship;
+    }
+
+    @JsonProperty("totalDNA")
+    public String getTotalDNA() {
+        return totalDNA;
+    }
+
+    @JsonProperty("totalDNA")
+    public void setTotalDNA(String totalDNA) {
+        this.totalDNA = totalDNA;
+    }
+
+    @JsonProperty("barcode")
+    public String getBarcode() {
+        return barcode;
+    }
+
+    @JsonProperty("barcode")
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    @JsonProperty("clinicalNotes")
+    public String getClinicalNotes() {
+        return clinicalNotes;
+    }
+
+    @JsonProperty("clinicalNotes")
+    public void setClinicalNotes(String clinicalNotes) {
+        this.clinicalNotes = clinicalNotes;
+    }
+
+    @JsonProperty("rackLocation")
+    public String getRackLocation() {
+        return rackLocation;
+    }
+
+    @JsonProperty("rackLocation")
+    public void setRackLocation(String rackLocation) {
+        this.rackLocation = rackLocation;
+    }
+
+    @JsonProperty("orderingPhysicianAddress")
+    public String getOrderingPhysicianAddress() {
+        return orderingPhysicianAddress;
+    }
+
+    @JsonProperty("orderingPhysicianAddress")
+    public void setOrderingPhysicianAddress(String orderingPhysicianAddress) {
+        this.orderingPhysicianAddress = orderingPhysicianAddress;
+    }
+
+    @JsonProperty("neptuneVersion")
+    public String getNeptuneVersion() {
+        return neptuneVersion;
+    }
+
+    @JsonProperty("neptuneVersion")
+    public void setNeptuneVersion(String neptuneVersion) {
+        this.neptuneVersion = neptuneVersion;
+    }
+
+    @JsonProperty("initialVolume")
+    public String getInitialVolume() {
+        return initialVolume;
+    }
+
+    @JsonProperty("initialVolume")
+    public void setInitialVolume(String initialVolume) {
+        this.initialVolume = initialVolume;
+    }
+
+    @JsonProperty("orderingPhysicianNPI")
+    public String getOrderingPhysicianNPI() {
+        return orderingPhysicianNPI;
+    }
+
+    @JsonProperty("orderingPhysicianNPI")
+    public void setOrderingPhysicianNPI(String orderingPhysicianNPI) {
+        this.orderingPhysicianNPI = orderingPhysicianNPI;
     }
 
     @JsonAnyGetter

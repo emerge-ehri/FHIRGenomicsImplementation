@@ -11,7 +11,7 @@ public class OrganizationValueMapper {
 
         Organization organizationHGSC = new Organization();
 
-        organizationHGSC.setLanguage("en-US");
+        organizationHGSC.setLanguage(hgscReport.getLanguage());
 
         //Profile
         organizationHGSC.getMeta().addProfile("http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization");
@@ -37,7 +37,7 @@ public class OrganizationValueMapper {
 
         Organization organizationBCM = new Organization();
 
-        organizationBCM.setLanguage("en-US");
+        organizationBCM.setLanguage(hgscReport.getLanguage());
 
         //Active
         organizationBCM.setActive(true);
@@ -56,7 +56,7 @@ public class OrganizationValueMapper {
 
         Organization organizationCHP = new Organization();
 
-        organizationCHP.setLanguage("en-US");
+        organizationCHP.setLanguage(hgscReport.getLanguage());
 
         //Active
         organizationCHP.setActive(true);
