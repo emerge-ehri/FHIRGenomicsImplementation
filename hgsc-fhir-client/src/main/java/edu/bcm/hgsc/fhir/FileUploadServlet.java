@@ -49,7 +49,6 @@ public class FileUploadServlet extends HttpServlet {
             }
 
             FileUploadServiceImpl fileUploadServiceImpl = new FileUploadServiceImpl();
-            //ArrayList<String> resp = fileUploadServiceImpl.createFhirResourcesInProd();
             ArrayList<String> resp = fileUploadServiceImpl.createFhirResourcesInTest(file);
             request.setAttribute("resultURLArr", resp);
         }

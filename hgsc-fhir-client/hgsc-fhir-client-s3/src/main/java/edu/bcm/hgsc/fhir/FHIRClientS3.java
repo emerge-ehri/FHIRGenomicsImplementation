@@ -1,4 +1,4 @@
-package edu.bcm.hgsc.fhir.services;
+package edu.bcm.hgsc.fhir;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.model.primitive.IdDt;
@@ -16,37 +16,67 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FileUploadServiceImpl {
+public class FHIRClientS3 {
 
-    private static Logger logger = Logger.getLogger(FileUploadServiceImpl.class);
+    private static Logger logger = Logger.getLogger(FHIRClientS3.class);
 
     FileUtils fileUtils = new FileUtils();
-
     FhirContext ctx = FhirContext.forR4();
     IGenericClient client = ctx.newRestfulGenericClient(fileUtils.loadPropertyValue("application.properties", "jpaserver.url"));
 
-    public ArrayList<String> createFhirResourcesInTest(File file) {
-
-        byte[] bytes = fileUtils.readBytesFromFile(file);
-        HgscReport report = new JsonMappingUtil().readHgscReportJson(bytes);
-
-        Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "Reports//feilocaldev/fhir-eMerge-Test.pdf", "Reports//feilocaldev/fhir-eMerge-Test.csv");
-        return this.createBundle(fhirResources, report);
+    public static void main(String[] args) {
+        FHIRClientS3 fhirClientS3 = new FHIRClientS3();
+        ArrayList<String> resultList = fhirClientS3.createFhirResourcesFromS3(args[0]);
+        fhirClientS3.outputFile(resultList, args[0]);
     }
 
-    private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport, String pdfFileKey, String excidFileKey) {
+    private ArrayList<String> createFhirResourcesFromS3(String orgName) {
 
-        HashMap<String, String> mappingConfig = fileUtils.readMapperConfig(getClass().getClassLoader().getResource("mapping.properties").getPath());
+        ArrayList<String> resourceURLList = new ArrayList<String>();
+
+        for(String key : fileUtils.getJSONFileListFromS3(orgName)) {
+            logger.info("Start loading " + key + " from S3...");
+            byte[] bytes = fileUtils.getS3ObjectAsByteArray(key);
+            HgscReport report = new JsonMappingUtil().readHgscReportJson(bytes);
+
+            Map<String, Object> fhirResources = null;
+
+            if(orgName.equals("NU")) {
+                String pdfFileKey = key.replace(".json", ".pdf");
+                String excidFileKey = key.replace(".json", ".csv");
+                byte[] pdfBytes = fileUtils.getS3ObjectAsByteArray(pdfFileKey);
+                byte[] excidBytes = fileUtils.getS3ObjectAsByteArray(excidFileKey);
+                if(pdfBytes == null || pdfBytes.length == 0 || excidBytes == null || excidBytes.length == 0) {
+                    logger.error("Failed to load " + key + " from S3: Related Pdf File or Excid File is missing or empty.");
+                    continue;
+                }
+
+                fhirResources = createIndividualFhirResources(report, pdfBytes, excidBytes);
+            } else {
+                fhirResources = createIndividualFhirResources(report, null, null);
+            }
+
+            resourceURLList.add("Start creating FHIR resources from " + key + " in S3 bucket...");
+            resourceURLList.addAll(createBundle(fhirResources, report));
+            logger.info("Completed loading " + key + " from S3 and creating FHIR resources.");
+        }
+
+        return resourceURLList;
+    }
+
+    private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport, byte[] pdfBytes, byte[] excidBytes) {
+
+        HashMap<String, String> mappingConfig = fileUtils.readMapperConfig("mapping.properties");
         Map<String, Object> newResources = null;
         try {
-            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscReport, pdfFileKey, excidFileKey);
+            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscReport, pdfBytes, excidBytes);
         } catch (java.text.ParseException e) {
             logger.error("Failed to Parse Date data type:", e);
         }
@@ -367,8 +397,6 @@ public class FileUploadServiceImpl {
 
         task.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(task))));
-        //planDefinition.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(planDefinition))));
         diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport))));
 
@@ -670,22 +698,12 @@ public class FileUploadServiceImpl {
         return resultURLArr;
     }
 
-    private DiagnosticReport searchDiagnosticReportById(String projectDir, String diagnosticReportId) {
-        DiagnosticReport diagnosticReport = client.read().resource(DiagnosticReport.class).withId(diagnosticReportId).execute();
+    private void outputFile(ArrayList<String> resultList, String orgName) {
 
-        String string = ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport);
-        System.out.println(string);
-
-        byte[] byteArray = diagnosticReport.getPresentedFormFirstRep().getData();
-        File outputFile = new File(projectDir + "outputFile.pdf");
-
-        // save byte[] into the output file
-        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
-            fos.write(byteArray);
+        try {Files.write(Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()
+                .replace("hgsc-fhir-client-s3.jar", "") + "FhirResources-" + "orgName" + ".txt"), resultList);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Failed to output created Fhir Resources to a file.", e);
         }
-
-        return diagnosticReport;
     }
 }
