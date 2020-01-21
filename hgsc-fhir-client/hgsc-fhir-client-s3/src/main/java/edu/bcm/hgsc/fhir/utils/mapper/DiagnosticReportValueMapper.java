@@ -45,7 +45,7 @@ public class DiagnosticReportValueMapper {
             }
         }
 
-        Extension ext3 = new Extension("http://hl7.org/fhir/StructureDefinition/test-disclaimer",
+        Extension ext3 = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/test-disclaimer",
                 new StringType(hgscReport.getFooter()));
         diagnosticReport.addExtension(ext3);
 

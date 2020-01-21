@@ -109,7 +109,7 @@ public class PatientValueMapper {
 
         if (mappingConfig.containsKey("HgscReport.dateOfBirth")) {
             if(hgscReport.getDateOfBirth() != null && !hgscReport.getDateOfBirth().equals("")) {
-                Extension ext4 = new Extension("http://hl7.org/fhir/StructureDefinition/patient-age", new IntegerType(calAge(hgscReport.getDateOfBirth(), sdf)));
+                Extension ext4 = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/patient-age", new IntegerType(calAge(hgscReport.getDateOfBirth(), sdf)));
                 patient.addExtension(ext4);
             }
         }
