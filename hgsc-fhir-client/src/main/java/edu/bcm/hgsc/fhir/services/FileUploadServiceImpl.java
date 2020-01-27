@@ -8,6 +8,7 @@ import edu.bcm.hgsc.fhir.models.Variant;
 import edu.bcm.hgsc.fhir.utils.FhirResourcesMappingUtils;
 import edu.bcm.hgsc.fhir.utils.FileUtils;
 import edu.bcm.hgsc.fhir.utils.JsonMappingUtil;
+import edu.bcm.hgsc.fhir.utils.LoincCodeUtil;
 import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -44,9 +45,11 @@ public class FileUploadServiceImpl {
     private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport, String pdfFileKey, String excidFileKey) {
 
         HashMap<String, String> mappingConfig = fileUtils.readMapperConfig(getClass().getClassLoader().getResource("mapping.properties").getPath());
+        HashMap<String, HashMap<String, String>> loincCodeMap = new LoincCodeUtil().loadLoincCodeToMap();
+
         Map<String, Object> newResources = null;
         try {
-            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscReport, pdfFileKey, excidFileKey);
+            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscReport, pdfFileKey, excidFileKey, loincCodeMap);
         } catch (java.text.ParseException e) {
             logger.error("Failed to Parse Date data type:", e);
         }

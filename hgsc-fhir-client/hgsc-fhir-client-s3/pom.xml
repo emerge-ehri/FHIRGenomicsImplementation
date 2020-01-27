@@ -74,6 +74,11 @@
       <artifactId>aws-java-sdk-s3</artifactId>
       <version>1.11.659</version>
     </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>1.19</version>
+    </dependency>
   </dependencies>
 
   <build>

@@ -9,9 +9,11 @@ import java.util.HashMap;
 
 public class ObsOverallValueMapper {
 
-    public Observation obsOverallValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation obsOverallValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf, HashMap<String, HashMap<String, String>> loincCodeMap) throws ParseException {
 
         Observation obsOverall = new Observation();
+
+        HashMap<String, String> overallInterpretationCodeMap = loincCodeMap.get("overallInterpretationCodeMap");
 
         obsOverall.setLanguage(hgscReport.getLanguage());
 
@@ -39,7 +41,8 @@ public class ObsOverallValueMapper {
         if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
             if(hgscReport.getOverallInterpretation() != null && !hgscReport.getOverallInterpretation().equals("")) {
                 obsOverall.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                        .setCode("LA6576-8").setDisplay(hgscReport.getOverallInterpretation())));
+                        .setCode(overallInterpretationCodeMap.get(hgscReport.getOverallInterpretation()))
+                        .setDisplay(hgscReport.getOverallInterpretation())));
             }
         }
 

@@ -12,11 +12,13 @@ import java.util.HashMap;
 
 public class ObsInhDisPathsValueMapper {
 
-    public HashMap<String, Observation> obsInhDisPathsValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+    public HashMap<String, Observation> obsInhDisPathsValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf, HashMap<String, HashMap<String, String>> loincCodeMap) throws ParseException {
 
         FhirResourcesMappingUtils util = new FhirResourcesMappingUtils();
 
         HashMap<String, Observation> obsInhDisPaths = new HashMap<String, Observation>();
+
+        HashMap<String, String> variantInterpretationCodeMap = loincCodeMap.get("variantInterpretationCodeMap");
 
         Observation obsInhDisPath = new Observation();
 
@@ -56,7 +58,7 @@ public class ObsInhDisPathsValueMapper {
                 if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
                     if(v.getInterpretation() != null && !v.getInterpretation().equals("")) {
                         temp.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                                .setCode("LA6668-3").setDisplay(v.getInterpretation())));
+                                .setCode(variantInterpretationCodeMap.get(v.getInterpretation())).setDisplay(v.getInterpretation())));
                     }
                 }
 

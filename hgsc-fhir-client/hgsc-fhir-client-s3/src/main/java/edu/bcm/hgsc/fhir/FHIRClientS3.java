@@ -8,6 +8,7 @@ import edu.bcm.hgsc.fhir.models.Variant;
 import edu.bcm.hgsc.fhir.utils.FhirResourcesMappingUtils;
 import edu.bcm.hgsc.fhir.utils.FileUtils;
 import edu.bcm.hgsc.fhir.utils.JsonMappingUtil;
+import edu.bcm.hgsc.fhir.utils.LoincCodeUtil;
 import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -33,11 +34,13 @@ public class FHIRClientS3 {
 
     public static void main(String[] args) {
         FHIRClientS3 fhirClientS3 = new FHIRClientS3();
-        ArrayList<String> resultList = fhirClientS3.createFhirResourcesFromS3(args[0]);
+        HashMap<String, HashMap<String, String>> loincCodeMap = new LoincCodeUtil().loadLoincCodeToMap();
+
+        ArrayList<String> resultList = fhirClientS3.createFhirResourcesFromS3(args[0], loincCodeMap);
         fhirClientS3.outputFile(resultList, args[0]);
     }
 
-    private ArrayList<String> createFhirResourcesFromS3(String orgName) {
+    private ArrayList<String> createFhirResourcesFromS3(String orgName, HashMap<String, HashMap<String, String>> loincCodeMap) {
 
         ArrayList<String> resourceURLList = new ArrayList<String>();
 
@@ -58,9 +61,9 @@ public class FHIRClientS3 {
                     continue;
                 }
 
-                fhirResources = createIndividualFhirResources(report, pdfBytes, excidBytes);
+                fhirResources = createIndividualFhirResources(report, pdfBytes, excidBytes, loincCodeMap);
             } else {
-                fhirResources = createIndividualFhirResources(report, null, null);
+                fhirResources = createIndividualFhirResources(report, null, null, loincCodeMap);
             }
 
             resourceURLList.add("Start creating FHIR resources from " + key + " in S3 bucket...");
@@ -71,12 +74,12 @@ public class FHIRClientS3 {
         return resourceURLList;
     }
 
-    private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport, byte[] pdfBytes, byte[] excidBytes) {
+    private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport, byte[] pdfBytes, byte[] excidBytes, HashMap<String, HashMap<String, String>> loincCodeMap) {
 
         HashMap<String, String> mappingConfig = fileUtils.readMapperConfig("mapping.properties");
         Map<String, Object> newResources = null;
         try {
-            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscReport, pdfBytes, excidBytes);
+            newResources = new FhirResourcesMappingUtils().mapping(mappingConfig, hgscReport, pdfBytes, excidBytes, loincCodeMap);
         } catch (java.text.ParseException e) {
             logger.error("Failed to Parse Date data type:", e);
         }

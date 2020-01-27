@@ -16,7 +16,7 @@ public class FhirResourcesMappingUtils {
 
     private static Logger logger = Logger.getLogger(FhirResourcesMappingUtils.class);
 
-    public Map<String, Object> mapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, String pdfFileKey, String excidFileKey) throws ParseException {
+    public Map<String, Object> mapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, String pdfFileKey, String excidFileKey, HashMap<String, HashMap<String, String>> loincCodeMap) throws ParseException {
 
         Map<String, Object> results = new HashMap<String, Object>();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -56,7 +56,7 @@ public class FhirResourcesMappingUtils {
                         results.put("OrganizationCHP", organizationCHP);
                         break;
                     case "ObsOverall":
-                        Observation obsOverall = new ObsOverallValueMapper().obsOverallValueMapping(mappingConfig, hgscReport, sdf);
+                        Observation obsOverall = new ObsOverallValueMapper().obsOverallValueMapping(mappingConfig, hgscReport, sdf, loincCodeMap);
                         results.put("ObsOverall", obsOverall);
                         break;
                     case "DxCNVVariants":
@@ -64,7 +64,7 @@ public class FhirResourcesMappingUtils {
                         results.put("DxCNVVariants", dxCNVVariants);
                         break;
                     case "DxSNPINDELVariants":
-                        HashMap<String, Observation> dxSNPINDELVariants = new DxSNPINDELVariantsValueMapper().dxSNPINDELVariantsValueMapping(mappingConfig, hgscReport, sdf);
+                        HashMap<String, Observation> dxSNPINDELVariants = new DxSNPINDELVariantsValueMapper().dxSNPINDELVariantsValueMapping(mappingConfig, hgscReport, sdf, loincCodeMap);
                         results.put("DxSNPINDELVariants", dxSNPINDELVariants);
                         break;
                     case "ObsReportComment":
@@ -80,31 +80,31 @@ public class FhirResourcesMappingUtils {
                         results.put("PgxPanel", pgxPanel);
                         break;
                     case "PgxResult_1001":
-                        Observation pgxResult_1001 = new PgxMedImplicationsValueMapper().pgxResult_1001_ValueMapping(mappingConfig, hgscReport, sdf);
+                        Observation pgxResult_1001 = new PgxMedImplicationsValueMapper().pgxResult_1001_ValueMapping(mappingConfig, hgscReport, sdf, loincCodeMap.get("pgxDataPhenotypeCodeMap"));
                         results.put("PgxResult_1001", pgxResult_1001);
                         break;
                     case "PgxResult_2001":
-                        Observation pgxResult_2001 = new PgxMedImplicationsValueMapper().pgxResult_2001_ValueMapping(mappingConfig, hgscReport, sdf);
+                        Observation pgxResult_2001 = new PgxMedImplicationsValueMapper().pgxResult_2001_ValueMapping(mappingConfig, hgscReport, sdf, loincCodeMap.get("pgxDataPhenotypeCodeMap"));
                         results.put("PgxResult_2001", pgxResult_2001);
                         break;
                     case "PgxResult_3001":
-                        Observation pgxResult_3001 = new PgxMedImplicationsValueMapper().pgxResult_3001_ValueMapping(mappingConfig, hgscReport, sdf);
+                        Observation pgxResult_3001 = new PgxMedImplicationsValueMapper().pgxResult_3001_ValueMapping(mappingConfig, hgscReport, sdf, loincCodeMap.get("pgxDataPhenotypeCodeMap"));
                         results.put("PgxResult_3001", pgxResult_3001);
                         break;
                     case "PgxResult_4001":
-                        Observation pgxResult_4001 = new PgxMedImplicationsValueMapper().pgxResult_4001_ValueMapping(mappingConfig, hgscReport, sdf);
+                        Observation pgxResult_4001 = new PgxMedImplicationsValueMapper().pgxResult_4001_ValueMapping(mappingConfig, hgscReport, sdf, loincCodeMap.get("pgxDataPhenotypeCodeMap"));
                         results.put("PgxResult_4001", pgxResult_4001);
                         break;
                     case "PgxResult_5001":
-                        Observation pgxResult_5001 = new PgxMedImplicationsValueMapper().pgxResult_5001_ValueMapping(mappingConfig, hgscReport, sdf);
+                        Observation pgxResult_5001 = new PgxMedImplicationsValueMapper().pgxResult_5001_ValueMapping(mappingConfig, hgscReport, sdf, loincCodeMap.get("pgxDataPhenotypeCodeMap"));
                         results.put("PgxResult_5001", pgxResult_5001);
                         break;
                     case "PgxResult_6001":
-                        Observation pgxResult_6001 = new PgxMedImplicationsValueMapper().pgxResult_6001_ValueMapping(mappingConfig, hgscReport, sdf);
+                        Observation pgxResult_6001 = new PgxMedImplicationsValueMapper().pgxResult_6001_ValueMapping(mappingConfig, hgscReport, sdf, loincCodeMap.get("pgxDataPhenotypeCodeMap"));
                         results.put("PgxResult_6001", pgxResult_6001);
                         break;
                     case "ObsInhDisPaths":
-                        HashMap<String, Observation> obsInhDisPaths = new ObsInhDisPathsValueMapper().obsInhDisPathsValueMapping(mappingConfig, hgscReport, sdf);
+                        HashMap<String, Observation> obsInhDisPaths = new ObsInhDisPathsValueMapper().obsInhDisPathsValueMapping(mappingConfig, hgscReport, sdf, loincCodeMap);
                         results.put("ObsInhDisPaths", obsInhDisPaths);
                         break;
                     case "GeneticistOne":

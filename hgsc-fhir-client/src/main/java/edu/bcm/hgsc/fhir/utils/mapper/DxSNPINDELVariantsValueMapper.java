@@ -12,9 +12,17 @@ import java.util.HashMap;
 
 public class DxSNPINDELVariantsValueMapper {
 
-    public HashMap<String, Observation> dxSNPINDELVariantsValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+    public HashMap<String, Observation> dxSNPINDELVariantsValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf, HashMap<String, HashMap<String, String>> loincCodeMap) throws ParseException {
 
         FhirResourcesMappingUtils util = new FhirResourcesMappingUtils();
+
+        HashMap<String, String> variantChromosomeCodeMap = loincCodeMap.get("variantChromosomeCodeMap");
+        HashMap<String, String> humanReferenceSequenceAssemblyVersionCodeMap = loincCodeMap.get("humanReferenceSequenceAssemblyVersionCodeMap");
+        HashMap<String, String> genomicCoordinateSystemCodeMap = loincCodeMap.get("genomicCoordinateSystemCodeMap");
+        HashMap<String, String> genomicSourceCodeMap = loincCodeMap.get("genomicSourceCodeMap");
+        HashMap<String, String> variantZygosityCodeMap = loincCodeMap.get("variantZygosityCodeMap");
+        HashMap<String, String> variantsCodeMap = loincCodeMap.get("variantsCodeMap");
+        HashMap<String, String> variantInheritanceCodeMap = loincCodeMap.get("variantInheritanceCodeMap");
 
         HashMap<String, Observation> dxSNPINDELVariants = new HashMap<String, Observation>();
 
@@ -46,10 +54,10 @@ public class DxSNPINDELVariantsValueMapper {
         //ValueCodeableConcept
         if(hgscReport.getVariants().size() > 0){
             dxSNPINDELVariant.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                    .setCode("LA9633-4").setDisplay("Present")));
+                    .setCode(variantsCodeMap.get("Present")).setDisplay("Present")));
         }else{
             dxSNPINDELVariant.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                    .setCode("LA9634-2").setDisplay("No Variant")));
+                    .setCode(variantsCodeMap.get("Absent")).setDisplay("Absent")));
         }
 
         //Component:ref-sequence-assembly
@@ -57,7 +65,8 @@ public class DxSNPINDELVariantsValueMapper {
             dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("62374-4").setDisplay("Human reference sequence assembly version")))
                     .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                            .setCode("LA14029-5").setDisplay(hgscReport.getHumanReferenceSequenceAssemblyVersion()))));
+                            .setCode(humanReferenceSequenceAssemblyVersionCodeMap.get(hgscReport.getHumanReferenceSequenceAssemblyVersion()))
+                            .setDisplay(hgscReport.getHumanReferenceSequenceAssemblyVersion()))));
         }
 
         //Component:coordinate-system
@@ -65,7 +74,8 @@ public class DxSNPINDELVariantsValueMapper {
             dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("92822-6").setDisplay("Genomic coordinate system [Type]")))
                     .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                            .setCode("LA30102-0").setDisplay(hgscReport.getGenomicCoordinateSystem()))));
+                            .setCode(genomicCoordinateSystemCodeMap.get(hgscReport.getGenomicCoordinateSystem()))
+                            .setDisplay(hgscReport.getGenomicCoordinateSystem()))));
         }
 
         //Component:genomic-source-class
@@ -73,7 +83,7 @@ public class DxSNPINDELVariantsValueMapper {
             dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                     new Coding().setSystem("http://loinc.org").setCode("48002-0").setDisplay("Genomic source class [Type]")))
                     .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                            .setCode("LA6683-2").setDisplay(hgscReport.getGenomicSource()))));
+                            .setCode(genomicSourceCodeMap.get(hgscReport.getGenomicSource())).setDisplay(hgscReport.getGenomicSource()))));
         }
 
         //Create multiple dxSNPINDELVariants if there is multiple variants
@@ -81,12 +91,12 @@ public class DxSNPINDELVariantsValueMapper {
             for(Variant v : hgscReport.getVariants()) {
                 Observation temp = (Observation)(util.deepCopy(dxSNPINDELVariant));
 
-                //Component:chromosome (extension)
+                //Component:chromosome-identifier (extension)
                 if(v.getChromosome() != null && !v.getChromosome().equals("")) {
                     dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                             new Coding().setSystem("http://loinc.org").setCode("48000-4").setDisplay("Chromosome, Blood or Tissue Specimen")))
                             .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                                    .setCode("LA21263-1").setDisplay("Chromosome " + v.getChromosome()))));
+                                    .setCode(variantChromosomeCodeMap.get(v.getChromosome())).setDisplay(v.getChromosome()))));
                 }
 
                 //Component:ref-allele
@@ -115,7 +125,7 @@ public class DxSNPINDELVariantsValueMapper {
                     temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                             new Coding().setSystem("http://loinc.org").setCode("53034-5").setDisplay("Allelic state")))
                             .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                                    .setCode("LA6706-1").setDisplay(v.getZygosity()))));
+                                    .setCode(variantZygosityCodeMap.get(v.getZygosity())).setDisplay(v.getZygosity()))));
                 }
 
                 //Component:gene-studied
@@ -155,7 +165,7 @@ public class DxSNPINDELVariantsValueMapper {
                     temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                             new Coding().setSystem("http://loinc.org").setCode("79742-3").setDisplay("Inheritance pattern based on family history")))
                             .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                                    .setCode(v.getInheritance()).setDisplay(v.getInheritance()))));
+                                    .setCode(variantInheritanceCodeMap.get(v.getInheritance())).setDisplay(v.getInheritance()))));
                 }
 
                 //Component:amino-acid-chg

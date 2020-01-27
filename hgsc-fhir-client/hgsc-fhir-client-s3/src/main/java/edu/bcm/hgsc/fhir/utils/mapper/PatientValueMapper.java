@@ -72,8 +72,7 @@ public class PatientValueMapper {
                                 .setValue(administrativeGender.toCode()));
             }else{
                 ext1 = new Extension("http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
-                        new CodeType().setSystem("http://terminology.hl7.org/CodeSystem/v3-AdministrativeGender")
-                                .setValue("Unknown"));
+                        new StringType(hgscReport.getSex()));
             }
             patient.addExtension(ext1);
         }
@@ -99,11 +98,14 @@ public class PatientValueMapper {
             //Returns enum V3Race or V3Race.NULL if not present
             V3Race race = Stream.of(V3Race.values()).filter(v3Race -> v3Race.getDefinition().equals(hgscReport.getRace()))
                     .findFirst().orElse(V3Race.NULL);
-            Extension ext3child1 = new Extension("ombCategory", new Coding().setSystem("urn:oid:2.16.840.1.113883.6.238")
-                    .setCode(race.toCode()).setDisplay(race.getDisplay()));
-            ext3.addExtension(ext3child1);
-            Extension ext3child2 = new Extension("text", new StringType(hgscReport.getRace()));
-            ext3.addExtension(ext3child2);
+            if(!race.toCode().equals("?")){
+                Extension ext3child1 = new Extension("ombCategory", new Coding().setSystem("urn:oid:2.16.840.1.113883.6.238")
+                        .setCode(race.toCode()).setDisplay(race.getDisplay()));
+                ext3.addExtension(ext3child1);
+            }else{
+                Extension ext3child2 = new Extension("text", new StringType(hgscReport.getRace()));
+                ext3.addExtension(ext3child2);
+            }
             patient.addExtension(ext3);
         }
 

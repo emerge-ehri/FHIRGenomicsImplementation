@@ -25,7 +25,7 @@ public class PgxMedImplicationsValueMapper {
         return null;
     }
 
-    public Observation pgxResult_1001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_1001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf, HashMap<String, String> pgxDataPhenotypeCodeMap) throws ParseException {
 
         Observation pgxResult_1001 = new Observation();
 
@@ -89,7 +89,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_1001;
     }
     
-    public Observation pgxResult_2001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_2001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf, HashMap<String, String> pgxDataPhenotypeCodeMap) throws ParseException {
 
         Observation pgxResult_2001 = new Observation();
 
@@ -151,7 +151,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_2001;
     }
     
-    public Observation pgxResult_3001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_3001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf, HashMap<String, String> pgxDataPhenotypeCodeMap) throws ParseException {
 
         Observation pgxResult_3001 = new Observation();
 
@@ -212,7 +212,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_3001;
     }
     
-    public Observation pgxResult_4001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_4001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf, HashMap<String, String> pgxDataPhenotypeCodeMap) throws ParseException {
 
         Observation pgxResult_4001 = new Observation();
 
@@ -271,7 +271,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_4001;
     }
     
-    public Observation pgxResult_5001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_5001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf, HashMap<String, String> pgxDataPhenotypeCodeMap) throws ParseException {
 
         Observation pgxResult_5001 = new Observation();
 
@@ -333,7 +333,7 @@ public class PgxMedImplicationsValueMapper {
         return pgxResult_5001;
     }
     
-    public Observation pgxResult_6001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf) throws ParseException {
+    public Observation pgxResult_6001_ValueMapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, SimpleDateFormat sdf, HashMap<String, String> pgxDataPhenotypeCodeMap) throws ParseException {
 
         Observation pgxResult_6001 = new Observation();
 
