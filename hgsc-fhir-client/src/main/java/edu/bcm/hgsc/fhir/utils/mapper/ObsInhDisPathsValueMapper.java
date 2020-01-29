@@ -57,8 +57,12 @@ public class ObsInhDisPathsValueMapper {
                 //ValueCodeableConcept
                 if (mappingConfig.containsKey("HgscReport.overallInterpretation")) {
                     if(v.getInterpretation() != null && !v.getInterpretation().equals("")) {
-                        temp.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                                .setCode(variantInterpretationCodeMap.get(v.getInterpretation())).setDisplay(v.getInterpretation())));
+                        if(!"Risk factor".equals(v.getInterpretation())){
+                            temp.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                                    .setCode(variantInterpretationCodeMap.get(v.getInterpretation())).setDisplay(v.getInterpretation())));
+                        }else{
+                            temp.setValue(new CodeableConcept().setText(v.getInterpretation()));
+                        }
                     }
                 }
 

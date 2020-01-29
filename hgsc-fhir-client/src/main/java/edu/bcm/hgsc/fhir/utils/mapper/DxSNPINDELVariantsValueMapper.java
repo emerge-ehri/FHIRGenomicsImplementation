@@ -162,10 +162,16 @@ public class DxSNPINDELVariantsValueMapper {
 
                 //Component:variation-inheritance
                 if(v.getInheritance() != null && !v.getInheritance().equals("")) {
-                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                            new Coding().setSystem("http://loinc.org").setCode("79742-3").setDisplay("Inheritance pattern based on family history")))
-                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                                    .setCode(variantInheritanceCodeMap.get(v.getInheritance())).setDisplay(v.getInheritance()))));
+                    if(!"Autosomal dominant / Autosomal recessive".equals(v.getInheritance())){
+                        temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                                new Coding().setSystem("http://loinc.org").setCode("79742-3").setDisplay("Inheritance pattern based on family history")))
+                                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                                        .setCode(variantInheritanceCodeMap.get(v.getInheritance())).setDisplay(v.getInheritance()))));
+                    }else{
+                        temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                                new Coding().setSystem("http://loinc.org").setCode("79742-3").setDisplay("Inheritance pattern based on family history")))
+                                .setValue(new CodeableConcept().setText(v.getInheritance())));
+                    }
                 }
 
                 //Component:amino-acid-chg
