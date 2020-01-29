@@ -62,8 +62,12 @@ public class PgxMedImplicationsValueMapper {
         }
         //ValueCodeableConcept
         if(pgxData != null && pgxData.getPhenotype() != null && !pgxData.getPhenotype().equals("")) {
-            pgxResult_1001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                    .setCode("LA9657-3").setDisplay(pgxData.getPhenotype())));
+            if(pgxDataPhenotypeCodeMap.get(pgxData.getPhenotype()) != null){
+                pgxResult_1001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode(pgxDataPhenotypeCodeMap.get(pgxData.getPhenotype())).setDisplay(pgxData.getPhenotype())));
+            }else{
+                pgxResult_1001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+            }
         }
 
         if(pgxData.getPgxDrugRecommendation() != null && pgxData.getPgxDrugRecommendation().size() > 0) {
@@ -127,7 +131,12 @@ public class PgxMedImplicationsValueMapper {
 
         //ValueCodeableConcept
         if(pgxData != null && pgxData.getPhenotype() != null && !pgxData.getPhenotype().equals("")) {
-            pgxResult_2001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+            if(pgxDataPhenotypeCodeMap.get(pgxData.getPhenotype()) != null){
+                pgxResult_2001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode(pgxDataPhenotypeCodeMap.get(pgxData.getPhenotype())).setDisplay(pgxData.getPhenotype())));
+            }else{
+                pgxResult_2001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+            }
         }
 
         if(pgxData.getPgxDrugRecommendation() != null && pgxData.getPgxDrugRecommendation().size() > 0) {
@@ -188,7 +197,12 @@ public class PgxMedImplicationsValueMapper {
 
         //ValueCodeableConcept
         if(pgxData != null && pgxData.getPhenotype() != null && !pgxData.getPhenotype().equals("")) {
-            pgxResult_3001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+            if(pgxDataPhenotypeCodeMap.get(pgxData.getPhenotype()) != null){
+                pgxResult_3001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode(pgxDataPhenotypeCodeMap.get(pgxData.getPhenotype())).setDisplay(pgxData.getPhenotype())));
+            }else{
+                pgxResult_3001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+            }
         }
 
         if(pgxData.getPgxDrugRecommendation() != null && pgxData.getPgxDrugRecommendation().size() > 0) {
@@ -249,7 +263,12 @@ public class PgxMedImplicationsValueMapper {
 
         //ValueCodeableConcept
         if(pgxData != null && pgxData.getPhenotype() != null && !pgxData.getPhenotype().equals("")) {
-            pgxResult_4001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+            if(pgxDataPhenotypeCodeMap.get(pgxData.getPhenotype()) != null){
+                pgxResult_4001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode(pgxDataPhenotypeCodeMap.get(pgxData.getPhenotype())).setDisplay(pgxData.getPhenotype())));
+            }else{
+                pgxResult_4001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+            }
         }
 
         if(pgxData.getPgxDrugRecommendation() != null && pgxData.getPgxDrugRecommendation().size() > 0) {
@@ -309,7 +328,12 @@ public class PgxMedImplicationsValueMapper {
 
         //ValueCodeableConcept
         if(pgxData != null && pgxData.getPhenotype() != null && !pgxData.getPhenotype().equals("")) {
-            pgxResult_5001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+            if(pgxDataPhenotypeCodeMap.get(pgxData.getPhenotype()) != null){
+                pgxResult_5001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode(pgxDataPhenotypeCodeMap.get(pgxData.getPhenotype())).setDisplay(pgxData.getPhenotype())));
+            }else{
+                pgxResult_5001.setValue(new CodeableConcept().setText(pgxData.getPhenotype()));
+            }
         }
 
         if(pgxData.getPgxDrugRecommendation() != null && pgxData.getPgxDrugRecommendation().size() > 0) {
@@ -371,7 +395,12 @@ public class PgxMedImplicationsValueMapper {
         }
         //ValueCodeableConcept
         if(pgxData1 != null && pgxData1.getPhenotype() != null && !pgxData1.getPhenotype().equals("")) {
-            pgxResult_6001.setValue(new CodeableConcept().setText(pgxData1.getPhenotype()));
+            if(pgxDataPhenotypeCodeMap.get(pgxData1.getPhenotype()) != null){
+                pgxResult_6001.setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode(pgxDataPhenotypeCodeMap.get(pgxData1.getPhenotype())).setDisplay(pgxData1.getPhenotype())));
+            }else{
+                pgxResult_6001.setValue(new CodeableConcept().setText(pgxData1.getPhenotype()));
+            }
         }
 
         if(pgxData1.getPgxDrugRecommendation() != null && pgxData1.getPgxDrugRecommendation().size() > 0) {
