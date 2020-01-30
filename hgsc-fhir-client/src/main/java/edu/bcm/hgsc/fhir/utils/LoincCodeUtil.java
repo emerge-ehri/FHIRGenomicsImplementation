@@ -55,7 +55,7 @@ public class LoincCodeUtil {
     private HashMap<String, String> loadSingleLoincCodeToMap(String url) {
 
         String username = "hgsc";
-        String password = "HGSCCLaa1";
+        String password = new FileUtils().loadPropertyValue("application.properties", "loinc.password");
         String authString = username + ":" + password;
         String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
         Client restClient = Client.create();
