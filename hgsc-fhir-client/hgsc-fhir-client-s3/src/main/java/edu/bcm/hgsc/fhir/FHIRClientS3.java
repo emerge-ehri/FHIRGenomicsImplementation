@@ -43,6 +43,11 @@ public class FHIRClientS3 {
     private ArrayList<String> createFhirResourcesFromS3(String orgName, HashMap<String, HashMap<String, String>> loincCodeMap) {
 
         ArrayList<String> resourceURLList = new ArrayList<String>();
+        HashMap<String, String> fileMap = null;
+
+        if(orgName.equals("NU")) {
+            fileMap = fileUtils.getEXCIDFileNameMapFromS3(orgName);
+        }
 
         for(String key : fileUtils.getJSONFileListFromS3(orgName)) {
             logger.info("Start loading " + key + " from S3...");
@@ -53,7 +58,14 @@ public class FHIRClientS3 {
 
             if(orgName.equals("NU")) {
                 String pdfFileKey = key.replace(".json", ".pdf");
-                String excidFileKey = key.replace(".json", ".csv");
+
+                String excidMapKey = key.split("\\.")[1];
+                String excidFileKey = fileMap.get(excidMapKey);
+                if(excidFileKey == null || excidFileKey.equals("")) {
+                    logger.error("Failed to find Excid File with MapKey " + excidMapKey + " from S3: Related Excid File is missing.");
+                    continue;
+                }
+
                 byte[] pdfBytes = fileUtils.getS3ObjectAsByteArray(pdfFileKey);
                 byte[] excidBytes = fileUtils.getS3ObjectAsByteArray(excidFileKey);
                 if(pdfBytes == null || pdfBytes.length == 0 || excidBytes == null || excidBytes.length == 0) {
