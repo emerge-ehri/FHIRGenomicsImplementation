@@ -149,7 +149,7 @@ public class HgscReport {
     @JsonProperty("notInterpreted")
     private String notInterpreted;
     @JsonProperty("addendums")
-    private List<List<String>> addendums = null;
+    private List<AddEndUm> addendums = null;
     @JsonProperty("age")
     private String age;
     @JsonProperty("sampleType")
@@ -507,14 +507,14 @@ public class HgscReport {
     }
 
     @JsonProperty("addendums")
-    public List<List<String>> getAddendums() {
+    public List<AddEndUm> getAddendums() {
         if (addendums == null)
-            addendums = new ArrayList<List<String>>();
+            addendums = new ArrayList<AddEndUm>();
         return addendums;
     }
 
     @JsonProperty("addendums")
-    public void setAddendums(List<List<String>> addendums) {
+    public void setAddendums(List<AddEndUm> addendums) {
         this.addendums = addendums;
     }
 

@@ -385,7 +385,7 @@ public class FileUploadServiceImpl {
                 .setResource(patient)
                 .getRequest()
                 .setUrl("Patient")
-                .setIfNoneExist("identifier=" + patient.getIdentifier().get(0).getValue())
+                //.setIfNoneExist("identifier=" + patient.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -393,7 +393,7 @@ public class FileUploadServiceImpl {
                 .setResource(specimen)
                 .getRequest()
                 .setUrl("Specimen")
-                .setIfNoneExist("identifier=" + specimen.getIdentifier().get(0).getValue())
+                //.setIfNoneExist("identifier=" + specimen.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -401,7 +401,7 @@ public class FileUploadServiceImpl {
                 .setResource(serviceRequest)
                 .getRequest()
                 .setUrl("ServiceRequest")
-                .setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
+                //.setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -584,7 +584,7 @@ public class FileUploadServiceImpl {
                 .setResource(geneticistOne)
                 .getRequest()
                 .setUrl("Practitioner")
-                .setIfNoneExist("identifier=" + geneticistOne.getIdentifier().get(0).getValue())
+                //.setIfNoneExist("identifier=" + geneticistOne.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -592,7 +592,7 @@ public class FileUploadServiceImpl {
                 .setResource(geneticistTwo)
                 .getRequest()
                 .setUrl("Practitioner")
-                .setIfNoneExist("identifier=" + geneticistTwo.getIdentifier().get(0).getValue())
+                //.setIfNoneExist("identifier=" + geneticistTwo.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -600,7 +600,7 @@ public class FileUploadServiceImpl {
                 .setResource(orderingPhysician)
                 .getRequest()
                 .setUrl("Practitioner")
-                .setIfNoneExist("identifier=" + orderingPhysician.getIdentifier().get(0).getValue())
+                //.setIfNoneExist("identifier=" + orderingPhysician.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -644,7 +644,7 @@ public class FileUploadServiceImpl {
                 .setResource(diagnosticReport)
                 .getRequest()
                 .setUrl("DiagnosticReport")
-                .setIfNoneExist("identifier=" + diagnosticReport.getIdentifier().get(0).getValue())
+                //.setIfNoneExist("identifier=" + diagnosticReport.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         Bundle resp = client.transaction().withBundle(bundle).execute();
