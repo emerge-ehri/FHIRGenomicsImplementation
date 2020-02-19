@@ -219,7 +219,7 @@ public class FHIRClientS3 {
         if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")
                 && hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
             for(Variant v : hgscReport.getVariants()) {
-                Observation snpVariant = dxSNPINDELVariants.get(v.getGene());
+                Observation snpVariant = dxSNPINDELVariants.get(v.getExternalId());
                 snpVariant.setId(IdDt.newRandomUuid());
                 snpVariant.addBasedOn(new Reference(serviceRequest.getId()));
                 snpVariant.setSubject(new Reference(patient.getId()));
@@ -233,7 +233,7 @@ public class FHIRClientS3 {
 //                dxCNVVariants.addPerformer(new Reference(organization.getId()));
 //                dxCNVVariants.addNote(new Annotation().setAuthor(new Reference(organizationHGSC.getId())).setText(v.getNotes()));
 
-                Observation inhDisPath = obsInhDisPaths.get(v.getGene());
+                Observation inhDisPath = obsInhDisPaths.get(v.getExternalId());
                 inhDisPath.setId(IdDt.newRandomUuid());
                 inhDisPath.addBasedOn(new Reference(serviceRequest.getId()));
                 inhDisPath.setSubject(new Reference(patient.getId()));
@@ -247,8 +247,8 @@ public class FHIRClientS3 {
                         .addHasMember(new Reference(inhDisPath.getId()));
                 //task.setReasonReference(new Reference(inhDisPath.getId()));
 
-                dxSNPINDELVariants.put(v.getGene(), snpVariant);
-                obsInhDisPaths.put(v.getGene(), inhDisPath);
+                dxSNPINDELVariants.put(v.getExternalId(), snpVariant);
+                obsInhDisPaths.put(v.getExternalId(), inhDisPath);
             }
         }
 
@@ -483,8 +483,8 @@ public class FHIRClientS3 {
         if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")
                 && hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
             for(Variant v : hgscReport.getVariants()) {
-                Observation snpV = dxSNPINDELVariants.get(v.getGene());
-                Observation inhDP = obsInhDisPaths.get(v.getGene());
+                Observation snpV = dxSNPINDELVariants.get(v.getExternalId());
+                Observation inhDP = obsInhDisPaths.get(v.getExternalId());
 
                 snpV.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                         .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(snpV))));
@@ -716,7 +716,7 @@ public class FHIRClientS3 {
     private void outputFile(ArrayList<String> resultList, String orgName) {
 
         try {Files.write(Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()
-                .replace("hgsc-fhir-client-s3.jar", "") + "FhirResources-" + "orgName" + ".txt"), resultList);
+                .replace("hgsc-fhir-client-s3.jar", "") + "FhirResources-" + orgName + ".txt"), resultList);
         } catch (IOException e) {
             logger.error("Failed to output created Fhir Resources to a file.", e);
         }

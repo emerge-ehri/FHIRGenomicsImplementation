@@ -87,7 +87,7 @@ public class ObsInhDisPathsValueMapper {
                     }
                 }
 
-                obsInhDisPaths.put(v.getGene(), temp);
+                obsInhDisPaths.put(v.getExternalId(), temp);
             }
         }
 

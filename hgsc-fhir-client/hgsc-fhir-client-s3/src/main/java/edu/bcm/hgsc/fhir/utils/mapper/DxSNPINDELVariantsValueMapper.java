@@ -93,7 +93,7 @@ public class DxSNPINDELVariantsValueMapper {
 
                 //Component:chromosome-identifier (extension)
                 if(v.getChromosome() != null && !v.getChromosome().equals("")) {
-                    dxSNPINDELVariant.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                             new Coding().setSystem("http://loinc.org").setCode("48000-4").setDisplay("Chromosome, Blood or Tissue Specimen")))
                             .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                                     .setCode(variantChromosomeCodeMap.get(v.getChromosome())).setDisplay(v.getChromosome()))));
@@ -190,7 +190,7 @@ public class DxSNPINDELVariantsValueMapper {
                                     .setCode(v.getDbSNPID()).setDisplay(v.getDbSNPID()))));
                 }
 
-                dxSNPINDELVariants.put(v.getGene(), temp);
+                dxSNPINDELVariants.put(v.getExternalId(), temp);
             }
         }
 
