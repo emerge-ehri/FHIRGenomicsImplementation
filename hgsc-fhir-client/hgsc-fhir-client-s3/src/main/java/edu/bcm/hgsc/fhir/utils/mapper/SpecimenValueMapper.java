@@ -24,16 +24,13 @@ public class SpecimenValueMapper {
                 specimen.addIdentifier(new Identifier().setSystem("https://emerge.mc.vanderbilt.edu/").setValue(hgscReport.getPatientSampleID())
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                                 .setCode("SID").setDisplay("Specimen ID"))));
-            }
-        }
-        //AccessionIdentifier
-        if (mappingConfig.containsKey("HgscReport.localID")) {
-            if(hgscReport.getLocalID() != null && !hgscReport.getLocalID().equals("")) {
-                specimen.setAccessionIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getLocalID())
+                //AccessionIdentifier
+                specimen.setAccessionIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getPatientSampleID())
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                                 .setCode("ACSN").setDisplay("Accession ID"))));
             }
         }
+
         //Type
         specimen.setType(new CodeableConcept().addCoding(new Coding().setSystem("http://snomed.info/sct")
                 .setCode("258566005").setDisplay("Deoxyribonucleic acid sample")));
