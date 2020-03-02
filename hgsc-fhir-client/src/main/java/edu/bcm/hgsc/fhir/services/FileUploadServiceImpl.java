@@ -18,8 +18,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +36,7 @@ public class FileUploadServiceImpl {
         byte[] bytes = fileUtils.readBytesFromFile(file);
         HgscReport report = new JsonMappingUtil().readHgscReportJson(bytes);
 
-        Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "Reports//feilocaldev/fhir-eMerge-Test.pdf", "Reports//feilocaldev/fhir-eMerge-Test.csv");
+        Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "", "");
         return this.createBundle(fhirResources, report);
     }
 
@@ -299,7 +297,6 @@ public class FileUploadServiceImpl {
                 .addResult(new Reference(obsReportComment.getId()));
 
         //Narrative
-        //ctx.setNarrativeGenerator(new DefaultThymeleafNarrativeGenerator());
         patient.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(patient))));
         specimen.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
@@ -370,8 +367,6 @@ public class FileUploadServiceImpl {
 
         task.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(task))));
-        //planDefinition.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(planDefinition))));
         diagnosticReport.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport))));
 
@@ -671,24 +666,5 @@ public class FileUploadServiceImpl {
         }
 
         return resultURLArr;
-    }
-
-    private DiagnosticReport searchDiagnosticReportById(String projectDir, String diagnosticReportId) {
-        DiagnosticReport diagnosticReport = client.read().resource(DiagnosticReport.class).withId(diagnosticReportId).execute();
-
-        String string = ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(diagnosticReport);
-        System.out.println(string);
-
-        byte[] byteArray = diagnosticReport.getPresentedFormFirstRep().getData();
-        File outputFile = new File(projectDir + "outputFile.pdf");
-
-        // save byte[] into the output file
-        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
-            fos.write(byteArray);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return diagnosticReport;
     }
 }

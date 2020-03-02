@@ -52,6 +52,7 @@ public class FileUploadServlet extends HttpServlet {
             ArrayList<String> resp = fileUploadServiceImpl.createFhirResourcesInTest(file);
             request.setAttribute("resultURLArr", resp);
         }
+        //Go to a new page with all created FHIR resource URLs
         request.getRequestDispatcher("/success.jsp").forward(request, response);
     }
 

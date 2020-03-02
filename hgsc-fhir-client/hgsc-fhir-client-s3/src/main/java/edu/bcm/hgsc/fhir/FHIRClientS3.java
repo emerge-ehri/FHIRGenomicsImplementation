@@ -341,7 +341,6 @@ public class FHIRClientS3 {
                 .addResult(new Reference(obsReportComment.getId()));
 
         //Narrative
-        //ctx.setNarrativeGenerator(new DefaultThymeleafNarrativeGenerator());
         patient.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(patient))));
         specimen.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
