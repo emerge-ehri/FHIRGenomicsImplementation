@@ -5,10 +5,7 @@ import ca.uhn.fhir.model.primitive.IdDt;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
-import edu.bcm.hgsc.fhir.utils.FhirResourcesMappingUtils;
-import edu.bcm.hgsc.fhir.utils.FileUtils;
-import edu.bcm.hgsc.fhir.utils.JsonMappingUtil;
-import edu.bcm.hgsc.fhir.utils.LoincCodeUtil;
+import edu.bcm.hgsc.fhir.utils.*;
 import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -29,14 +26,17 @@ public class FileUploadServiceImpl {
     FileUtils fileUtils = new FileUtils();
 
     FhirContext ctx = FhirContext.forR4();
-    IGenericClient client = ctx.newRestfulGenericClient(fileUtils.loadPropertyValue("application.properties", "jpaserver.url"));
+
+    String serverURL = fileUtils.loadPropertyValue("application.properties", "jpaserver.url");
+    IGenericClient client = ctx.newRestfulGenericClient(serverURL);
 
     public ArrayList<String> createFhirResourcesInTest(File file) {
 
         byte[] bytes = fileUtils.readBytesFromFile(file);
         HgscReport report = new JsonMappingUtil().readHgscReportJson(bytes);
 
-        Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "", "");
+        //Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "", "");
+        Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "Reports//feilocaldev/fhir-eMerge-Test.pdf", "Reports//feilocaldev/fhir-eMerge-Test.csv");
         return this.createBundle(fhirResources, report);
     }
 
@@ -653,16 +653,20 @@ public class FileUploadServiceImpl {
             logger.error("Failed to convert bundle result to JSON response.", e);
         }
 
-        JSONArray urlArr = (JSONArray) response.get("link");
-        JSONObject jsonUrl = (JSONObject) urlArr.get(0);
-        String serverURL = jsonUrl.get("url").toString();
-
         ArrayList<String> resultURLArr = new ArrayList<String>();
         JSONArray resourcesURLArr = (JSONArray) response.get("entry");
         for (Object o : resourcesURLArr) {
             JSONObject jso = (JSONObject) o;
             JSONObject jso2 = (JSONObject) jso.get("response");
             resultURLArr.add(serverURL + "/" + jso2.get("location"));
+        }
+
+        try {
+            if(!new FhirResourcesValidationUtils().validate(resultURLArr, hgscReport, client)) {
+                logger.error("Failed to validate FHIR resources.");
+            }
+        } catch (java.text.ParseException e) {
+            logger.error("Failed to validate FHIR resources.", e);
         }
 
         return resultURLArr;
