@@ -29,6 +29,7 @@ public class FileUploadServiceImpl {
 
     String serverURL = fileUtils.loadPropertyValue("application.properties", "jpaserver.url");
     IGenericClient client = ctx.newRestfulGenericClient(serverURL);
+    HashMap<String, HashMap<String, String>> loincCodeMap = new LoincCodeUtil().loadLoincCodeToMap();
 
     public ArrayList<String> createFhirResourcesInTest(File file) {
 
@@ -43,7 +44,6 @@ public class FileUploadServiceImpl {
     private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport, String pdfFileKey, String excidFileKey) {
 
         HashMap<String, String> mappingConfig = fileUtils.readMapperConfig(getClass().getClassLoader().getResource("mapping.properties").getPath());
-        HashMap<String, HashMap<String, String>> loincCodeMap = new LoincCodeUtil().loadLoincCodeToMap();
 
         Map<String, Object> newResources = null;
         try {
@@ -662,7 +662,8 @@ public class FileUploadServiceImpl {
         }
 
         try {
-            if(!new FhirResourcesValidationUtils().validate(resultURLArr, hgscReport, client)) {
+            String orgName = "JHU";
+            if(!new FhirResourcesValidationUtils().validate(resultURLArr, hgscReport, client, orgName, loincCodeMap)) {
                 logger.error("Failed to validate FHIR resources.");
             }
         } catch (java.text.ParseException e) {

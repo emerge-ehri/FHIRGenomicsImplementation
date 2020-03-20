@@ -6,6 +6,7 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
 import edu.bcm.hgsc.fhir.utils.FhirResourcesMappingUtils;
+import edu.bcm.hgsc.fhir.utils.FhirResourcesValidationUtils;
 import edu.bcm.hgsc.fhir.utils.FileUtils;
 import edu.bcm.hgsc.fhir.utils.JsonMappingUtil;
 import edu.bcm.hgsc.fhir.utils.LoincCodeUtil;
@@ -34,8 +35,8 @@ public class FHIRClientS3 {
 
     public static void main(String[] args) {
         FHIRClientS3 fhirClientS3 = new FHIRClientS3();
-        HashMap<String, HashMap<String, String>> loincCodeMap = new LoincCodeUtil().loadLoincCodeToMap();
 
+        HashMap<String, HashMap<String, String>> loincCodeMap = new LoincCodeUtil().loadLoincCodeToMap();
         ArrayList<String> resultList = fhirClientS3.createFhirResourcesFromS3(args[0], loincCodeMap);
         fhirClientS3.outputFile(resultList, args[0]);
     }
@@ -79,7 +80,7 @@ public class FHIRClientS3 {
             }
 
             resourceURLList.add("Start creating FHIR resources from " + key + " in S3 bucket...");
-            resourceURLList.addAll(createBundle(fhirResources, report));
+            resourceURLList.addAll(createBundle(fhirResources, report, orgName, loincCodeMap));
             logger.info("Completed loading " + key + " from S3 and creating FHIR resources.");
         }
 
@@ -98,7 +99,7 @@ public class FHIRClientS3 {
         return newResources;
     }
 
-    private ArrayList<String> createBundle(Map<String, Object> fhirResources, HgscReport hgscReport) {
+    private ArrayList<String> createBundle(Map<String, Object> fhirResources, HgscReport hgscReport, String orgName, HashMap<String, HashMap<String, String>> loincCodeMap) {
 
         Patient patient = (Patient)fhirResources.get("Patient");
         // Give the patient a temporary UUID so that other resources in the transaction can refer to it
@@ -707,6 +708,14 @@ public class FHIRClientS3 {
             JSONObject jso = (JSONObject) o;
             JSONObject jso2 = (JSONObject) jso.get("response");
             resultURLArr.add(serverURL + "/" + jso2.get("location"));
+        }
+
+        try {
+            if(!new FhirResourcesValidationUtils().validate(resultURLArr, hgscReport, client, orgName, loincCodeMap)) {
+                logger.error("Failed to validate FHIR resources.");
+            }
+        } catch (java.text.ParseException e) {
+            logger.error("Failed to validate FHIR resources.", e);
         }
 
         return resultURLArr;
