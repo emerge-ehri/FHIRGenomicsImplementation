@@ -713,6 +713,8 @@ public class FHIRClientS3 {
         try {
             if(!new FhirResourcesValidationUtils().validate(resultURLArr, hgscReport, client, orgName, loincCodeMap)) {
                 logger.error("Failed to validate FHIR resources.");
+            }else{
+                logger.info("Completed validating FHIR resources.");
             }
         } catch (java.text.ParseException e) {
             logger.error("Failed to validate FHIR resources.", e);
