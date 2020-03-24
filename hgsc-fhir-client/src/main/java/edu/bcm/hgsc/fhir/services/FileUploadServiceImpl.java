@@ -201,7 +201,7 @@ public class FileUploadServiceImpl {
                 obsOverall.addDerivedFrom(new Reference(inhDisPath.getId()));
                 dxPanel.addHasMember(new Reference(snpVariant.getId()))
                         .addHasMember(new Reference(inhDisPath.getId()));
-                //task.setReasonReference(new Reference(inhDisPath.getId()));
+                task.setReasonReference(new Reference(inhDisPath.getId()));
 
                 dxSNPINDELVariants.put(v.getExternalId(), snpVariant);
                 obsInhDisPaths.put(v.getExternalId(), inhDisPath);
