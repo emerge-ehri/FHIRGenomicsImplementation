@@ -150,7 +150,7 @@ public class FileUploadServiceImpl {
         serviceRequest.addSpecimen(new Reference(specimen.getId()));
         serviceRequest.addPerformer(new Reference(organizationHGSC.getId()));
         serviceRequest.addInstantiatesCanonical(planDefinition.getId());
-        practitionerRole.setPractitioner(new Reference(geneticistOne.getId()));
+        practitionerRole.setPractitioner(new Reference(orderingPhysician.getId()));
         practitionerRole.setOrganization(new Reference(organizationCHP.getId()));
         practitionerRoleGeneticistOne.setPractitioner(new Reference(geneticistOne.getId()));
         practitionerRoleGeneticistOne.setOrganization(new Reference(organizationHGSC.getId()));
@@ -275,7 +275,10 @@ public class FileUploadServiceImpl {
         dxPanel.addHasMember(new Reference(obsOverall.getId()));
                 //.addHasMember(new Reference(dxCNVVariants.getId()));
 
-        serviceRequest.setRequester(new Reference(practitionerRole.getId()));
+        String orgName = "";
+        if(orgName.equals("NU")) {
+            serviceRequest.setRequester(new Reference(practitionerRole.getId()));
+        }
 
         DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
         diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
@@ -397,28 +400,6 @@ public class FileUploadServiceImpl {
                 .getRequest()
                 .setUrl("ServiceRequest")
                 //.setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
-                .setMethod(Bundle.HTTPVerb.POST);
-
-        bundle.addEntry()
-                .setFullUrl(organizationHGSC.getId())
-                .setResource(organizationHGSC)
-                .getRequest()
-                .setUrl("Organization")
-                //.setIfNoneExist("identifier=" + organizationHGSC.getIdentifier().get(0).getValue())
-                .setMethod(Bundle.HTTPVerb.POST);
-
-        bundle.addEntry()
-                .setFullUrl(organizationBCM.getId())
-                .setResource(organizationBCM)
-                .getRequest()
-                .setUrl("Organization")
-                .setMethod(Bundle.HTTPVerb.POST);
-
-        bundle.addEntry()
-                .setFullUrl(organizationCHP.getId())
-                .setResource(organizationCHP)
-                .getRequest()
-                .setUrl("Organization")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -591,18 +572,18 @@ public class FileUploadServiceImpl {
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
-                .setFullUrl(orderingPhysician.getId())
-                .setResource(orderingPhysician)
+                .setFullUrl(organizationHGSC.getId())
+                .setResource(organizationHGSC)
                 .getRequest()
-                .setUrl("Practitioner")
-                //.setIfNoneExist("identifier=" + orderingPhysician.getIdentifier().get(0).getValue())
+                .setUrl("Organization")
+                //.setIfNoneExist("identifier=" + organizationHGSC.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
-                .setFullUrl(practitionerRole.getId())
-                .setResource(practitionerRole)
+                .setFullUrl(organizationBCM.getId())
+                .setResource(organizationBCM)
                 .getRequest()
-                .setUrl("PractitionerRole")
+                .setUrl("Organization")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -618,6 +599,28 @@ public class FileUploadServiceImpl {
                 .getRequest()
                 .setUrl("PractitionerRole")
                 .setMethod(Bundle.HTTPVerb.POST);
+
+        if(orgName.equals("NU")) {
+            bundle.addEntry()
+                    .setFullUrl(orderingPhysician.getId())
+                    .setResource(orderingPhysician)
+                    .getRequest()
+                    .setUrl("Practitioner")
+                    //.setIfNoneExist("identifier=" + orderingPhysician.getIdentifier().get(0).getValue())
+                    .setMethod(Bundle.HTTPVerb.POST);
+            bundle.addEntry()
+                    .setFullUrl(organizationCHP.getId())
+                    .setResource(organizationCHP)
+                    .getRequest()
+                    .setUrl("Organization")
+                    .setMethod(Bundle.HTTPVerb.POST);
+            bundle.addEntry()
+                    .setFullUrl(practitionerRole.getId())
+                    .setResource(practitionerRole)
+                    .getRequest()
+                    .setUrl("PractitionerRole")
+                    .setMethod(Bundle.HTTPVerb.POST);
+        }
 
         if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")) {
             bundle.addEntry()
@@ -662,9 +665,10 @@ public class FileUploadServiceImpl {
         }
 
         try {
-            String orgName = "JHU";
             if(!new FhirResourcesValidationUtils().validate(resultURLArr, hgscReport, client, orgName, loincCodeMap)) {
                 logger.error("Failed to validate FHIR resources.");
+            }else{
+                logger.info("Completed validating FHIR resources.");
             }
         } catch (java.text.ParseException e) {
             logger.error("Failed to validate FHIR resources.", e);

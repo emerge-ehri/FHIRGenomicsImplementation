@@ -31,7 +31,8 @@ public class FHIRClientS3 {
 
     FileUtils fileUtils = new FileUtils();
     FhirContext ctx = FhirContext.forR4();
-    IGenericClient client = ctx.newRestfulGenericClient(fileUtils.loadPropertyValue("application.properties", "jpaserver.url"));
+    String serverURL = fileUtils.loadPropertyValue("application.properties", "jpaserver.url");
+    IGenericClient client = ctx.newRestfulGenericClient(serverURL);
 
     public static void main(String[] args) {
         FHIRClientS3 fhirClientS3 = new FHIRClientS3();
@@ -195,7 +196,7 @@ public class FHIRClientS3 {
         serviceRequest.addSpecimen(new Reference(specimen.getId()));
         serviceRequest.addPerformer(new Reference(organizationHGSC.getId()));
         serviceRequest.addInstantiatesCanonical(planDefinition.getId());
-        practitionerRole.setPractitioner(new Reference(geneticistOne.getId()));
+        practitionerRole.setPractitioner(new Reference(orderingPhysician.getId()));
         practitionerRole.setOrganization(new Reference(organizationCHP.getId()));
         practitionerRoleGeneticistOne.setPractitioner(new Reference(geneticistOne.getId()));
         practitionerRoleGeneticistOne.setOrganization(new Reference(organizationHGSC.getId()));
@@ -318,9 +319,11 @@ public class FHIRClientS3 {
                 .addHasMember(new Reference(pgxResult_6001.getId()));
 
         dxPanel.addHasMember(new Reference(obsOverall.getId()));
-                //.addHasMember(new Reference(dxCNVVariants.getId()));
+        //.addHasMember(new Reference(dxCNVVariants.getId()));
 
-        serviceRequest.setRequester(new Reference(practitionerRole.getId()));
+        if(orgName.equals("NU")) {
+            serviceRequest.setRequester(new Reference(practitionerRole.getId()));
+        }
 
         DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
         diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
@@ -351,7 +354,7 @@ public class FHIRClientS3 {
 
         //hard code organization narrative
         organizationHGSC.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-        .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>id</b>: Human Genome Sequencing Center Clinical Laboratory</p><p>One Baylor Plaza • Houston • TX 77030</p><p>Phone: 713.798.6539 • Fax: 713.798.5741 • www.hgsc.bcm.edu • email: questions@hgsc.bcm.edu</p><p>CAP# 8004250 / CLIA# 45D2027450</p></div>")));
+                .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>id</b>: Human Genome Sequencing Center Clinical Laboratory</p><p>One Baylor Plaza • Houston • TX 77030</p><p>Phone: 713.798.6539 • Fax: 713.798.5741 • www.hgsc.bcm.edu • email: questions@hgsc.bcm.edu</p><p>CAP# 8004250 / CLIA# 45D2027450</p></div>")));
         organizationBCM.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>id</b>: Baylor College of Medicine</p><p>One Baylor Plaza • Houston • TX 77030</p><p>Phone: (713) 798-4951 • https://www.bcm.edu/ </p></div>")));
         organizationCHP.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
@@ -360,7 +363,7 @@ public class FHIRClientS3 {
         obsOverall.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsOverall))));
         //dxCNVVariants.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxCNVVariants))));
+        //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxCNVVariants))));
 
         obsReportComment.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsReportComment))));
@@ -442,28 +445,6 @@ public class FHIRClientS3 {
                 .getRequest()
                 .setUrl("ServiceRequest")
                 //.setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
-                .setMethod(Bundle.HTTPVerb.POST);
-
-        bundle.addEntry()
-                .setFullUrl(organizationHGSC.getId())
-                .setResource(organizationHGSC)
-                .getRequest()
-                .setUrl("Organization")
-                //.setIfNoneExist("identifier=" + organizationHGSC.getIdentifier().get(0).getValue())
-                .setMethod(Bundle.HTTPVerb.POST);
-
-        bundle.addEntry()
-                .setFullUrl(organizationBCM.getId())
-                .setResource(organizationBCM)
-                .getRequest()
-                .setUrl("Organization")
-                .setMethod(Bundle.HTTPVerb.POST);
-
-        bundle.addEntry()
-                .setFullUrl(organizationCHP.getId())
-                .setResource(organizationCHP)
-                .getRequest()
-                .setUrl("Organization")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -636,18 +617,18 @@ public class FHIRClientS3 {
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
-                .setFullUrl(orderingPhysician.getId())
-                .setResource(orderingPhysician)
+                .setFullUrl(organizationHGSC.getId())
+                .setResource(organizationHGSC)
                 .getRequest()
-                .setUrl("Practitioner")
-                //.setIfNoneExist("identifier=" + orderingPhysician.getIdentifier().get(0).getValue())
+                .setUrl("Organization")
+                //.setIfNoneExist("identifier=" + organizationHGSC.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
-                .setFullUrl(practitionerRole.getId())
-                .setResource(practitionerRole)
+                .setFullUrl(organizationBCM.getId())
+                .setResource(organizationBCM)
                 .getRequest()
-                .setUrl("PractitionerRole")
+                .setUrl("Organization")
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -663,6 +644,28 @@ public class FHIRClientS3 {
                 .getRequest()
                 .setUrl("PractitionerRole")
                 .setMethod(Bundle.HTTPVerb.POST);
+
+        if(orgName.equals("NU")) {
+            bundle.addEntry()
+                    .setFullUrl(orderingPhysician.getId())
+                    .setResource(orderingPhysician)
+                    .getRequest()
+                    .setUrl("Practitioner")
+                    //.setIfNoneExist("identifier=" + orderingPhysician.getIdentifier().get(0).getValue())
+                    .setMethod(Bundle.HTTPVerb.POST);
+            bundle.addEntry()
+                    .setFullUrl(organizationCHP.getId())
+                    .setResource(organizationCHP)
+                    .getRequest()
+                    .setUrl("Organization")
+                    .setMethod(Bundle.HTTPVerb.POST);
+            bundle.addEntry()
+                    .setFullUrl(practitionerRole.getId())
+                    .setResource(practitionerRole)
+                    .getRequest()
+                    .setUrl("PractitionerRole")
+                    .setMethod(Bundle.HTTPVerb.POST);
+        }
 
         if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")) {
             bundle.addEntry()
@@ -697,10 +700,6 @@ public class FHIRClientS3 {
         } catch (ParseException e) {
             logger.error("Failed to convert bundle result to JSON response.", e);
         }
-
-        JSONArray urlArr = (JSONArray) response.get("link");
-        JSONObject jsonUrl = (JSONObject) urlArr.get(0);
-        String serverURL = jsonUrl.get("url").toString();
 
         ArrayList<String> resultURLArr = new ArrayList<String>();
         JSONArray resourcesURLArr = (JSONArray) response.get("entry");

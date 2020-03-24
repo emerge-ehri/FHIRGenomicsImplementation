@@ -36,7 +36,7 @@ public class FhirResourcesValidationUtils {
             return false;
         }
 
-        if(!new ObsOverallValidator().validateObsOverallById(resultURLArr.get(6).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
+        if(!new ObsOverallValidator().validateObsOverallById(resultURLArr.get(3).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
@@ -48,13 +48,13 @@ public class FhirResourcesValidationUtils {
 
             int startIndex = 1;
             for(Variant v : hgscReport.getVariants()) {
-                if(!new DxSNPVariantsValidator().validateDxSNPVariantsById(resultURLArr.get(6 + startIndex).split("Observation/")[1].split("/_history")[0], hgscReport, client, v)) {
+                if(!new DxSNPVariantsValidator().validateDxSNPVariantsById(resultURLArr.get(3 + startIndex).split("Observation/")[1].split("/_history")[0], hgscReport, client, v)) {
                     logger.error("Failed to validate FHIR resources.");
                     return false;
                 }
                 startIndex++;
 
-                if(!new ObsInhDisPathsValidator().validateObsInhDisPathById(resultURLArr.get(6 + startIndex).split("Observation/")[1].split("/_history")[0], hgscReport, client, v)) {
+                if(!new ObsInhDisPathsValidator().validateObsInhDisPathById(resultURLArr.get(3 + startIndex).split("Observation/")[1].split("/_history")[0], hgscReport, client, v)) {
                     logger.error("Failed to validate FHIR resources.");
                     return false;
                 }
@@ -62,77 +62,77 @@ public class FhirResourcesValidationUtils {
             }
         }
 
-        if(!new DxPanelValidator().validateDxPanelById(resultURLArr.get(8 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
+        if(!new DxPanelValidator().validateDxPanelById(resultURLArr.get(5 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxPanelValidator().validatePgxPanelById(resultURLArr.get(9 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
+        if(!new PgxPanelValidator().validatePgxPanelById(resultURLArr.get(6 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxMedImplicationsValidator().validatePgxResult_1001_ById(resultURLArr.get(10 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
+        if(!new PgxMedImplicationsValidator().validatePgxResult_1001_ById(resultURLArr.get(7 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxMedImplicationsValidator().validatePgxResult_2001_ById(resultURLArr.get(11 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
+        if(!new PgxMedImplicationsValidator().validatePgxResult_2001_ById(resultURLArr.get(8 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxMedImplicationsValidator().validatePgxResult_3001_ById(resultURLArr.get(12 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
+        if(!new PgxMedImplicationsValidator().validatePgxResult_3001_ById(resultURLArr.get(9 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxMedImplicationsValidator().validatePgxResult_4001_ById(resultURLArr.get(13 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
+        if(!new PgxMedImplicationsValidator().validatePgxResult_4001_ById(resultURLArr.get(10 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxMedImplicationsValidator().validatePgxResult_5001_ById(resultURLArr.get(14 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
+        if(!new PgxMedImplicationsValidator().validatePgxResult_5001_ById(resultURLArr.get(11 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxMedImplicationsValidator().validatePgxResult_6001_ById(resultURLArr.get(15 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
+        if(!new PgxMedImplicationsValidator().validatePgxResult_6001_ById(resultURLArr.get(12 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client, loincCodeMap.get("pgxDataPhenotypeCodeMap"))) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxgenotypesValidator().validatePgxGeno_1001_ById(resultURLArr.get(16 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
+        if(!new PgxgenotypesValidator().validatePgxGeno_1001_ById(resultURLArr.get(13 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxgenotypesValidator().validatePgxGeno_2001_ById(resultURLArr.get(17 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
+        if(!new PgxgenotypesValidator().validatePgxGeno_2001_ById(resultURLArr.get(14 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxgenotypesValidator().validatePgxGeno_3001_ById(resultURLArr.get(18 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
+        if(!new PgxgenotypesValidator().validatePgxGeno_3001_ById(resultURLArr.get(15 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxgenotypesValidator().validatePgxGeno_4001_ById(resultURLArr.get(19 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
+        if(!new PgxgenotypesValidator().validatePgxGeno_4001_ById(resultURLArr.get(16 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxgenotypesValidator().validatePgxGeno_5001_ById(resultURLArr.get(20 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
+        if(!new PgxgenotypesValidator().validatePgxGeno_5001_ById(resultURLArr.get(17 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxgenotypesValidator().validatePgxGeno_6001_ById(resultURLArr.get(21 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
+        if(!new PgxgenotypesValidator().validatePgxGeno_6001_ById(resultURLArr.get(18 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
 
-        if(!new PgxgenotypesValidator().validatePgxGeno_7001_ById(resultURLArr.get(22 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
+        if(!new PgxgenotypesValidator().validatePgxGeno_7001_ById(resultURLArr.get(19 + snpVinhDPNum).split("Observation/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }
