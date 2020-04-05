@@ -86,10 +86,10 @@ public class PatientValueMapper {
                 Extension ext2child1 = new Extension("ombCategory", new Coding().setSystem("urn:oid:2.16.840.1.113883.6.238")
                         .setCode(ethnicity.toCode()).setDisplay(ethnicity.getDisplay()));
                 ext2.addExtension(ext2child1);
-            }else{
-                Extension ext2child2 = new Extension("text", new StringType(hgscReport.getEthnicity()));
-                ext2.addExtension(ext2child2);
             }
+            Extension ext2child2 = new Extension("text", new StringType(hgscReport.getEthnicity()));
+            ext2.addExtension(ext2child2);
+
             patient.addExtension(ext2);
         }
 
@@ -102,10 +102,10 @@ public class PatientValueMapper {
                 Extension ext3child1 = new Extension("ombCategory", new Coding().setSystem("urn:oid:2.16.840.1.113883.6.238")
                         .setCode(race.toCode()).setDisplay(race.getDisplay()));
                 ext3.addExtension(ext3child1);
-            }else{
-                Extension ext3child2 = new Extension("text", new StringType(hgscReport.getRace()));
-                ext3.addExtension(ext3child2);
             }
+            Extension ext3child2 = new Extension("text", new StringType(hgscReport.getRace()));
+            ext3.addExtension(ext3child2);
+
             patient.addExtension(ext3);
         }
 

@@ -1,11 +1,18 @@
 package edu.bcm.hgsc.fhir.utils;
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
 import edu.bcm.hgsc.fhir.utils.validator.*;
 import org.apache.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
+import javax.ws.rs.core.MediaType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +26,7 @@ public class FhirResourcesValidationUtils {
     SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
     SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy");
 
-    public boolean validate(ArrayList<String> resultURLArr, HgscReport hgscReport, IGenericClient client, String orgName, HashMap<String, HashMap<String, String>> loincCodeMap) throws ParseException {
+    public boolean validateData(ArrayList<String> resultURLArr, HgscReport hgscReport, IGenericClient client, String orgName, HashMap<String, HashMap<String, String>> loincCodeMap) throws ParseException {
 
         if(!new PatientValidator().validatePatientById(resultURLArr.get(0).split("Patient/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
@@ -140,6 +147,131 @@ public class FhirResourcesValidationUtils {
         if(!new DiagnosticReportValidator().validateDiagnosticReportById(resultURLArr.get(resultURLArr.size() - 1).split("DiagnosticReport/")[1].split("/_history")[0], resultURLArr, hgscReport, client, sdf, sdf2, orgName)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
+        }
+
+        return true;
+    }
+
+    /*public boolean validateFhirFormat(HashMap<String, String> resourcesIdMap, IGenericClient client) {
+
+        for(Map.Entry<String,String> entry : resourcesIdMap.entrySet()) {
+            String resourceId = entry.getKey();
+            String resourceType = entry.getValue();
+
+            DomainResource resource = null;
+            switch (resourceType) {
+                case "Patient":
+                    resource = client.read().resource(Patient.class).withId(resourceId).execute();
+                    break;
+                case "Specimen":
+                    resource = client.read().resource(Specimen.class).withId(resourceId).execute();
+                    break;
+                case "ServiceRequest":
+                    resource = client.read().resource(ServiceRequest.class).withId(resourceId).execute();
+                    break;
+                case "Organization":
+                    resource = client.read().resource(Organization.class).withId(resourceId).execute();
+                    break;
+                case "Observation":
+                    resource = client.read().resource(Observation.class).withId(resourceId).execute();
+                    break;
+                case "Practitioner":
+                    resource = client.read().resource(Practitioner.class).withId(resourceId).execute();
+                    break;
+                case "PractitionerRole":
+                    resource = client.read().resource(PractitionerRole.class).withId(resourceId).execute();
+                    break;
+                case "Task":
+                    resource = client.read().resource(Task.class).withId(resourceId).execute();
+                    break;
+                case "PlanDefinition":
+                    resource = client.read().resource(PlanDefinition.class).withId(resourceId).execute();
+                    break;
+                case "DiagnosticReport":
+                    //resource = client.read().resource(DiagnosticReport.class).withId(resourceId).execute();
+                    break;
+            }
+
+            if(resource != null) {
+                if(validateSingleFhirResourceFormat(resource, resourceId, resourceType, client)) {
+                    continue;
+                }else{
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean validateSingleFhirResourceFormat(DomainResource resource, String resourceId, String resourceType, IGenericClient client) {
+
+        try {
+            MethodOutcome outcome = client.validate().resource(resource).execute();
+            OperationOutcome oo = (OperationOutcome) outcome.getOperationOutcome();
+
+            for (OperationOutcome.OperationOutcomeIssueComponent nextIssue : oo.getIssue()) {
+                if (nextIssue.getSeverity().ordinal() <= OperationOutcome.IssueSeverity.ERROR.ordinal()) {
+                    if(!nextIssue.getDiagnostics().contains("hgvs") && !nextIssue.getDiagnostics().contains("inherited-disease-pathogenicity")) {
+                        logger.error("Failed to validate " + resourceType + " with resourceId: " + resourceId + " with error:" + nextIssue.getDiagnostics());
+                    }
+                    return false;
+                }
+            }
+        } catch(Exception e) {
+            if(!e.getMessage().contains("Precondition Failed")
+                    && !e.getMessage().contains("inherited-disease-pathogenicity")
+                    && !e.getMessage().contains("hgvs")) {
+                logger.error("Failed to validate " + resourceType + " with resourceId: " + resourceId + " with error:" + e.getMessage());
+                return false;
+            }else{
+                logger.info("Validation ERROR Expected for " + resourceType + " with resourceId:" + resourceId + " with error:" + e.getMessage());
+            }
+        }
+
+        return true;
+    }*/
+
+    public boolean validateBundleFhirResourceFormat(String serverURL, String bundle) {
+
+        Client restClient = Client.create();
+        WebResource webResource = restClient.resource(serverURL + "/Bundle/$validate");
+
+        ClientResponse response = webResource.type(MediaType.APPLICATION_JSON)
+                .post(ClientResponse.class, bundle);
+
+        if(response.getStatus() != 200 && response.getStatus() != 412){
+            logger.error("Unexpected error response code for validateBundleFhirResourceFormat.");
+            return false;
+        }
+
+        JSONObject jsonResp = null;
+        try {
+            jsonResp = (JSONObject) new JSONParser().parse(response.getEntity(String.class));
+        } catch (org.json.simple.parser.ParseException e) {
+            logger.error("Failed to Parse response from validateBundleFhirResourceFormat.", e);
+            return false;
+        }
+
+        JSONArray issueArr = (JSONArray) jsonResp.get("issue");
+        for (Object o : issueArr) {
+            JSONObject jso = (JSONObject) o;
+            String severity = jso.get("severity").toString();
+            if(severity.equalsIgnoreCase("warning") || severity.equalsIgnoreCase("information")) {
+                continue;
+            }else{
+                String diagnostics = jso.get("diagnostics").toString();
+                if(!diagnostics.contains("Precondition Failed")
+                        && !diagnostics.contains("inherited-disease-pathogenicity")
+                        && !diagnostics.contains("hgvs")
+                        && !diagnostics.contains("LL1037-2")
+                        && !diagnostics.contains("task-rec-followup")) {
+                    logger.error("Failed to validate bundle resources with error:" + diagnostics);
+                    return false;
+                }else{
+                    logger.info("Validation ERROR Expected for bundle resources with error:" + diagnostics);
+                }
+            }
         }
 
         return true;

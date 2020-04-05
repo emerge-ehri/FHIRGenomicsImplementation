@@ -140,7 +140,7 @@ public class DxSNPINDELVariantsValueMapper {
                 if(v.getGenomic() != null && !v.getGenomic().equals("")) {
                     temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                             new Coding().setSystem("http://loinc.org").setCode("81290-9").setDisplay("Genomic DNA change (gHGVS)")))
-                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org/")
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://varnomen.hgvs.org/")
                                     .setCode(v.getGenomic()).setDisplay(v.getGenomic()))));
                 }
 
@@ -156,7 +156,7 @@ public class DxSNPINDELVariantsValueMapper {
                 if(v.getCDNA() != null && !v.getCDNA().equals("")) {
                     temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                             new Coding().setSystem("http://loinc.org").setCode("48004-6").setDisplay("DNA change (c.HGVS)")))
-                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org")
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://varnomen.hgvs.org")
                                     .setCode(v.getCDNA()).setDisplay(v.getCDNA()))));
                 }
 
@@ -178,7 +178,7 @@ public class DxSNPINDELVariantsValueMapper {
                 if(v.getProteinChange() != null && !v.getProteinChange().equals("")) {
                     temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                             new Coding().setSystem("http://loinc.org").setCode("48005-3").setDisplay("Amino acid change (pHGVS)")))
-                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org/")
+                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://varnomen.hgvs.org/")
                                     .setCode(v.getProteinChange()).setDisplay(v.getProteinChange()))));
                 }
 

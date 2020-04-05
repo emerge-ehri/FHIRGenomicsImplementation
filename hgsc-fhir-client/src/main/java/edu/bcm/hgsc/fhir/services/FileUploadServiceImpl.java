@@ -38,7 +38,7 @@ public class FileUploadServiceImpl {
 
         //Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "", "");
         Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "Reports//feilocaldev/fhir-eMerge-Test.pdf", "Reports//feilocaldev/fhir-eMerge-Test.csv");
-        return this.createBundle(fhirResources, report);
+        return createBundle(fhirResources, report);
     }
 
     private Map<String, Object> createIndividualFhirResources(HgscReport hgscReport, String pdfFileKey, String excidFileKey) {
@@ -638,6 +638,24 @@ public class FileUploadServiceImpl {
                 .setUrl("PlanDefinition")
                 .setMethod(Bundle.HTTPVerb.POST);
 
+        //Validate Bundle Fhir Resource Format
+        FhirResourcesValidationUtils fhirResourcesValidationUtils = new FhirResourcesValidationUtils();
+        JSONObject jsonBundle = null;
+        try {
+            jsonBundle = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(bundle));
+        } catch (ParseException e) {
+            logger.error("Failed to convert bundle resources to JSON format for validation.", e);
+            return null;
+        }
+
+        if(!fhirResourcesValidationUtils.validateBundleFhirResourceFormat(serverURL, jsonBundle.toJSONString())) {
+            logger.error("Failed to validate FHIR resources format.");
+            return null;
+        }else{
+            logger.info("Completed validating FHIR resources format.");
+        }
+
+        //Add DiagnosticReport to the bundle after FHIR format validation
         bundle.addEntry()
                 .setResource(diagnosticReport)
                 .getRequest()
@@ -654,6 +672,7 @@ public class FileUploadServiceImpl {
             logger.info("Create Bundle:" + response);
         } catch (ParseException e) {
             logger.error("Failed to convert bundle result to JSON response.", e);
+            return null;
         }
 
         ArrayList<String> resultURLArr = new ArrayList<String>();
@@ -665,14 +684,29 @@ public class FileUploadServiceImpl {
         }
 
         try {
-            if(!new FhirResourcesValidationUtils().validate(resultURLArr, hgscReport, client, orgName, loincCodeMap)) {
-                logger.error("Failed to validate FHIR resources.");
+            if(!fhirResourcesValidationUtils.validateData(resultURLArr, hgscReport, client, orgName, loincCodeMap)) {
+                logger.error("Failed to validate FHIR resources data.");
+                return null;
             }else{
-                logger.info("Completed validating FHIR resources.");
+                logger.info("Completed validating FHIR resources data.");
             }
         } catch (java.text.ParseException e) {
-            logger.error("Failed to validate FHIR resources.", e);
+            logger.error("Failed to validate FHIR resources data.", e);
+            return null;
         }
+
+        //POST to JHU server
+        JHUPostUtil jhuPostUtil = new JHUPostUtil();
+        String jhuToken = jhuPostUtil.postForJHUToken();
+        JSONObject jhuBundle = null;
+        try {
+            jhuBundle = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(bundle));
+        } catch (ParseException e) {
+            logger.error("Failed to convert bundle resources to JSON format for POST request to JHU.", e);
+            return null;
+        }
+
+        //jhuPostUtil.postForJHU(jhuBundle.toJSONString(), jhuToken);
 
         return resultURLArr;
     }

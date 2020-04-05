@@ -54,7 +54,7 @@ public class DxCNVVariantsValueMapper {
         //Component:dna-chg
         dxCNVVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("48004-6").setDisplay("DNA change (c.HGVS)")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org")
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://varnomen.hgvs.org")
                         .setCode("c.1552C>T").setDisplay("c.1552C>T"))));
         //Component:dna-chg-type
         dxCNVVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
@@ -73,7 +73,7 @@ public class DxCNVVariantsValueMapper {
         //Component:genomic-dna-chg
         dxCNVVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("81290-9").setDisplay("Genomic DNA change (gHGVS)")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org/")
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://varnomen.hgvs.org/")
                         .setCode("g.2790111C>T").setDisplay("g.2790111C>T"))));
         //Component:genomic-source-class
         dxCNVVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
@@ -83,7 +83,7 @@ public class DxCNVVariantsValueMapper {
         //Component:amino-acid-chg
         dxCNVVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
                 new Coding().setSystem("http://loinc.org").setCode("48005-3").setDisplay("Amino acid change (pHGVS)")))
-                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("https://varnomen.hgvs.org/")
+                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://varnomen.hgvs.org/")
                         .setCode("p.Arg518*").setDisplay("p.Arg518*"))));
         //Component:amino-acid-chg-type
         dxCNVVariants.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
