@@ -152,86 +152,6 @@ public class FhirResourcesValidationUtils {
         return true;
     }
 
-    /*public boolean validateFhirFormat(HashMap<String, String> resourcesIdMap, IGenericClient client) {
-
-        for(Map.Entry<String,String> entry : resourcesIdMap.entrySet()) {
-            String resourceId = entry.getKey();
-            String resourceType = entry.getValue();
-
-            DomainResource resource = null;
-            switch (resourceType) {
-                case "Patient":
-                    resource = client.read().resource(Patient.class).withId(resourceId).execute();
-                    break;
-                case "Specimen":
-                    resource = client.read().resource(Specimen.class).withId(resourceId).execute();
-                    break;
-                case "ServiceRequest":
-                    resource = client.read().resource(ServiceRequest.class).withId(resourceId).execute();
-                    break;
-                case "Organization":
-                    resource = client.read().resource(Organization.class).withId(resourceId).execute();
-                    break;
-                case "Observation":
-                    resource = client.read().resource(Observation.class).withId(resourceId).execute();
-                    break;
-                case "Practitioner":
-                    resource = client.read().resource(Practitioner.class).withId(resourceId).execute();
-                    break;
-                case "PractitionerRole":
-                    resource = client.read().resource(PractitionerRole.class).withId(resourceId).execute();
-                    break;
-                case "Task":
-                    resource = client.read().resource(Task.class).withId(resourceId).execute();
-                    break;
-                case "PlanDefinition":
-                    resource = client.read().resource(PlanDefinition.class).withId(resourceId).execute();
-                    break;
-                case "DiagnosticReport":
-                    //resource = client.read().resource(DiagnosticReport.class).withId(resourceId).execute();
-                    break;
-            }
-
-            if(resource != null) {
-                if(validateSingleFhirResourceFormat(resource, resourceId, resourceType, client)) {
-                    continue;
-                }else{
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    private boolean validateSingleFhirResourceFormat(DomainResource resource, String resourceId, String resourceType, IGenericClient client) {
-
-        try {
-            MethodOutcome outcome = client.validate().resource(resource).execute();
-            OperationOutcome oo = (OperationOutcome) outcome.getOperationOutcome();
-
-            for (OperationOutcome.OperationOutcomeIssueComponent nextIssue : oo.getIssue()) {
-                if (nextIssue.getSeverity().ordinal() <= OperationOutcome.IssueSeverity.ERROR.ordinal()) {
-                    if(!nextIssue.getDiagnostics().contains("hgvs") && !nextIssue.getDiagnostics().contains("inherited-disease-pathogenicity")) {
-                        logger.error("Failed to validate " + resourceType + " with resourceId: " + resourceId + " with error:" + nextIssue.getDiagnostics());
-                    }
-                    return false;
-                }
-            }
-        } catch(Exception e) {
-            if(!e.getMessage().contains("Precondition Failed")
-                    && !e.getMessage().contains("inherited-disease-pathogenicity")
-                    && !e.getMessage().contains("hgvs")) {
-                logger.error("Failed to validate " + resourceType + " with resourceId: " + resourceId + " with error:" + e.getMessage());
-                return false;
-            }else{
-                logger.info("Validation ERROR Expected for " + resourceType + " with resourceId:" + resourceId + " with error:" + e.getMessage());
-            }
-        }
-
-        return true;
-    }*/
-
     public boolean validateBundleFhirResourceFormat(String serverURL, String bundle) {
 
         Client restClient = Client.create();
@@ -261,11 +181,7 @@ public class FhirResourcesValidationUtils {
                 continue;
             }else{
                 String diagnostics = jso.get("diagnostics").toString();
-                if(!diagnostics.contains("Precondition Failed")
-                        && !diagnostics.contains("inherited-disease-pathogenicity")
-                        && !diagnostics.contains("hgvs")
-                        && !diagnostics.contains("LL1037-2")
-                        && !diagnostics.contains("task-rec-followup")) {
+                if(!diagnostics.contains("hgvs")) {
                     logger.error("Failed to validate bundle resources with error:" + diagnostics);
                     return false;
                 }else{
