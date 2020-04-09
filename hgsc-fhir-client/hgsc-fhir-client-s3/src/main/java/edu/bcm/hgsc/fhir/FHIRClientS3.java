@@ -5,11 +5,7 @@ import ca.uhn.fhir.model.primitive.IdDt;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
-import edu.bcm.hgsc.fhir.utils.FhirResourcesMappingUtils;
-import edu.bcm.hgsc.fhir.utils.FhirResourcesValidationUtils;
-import edu.bcm.hgsc.fhir.utils.FileUtils;
-import edu.bcm.hgsc.fhir.utils.JsonMappingUtil;
-import edu.bcm.hgsc.fhir.utils.LoincCodeUtil;
+import edu.bcm.hgsc.fhir.utils.*;
 import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -743,7 +739,14 @@ public class FHIRClientS3 {
         //POST to JHU server
         JHUPostUtil jhuPostUtil = new JHUPostUtil();
         String jhuToken = jhuPostUtil.postForJHUToken();
+        if(jhuToken == null || jhuToken.equals("")) {
+            logger.error("Unable to get token from the JHU server.");
+            return null;
+        }
+
         JSONObject jhuBundle = null;
+        //Send Bundle as BATCH for JHU
+        bundle.setType(Bundle.BundleType.BATCH);
         try {
             jhuBundle = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(bundle));
         } catch (ParseException e) {
@@ -751,7 +754,10 @@ public class FHIRClientS3 {
             return null;
         }
 
-        //jhuPostUtil.postForJHU(jhuBundle.toJSONString(), jhuToken);
+        if(!jhuPostUtil.postForJHU(jhuBundle.toJSONString(), jhuToken)) {
+            logger.error("Failed to Post Fhir resources to the JHU server.");
+            return null;
+        }
 
         return resultURLArr;
     }

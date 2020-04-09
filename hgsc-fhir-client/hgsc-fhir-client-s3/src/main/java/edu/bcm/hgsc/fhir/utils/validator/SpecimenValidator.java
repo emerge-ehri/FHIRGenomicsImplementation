@@ -16,7 +16,10 @@ public class SpecimenValidator {
 
         Specimen specimen = client.read().resource(Specimen.class).withId(resourceId).execute();
 
-        boolean validateSampleCollectedDateResult = sdf2.format(sdf.parse(specimen.getCollection().getCollectedDateTimeType().getValue().toString())).equals(hgscReport.getSampleCollectedDate());
+        boolean validateSampleCollectedDateResult = true;
+        if(hgscReport.getSampleCollectedDate() != null && !hgscReport.getSampleCollectedDate().equals("")) {
+            validateSampleCollectedDateResult = sdf2.format(sdf.parse(specimen.getCollection().getCollectedDateTimeType().getValue().toString())).equals(hgscReport.getSampleCollectedDate());
+        }
 
         if(!validateSampleCollectedDateResult) {
             logger.error("Failed to validate FHIR Specimen resource with resourceId:" + resourceId);

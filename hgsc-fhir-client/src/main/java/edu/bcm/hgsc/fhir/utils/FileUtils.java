@@ -88,7 +88,7 @@ public class FileUtils {
       return s3ObjectBytes;
    }
 
-   private byte[] generateByteArray(InputStream is) {
+   public byte[] generateByteArray(InputStream is) {
 
       byte[] bytes = null;
       try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {

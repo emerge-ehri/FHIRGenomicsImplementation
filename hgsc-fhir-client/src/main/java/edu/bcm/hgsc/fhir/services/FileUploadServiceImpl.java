@@ -698,7 +698,14 @@ public class FileUploadServiceImpl {
         //POST to JHU server
         JHUPostUtil jhuPostUtil = new JHUPostUtil();
         String jhuToken = jhuPostUtil.postForJHUToken();
+        if(jhuToken == null || jhuToken.equals("")) {
+            logger.error("Unable to get token from the JHU server.");
+            return null;
+        }
+
         JSONObject jhuBundle = null;
+        //Send Bundle as BATCH for JHU
+        bundle.setType(Bundle.BundleType.BATCH);
         try {
             jhuBundle = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(bundle));
         } catch (ParseException e) {
@@ -706,7 +713,10 @@ public class FileUploadServiceImpl {
             return null;
         }
 
-        //jhuPostUtil.postForJHU(jhuBundle.toJSONString(), jhuToken);
+        if(!jhuPostUtil.postForJHU(jhuBundle.toJSONString(), jhuToken)) {
+            logger.error("Failed to Post Fhir resources to the JHU server.");
+            return null;
+        }
 
         return resultURLArr;
     }

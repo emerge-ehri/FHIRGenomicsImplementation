@@ -21,9 +21,15 @@ public class TaskValueMapper {
         task.setIntent(Task.TaskIntent.PROPOSAL);
         //Code
         if(hgscReport.getPanelRecommendation() != null && !hgscReport.getPanelRecommendation().equals("")) {
-            task.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                    .setCode("LA14020-4").setDisplay("Genetic counseling recommended"))
-                    .setText(hgscReport.getPanelRecommendation()));
+            if(hgscReport.getOverallInterpretation().equalsIgnoreCase("positive")) {
+                task.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode("LA14020-4").setDisplay("Genetic counseling recommended"))
+                        .setText(hgscReport.getPanelRecommendation()));
+            }else{
+                task.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                        .setCode("LA14022-0").setDisplay("Additional testing recommended"))
+                        .setText(hgscReport.getPanelRecommendation()));
+            }
         }
 
         //Description

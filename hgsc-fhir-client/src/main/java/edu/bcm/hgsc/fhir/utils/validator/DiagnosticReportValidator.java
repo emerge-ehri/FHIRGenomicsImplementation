@@ -18,7 +18,10 @@ public class DiagnosticReportValidator {
 
         DiagnosticReport diagnosticReport = client.read().resource(DiagnosticReport.class).withId(resourceId).execute();
 
-        boolean validateIdentifierResult = diagnosticReport.getIdentifierFirstRep().getValue().equals(hgscReport.getReportIdentifier());
+        boolean validateIdentifierResult = true;
+        if(hgscReport.getReportIdentifier() != null && !hgscReport.getReportIdentifier().equals("")) {
+            validateIdentifierResult = diagnosticReport.getIdentifierFirstRep().getValue().equals(hgscReport.getReportIdentifier());
+        }
 
         boolean validateExcidResult = true;
         boolean validatePDFResult = true;
@@ -32,7 +35,10 @@ public class DiagnosticReportValidator {
 
         boolean validatePatientRefResult = resultURLArr.get(0).contains(diagnosticReport.getSubject().getReference());
 
-        boolean validateIssuedResult = sdf2.format(sdf.parse(diagnosticReport.getIssued().toString())).equals(hgscReport.getReportDate());
+        boolean validateIssuedResult = true;
+        if(hgscReport.getReportDate() != null && !hgscReport.getReportDate().equals("")) {
+            validateIssuedResult = sdf2.format(sdf.parse(diagnosticReport.getIssued().toString())).equals(hgscReport.getReportDate());
+        }
 
         boolean validateSpecimenRefResult = resultURLArr.get(1).contains(diagnosticReport.getSpecimenFirstRep().getReference());
 

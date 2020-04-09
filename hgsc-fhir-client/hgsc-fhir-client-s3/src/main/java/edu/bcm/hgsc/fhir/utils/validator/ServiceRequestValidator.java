@@ -13,7 +13,10 @@ public class ServiceRequestValidator {
 
         ServiceRequest serviceRequest = client.read().resource(ServiceRequest.class).withId(resourceId).execute();
 
-        boolean validateIdentifierResult = serviceRequest.getIdentifierFirstRep().getValue().equals(hgscReport.getPatientSampleID());
+        boolean validateIdentifierResult = true;
+        if(hgscReport.getPatientSampleID() != null && !hgscReport.getPatientSampleID().equals("")) {
+            validateIdentifierResult = serviceRequest.getIdentifierFirstRep().getValue().equals(hgscReport.getPatientSampleID());
+        }
 
         boolean validateReasonCodeResult = true;
         if(hgscReport.getIndicationForTesting() != null && !hgscReport.getIndicationForTesting().equals("")) {
