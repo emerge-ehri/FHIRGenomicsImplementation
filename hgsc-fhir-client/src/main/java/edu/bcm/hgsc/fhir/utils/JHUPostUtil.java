@@ -89,13 +89,15 @@ public class JHUPostUtil {
             JSONObject resEntry = (JSONObject) o;
             JSONObject resp = (JSONObject) resEntry.get("response");
             String status = resp.get("status").toString();
-            if(!status.equals("201")) {
+            if(status.equals("201")) {
+                logger.info("Post Fhir resource " + resp.get("location") + " to JHU server Done..");
+            }else{
                 logger.error("Failed to Post the Fhir resources to the JHU server.");
                 return false;
             }
         }
 
-        logger.info("Post Fhir resources to JHU server Done..");
+        logger.info("Post Fhir bundle resources to JHU server Done..");
 
         return true;
     }
