@@ -14,53 +14,60 @@ public class DxSNPVariantsValidator {
 
         Observation snpV = client.read().resource(Observation.class).withId(resourceId).execute();
 
-        //Component:chromosome-identifier (extension)
         boolean validateChromosomeResult = true;
-        Observation.ObservationComponentComponent component_3 = snpV.getComponent().get(3);
-        if(v.getChromosome() != null && !v.getChromosome().equals("")) {
-            validateChromosomeResult = component_3.getValueCodeableConcept().getCodingFirstRep().getDisplay().equals(v.getChromosome());
-        }
-
-        //Component:ref-allele
         boolean validateRefAlleleResult = true;
-        Observation.ObservationComponentComponent component_4 = snpV.getComponent().get(4);
-        if(v.getRef() != null && !v.getRef().equals("")) {
-            validateRefAlleleResult = component_4.getValueStringType().toString().equals(v.getRef());
-        }
-
-        //Component:alt-allele
         boolean validateAltAlleleResult = true;
-        Observation.ObservationComponentComponent component_5 = snpV.getComponent().get(5);
-        if(v.getAlt() != null && !v.getAlt().equals("")) {
-            validateAltAlleleResult = component_5.getValueStringType().toString().equals(v.getAlt());
-        }
-
-        //Component:exact-start-end
         boolean validateStartEndResult = true;
-        Observation.ObservationComponentComponent component_6 = snpV.getComponent().get(6);
-        if(v.getPosition() != null && !v.getPosition().equals("")) {
-            validateStartEndResult = component_6.getValueRange().getLow().getValue().toString().equals(v.getPosition());
-        }
-
-        //Component:allelic-state
         boolean validateAllelicStateResult = true;
-        Observation.ObservationComponentComponent component_7 = snpV.getComponent().get(7);
-        if(v.getZygosity() != null && !v.getZygosity().equals("")) {
-            validateAllelicStateResult = component_7.getValueCodeableConcept().getCodingFirstRep().getDisplay().equals(v.getZygosity());
-        }
-
-        //Component:gene-studied
         boolean validateGeneStudiedResult = true;
-        Observation.ObservationComponentComponent component_8 = snpV.getComponent().get(8);
-        if(v.getHgncID() != null && !v.getHgncID().equals("") && v.getGene() != null && !v.getGene().equals("")) {
-            validateGeneStudiedResult = component_8.getValueCodeableConcept().getCodingFirstRep().getDisplay().equals(v.getGene());
-        }
-
-        //Component:dna-chg
         boolean validateDnaChgResult = true;
-        Observation.ObservationComponentComponent component_11 = snpV.getComponent().get(11);
-        if(v.getCDNA() != null && !v.getCDNA().equals("")) {
-            validateDnaChgResult = component_11.getValueCodeableConcept().getCodingFirstRep().getDisplay().equals(v.getCDNA());
+
+        for(Observation.ObservationComponentComponent component : snpV.getComponent()) {
+            String code = component.getCode().getCodingFirstRep().getCode();
+            switch (code) {
+                case "48000-4":
+                    //Component:chromosome-identifier (extension)
+                    if(v.getChromosome() != null && !v.getChromosome().equals("")) {
+                        validateChromosomeResult = component.getValueCodeableConcept().getCodingFirstRep().getDisplay().equals(v.getChromosome());
+                    }
+                    break;
+                case "69547-8":
+                    //Component:ref-allele
+                    if(v.getRef() != null && !v.getRef().equals("")) {
+                        validateRefAlleleResult = component.getValueStringType().toString().equals(v.getRef());
+                    }
+                    break;
+                case "69551-0":
+                    //Component:alt-allele
+                    if(v.getAlt() != null && !v.getAlt().equals("")) {
+                        validateAltAlleleResult = component.getValueStringType().toString().equals(v.getAlt());
+                    }
+                    break;
+                case "81254-5":
+                    //Component:exact-start-end
+                    if(v.getPosition() != null && !v.getPosition().equals("")) {
+                        validateStartEndResult = component.getValueRange().getLow().getValue().toString().equals(v.getPosition());
+                    }
+                    break;
+                case "53034-5":
+                    //Component:allelic-state
+                    if(v.getZygosity() != null && !v.getZygosity().equals("")) {
+                        validateAllelicStateResult = component.getValueCodeableConcept().getCodingFirstRep().getDisplay().equals(v.getZygosity());
+                    }
+                    break;
+                case "48018-6":
+                    //Component:gene-studied
+                    if(v.getHgncID() != null && !v.getHgncID().equals("") && v.getGene() != null && !v.getGene().equals("")) {
+                        validateGeneStudiedResult = component.getValueCodeableConcept().getCodingFirstRep().getDisplay().equals(v.getGene());
+                    }
+                    break;
+                case "48004-6":
+                    //Component:dna-chg
+                    if(v.getCDNA() != null && !v.getCDNA().equals("")) {
+                        validateDnaChgResult = component.getValueCodeableConcept().getCodingFirstRep().getDisplay().equals(v.getCDNA());
+                    }
+                    break;
+            }
         }
 
         if(!validateChromosomeResult || !validateRefAlleleResult || !validateAltAlleleResult || !validateStartEndResult
