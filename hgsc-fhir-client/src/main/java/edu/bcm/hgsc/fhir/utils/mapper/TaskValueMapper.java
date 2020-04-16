@@ -25,10 +25,6 @@ public class TaskValueMapper {
                 task.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
                         .setCode("LA14020-4").setDisplay("Genetic counseling recommended"))
                         .setText(hgscReport.getPanelRecommendation()));
-            }else{
-                task.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                        .setCode("LA14022-0").setDisplay("Additional testing recommended"))
-                        .setText(hgscReport.getPanelRecommendation()));
             }
         }
 
