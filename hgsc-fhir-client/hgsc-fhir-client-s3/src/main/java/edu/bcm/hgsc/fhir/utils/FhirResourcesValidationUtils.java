@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -154,10 +155,16 @@ public class FhirResourcesValidationUtils {
 
     public boolean validateBundleFhirResourceFormat(String serverURL, String bundle) {
 
+        FileUtils fileUtils = new FileUtils();
+        String hgscFhirServerUsername = fileUtils.loadPropertyValue("application.properties", "jpaserver.username");
+        String hgscFhirServerPassword = fileUtils.loadPropertyValue("application.properties", "jpaserver.password");
+        String authString = hgscFhirServerUsername + ":" + hgscFhirServerPassword;
+        String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
+
         Client restClient = Client.create();
         WebResource webResource = restClient.resource(serverURL + "/Bundle/$validate");
-
         ClientResponse response = webResource.type(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Basic " + authStringEnc)
                 .post(ClientResponse.class, bundle);
 
         if(response.getStatus() != 200 && response.getStatus() != 412){

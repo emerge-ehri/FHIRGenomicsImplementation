@@ -2,7 +2,9 @@ package edu.bcm.hgsc.fhir.services;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.model.primitive.IdDt;
+import ca.uhn.fhir.rest.client.api.IClientInterceptor;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
+import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
 import edu.bcm.hgsc.fhir.utils.*;
@@ -28,7 +30,6 @@ public class FileUploadServiceImpl {
     FhirContext ctx = FhirContext.forR4();
 
     String serverURL = fileUtils.loadPropertyValue("application.properties", "jpaserver.url");
-    IGenericClient client = ctx.newRestfulGenericClient(serverURL);
     HashMap<String, HashMap<String, String>> loincCodeMap = new LoincCodeUtil().loadLoincCodeToMap();
 
     public ArrayList<String> createFhirResourcesInTest(File file) {
@@ -663,6 +664,14 @@ public class FileUploadServiceImpl {
                 //.setIfNoneExist("identifier=" + diagnosticReport.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
+        //Check security for jpaserver
+        String hgscFhirServerUsername = fileUtils.loadPropertyValue("application.properties", "jpaserver.username");
+        String hgscFhirServerPassword = fileUtils.loadPropertyValue("application.properties", "jpaserver.password");
+        IClientInterceptor authInterceptor = new BasicAuthInterceptor(hgscFhirServerUsername, hgscFhirServerPassword);
+        IGenericClient client = ctx.newRestfulGenericClient(serverURL);
+        client.registerInterceptor(authInterceptor);
+
+        //Send bundle to jpaserver
         Bundle resp = client.transaction().withBundle(bundle).execute();
 
         //Convert bundle resp to actual resource URL and send as htmlResponse
