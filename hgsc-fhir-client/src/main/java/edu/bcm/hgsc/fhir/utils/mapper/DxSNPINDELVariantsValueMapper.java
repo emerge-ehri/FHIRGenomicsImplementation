@@ -122,10 +122,16 @@ public class DxSNPINDELVariantsValueMapper {
 
                 //Component:allelic-state
                 if(v.getZygosity() != null && !v.getZygosity().equals("")) {
-                    temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
-                            new Coding().setSystem("http://loinc.org").setCode("53034-5").setDisplay("Allelic state")))
-                            .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
-                                    .setCode(variantZygosityCodeMap.get(v.getZygosity())).setDisplay(v.getZygosity()))));
+                    if(!"Mosaic".equals(v.getZygosity())){
+                        temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                                new Coding().setSystem("http://loinc.org").setCode("53034-5").setDisplay("Allelic state")))
+                                .setValue(new CodeableConcept().addCoding(new Coding().setSystem("http://loinc.org")
+                                        .setCode(variantZygosityCodeMap.get(v.getZygosity())).setDisplay(v.getZygosity()))));
+                    }else{
+                        temp.addComponent(new ObservationComponentComponent().setCode(new CodeableConcept().addCoding(
+                                new Coding().setSystem("http://loinc.org").setCode("53034-5").setDisplay("Allelic state")))
+                                .setValue(new CodeableConcept().setText(v.getZygosity())));
+                    }
                 }
 
                 //Component:gene-studied

@@ -52,7 +52,11 @@ public class DxSNPVariantsValidator {
                 case "53034-5":
                     //Component:allelic-state
                     if(v.getZygosity() != null && !v.getZygosity().equals("")) {
-                        validateAllelicStateResult = component.getValueCodeableConcept().getCodingFirstRep().getDisplay().equals(v.getZygosity());
+                        if(!"Mosaic".equals(v.getZygosity())) {
+                            validateAllelicStateResult = component.getValueCodeableConcept().getCodingFirstRep().getDisplay().equals(v.getZygosity());
+                        }else{
+                            validateAllelicStateResult = component.getValueCodeableConcept().getText().equals(v.getZygosity());
+                        }
                     }
                     break;
                 case "48018-6":
