@@ -76,7 +76,7 @@ public class FileUtils {
       return fileList;
    }
 
-   public HashMap<String, String> getEXCIDFileNameMapFromS3(String orgName) {
+   public HashMap<String, String> getFileNameMapFromS3(String orgName, String fileType) {
 
       HashMap<String, String> fileMap = new HashMap<String, String>();
       String s3Bucket = loadPropertyValue("application.properties", "s3.bucketname");
@@ -89,17 +89,22 @@ public class FileUtils {
             result = s3.listObjects(req);
             for (S3ObjectSummary objectSummary : result.getObjectSummaries()) {
                String objectKey = objectSummary.getKey();
-               if(objectKey.endsWith(".txt")) {
+               if(objectKey.endsWith(fileType) && fileType.equals(".txt")) {
                   String[] arr = objectKey.split("_");
                   String[] tempKeyArr = arr[0].split("/");
                   String mapKey = tempKeyArr[tempKeyArr.length - 1];
                   fileMap.put(mapKey, objectKey);
-                  logger.info("Find object " + objectKey + " which size is " + objectSummary.getSize());
+               }else if(objectKey.endsWith(fileType) && fileType.equals(".pdf")) {
+                  String mapKey = objectKey.split("\\.")[1];
+                  fileMap.put(mapKey, objectKey);
+               }else{
+                  continue;
                }
+               logger.info("Find object " + objectKey + " which size is " + objectSummary.getSize());
             }
          } while (result.isTruncated());
       } catch (Exception e) {
-         logger.error("GetJSONFileListFromS3 Failed:" + e.getMessage());
+         logger.error("GetFileListFromS3 Failed:" + e.getMessage());
       }
 
       return fileMap;

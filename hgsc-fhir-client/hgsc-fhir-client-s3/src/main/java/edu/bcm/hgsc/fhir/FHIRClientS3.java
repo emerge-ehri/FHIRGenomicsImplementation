@@ -5,6 +5,10 @@ import ca.uhn.fhir.model.primitive.IdDt;
 import ca.uhn.fhir.rest.client.api.IClientInterceptor;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
 import edu.bcm.hgsc.fhir.utils.*;
@@ -36,16 +40,20 @@ public class FHIRClientS3 {
 
         HashMap<String, HashMap<String, String>> loincCodeMap = new LoincCodeUtil().loadLoincCodeToMap();
         ArrayList<String> resultList = fhirClientS3.createFhirResourcesFromS3(args[0], loincCodeMap);
-        fhirClientS3.outputFile(resultList, args[0]);
+        if(args[0].equals("JHU")) {
+            fhirClientS3.outputFile(resultList, args[0]);
+        }
     }
 
     private ArrayList<String> createFhirResourcesFromS3(String orgName, HashMap<String, HashMap<String, String>> loincCodeMap) {
 
         ArrayList<String> resourceURLList = new ArrayList<String>();
-        HashMap<String, String> fileMap = null;
+        HashMap<String, String> pdfFileMap = null;
+        HashMap<String, String> excidFileMap = null;
 
         if(orgName.equals("NU")) {
-            fileMap = fileUtils.getEXCIDFileNameMapFromS3(orgName);
+            pdfFileMap = fileUtils.getFileNameMapFromS3(orgName, ".pdf");
+            excidFileMap = fileUtils.getFileNameMapFromS3(orgName, ".txt");
         }
 
         for(String key : fileUtils.getJSONFileListFromS3(orgName)) {
@@ -56,12 +64,15 @@ public class FHIRClientS3 {
             Map<String, Object> fhirResources = null;
 
             if(orgName.equals("NU")) {
-                String pdfFileKey = key.replace(".json", ".pdf");
-
-                String excidMapKey = key.split("\\.")[1];
-                String excidFileKey = fileMap.get(excidMapKey);
+                String mapKey = key.split("\\.")[1];
+                String pdfFileKey = pdfFileMap.get(mapKey);
+                String excidFileKey = excidFileMap.get(mapKey);
+                if(pdfFileKey == null || pdfFileKey.equals("")) {
+                    logger.error("Failed to find PDF File with MapKey " + mapKey + " from S3: Related PDF File is missing.");
+                    continue;
+                }
                 if(excidFileKey == null || excidFileKey.equals("")) {
-                    logger.error("Failed to find Excid File with MapKey " + excidMapKey + " from S3: Related Excid File is missing.");
+                    logger.error("Failed to find Excid File with MapKey " + mapKey + " from S3: Related Excid File is missing.");
                     continue;
                 }
 
@@ -78,7 +89,7 @@ public class FHIRClientS3 {
             }
 
             resourceURLList.add("Start creating FHIR resources from " + key + " in S3 bucket...");
-            resourceURLList.addAll(createBundle(fhirResources, report, orgName, loincCodeMap));
+            resourceURLList.addAll(createBundle(fhirResources, report, orgName, key, loincCodeMap));
             logger.info("Completed loading " + key + " from S3 and creating FHIR resources.");
         }
 
@@ -97,7 +108,7 @@ public class FHIRClientS3 {
         return newResources;
     }
 
-    private ArrayList<String> createBundle(Map<String, Object> fhirResources, HgscReport hgscReport, String orgName, HashMap<String, HashMap<String, String>> loincCodeMap) {
+    private ArrayList<String> createBundle(Map<String, Object> fhirResources, HgscReport hgscReport, String orgName, String key, HashMap<String, HashMap<String, String>> loincCodeMap) {
 
         Patient patient = (Patient)fhirResources.get("Patient");
         // Give the patient a temporary UUID so that other resources in the transaction can refer to it
@@ -705,67 +716,87 @@ public class FHIRClientS3 {
                 //.setIfNoneExist("identifier=" + diagnosticReport.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
-        //Check security for jpaserver
-        String hgscFhirServerUsername = fileUtils.loadPropertyValue("application.properties", "jpaserver.username");
-        String hgscFhirServerPassword = fileUtils.loadPropertyValue("application.properties", "jpaserver.password");
-        IClientInterceptor authInterceptor = new BasicAuthInterceptor(hgscFhirServerUsername, hgscFhirServerPassword);
-        IGenericClient client = ctx.newRestfulGenericClient(serverURL);
-        client.registerInterceptor(authInterceptor);
-
-        //Send bundle to jpaserver
-        Bundle resp = client.transaction().withBundle(bundle).execute();
-
-        //Convert bundle resp to actual resource URL and send as htmlResponse
-        JSONObject response = null;
-        try {
-            response = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(resp));
-            logger.info("Create Bundle:" + response);
-        } catch (ParseException e) {
-            logger.error("Failed to convert bundle result to JSON response.", e);
-            return null;
-        }
-
         ArrayList<String> resultURLArr = new ArrayList<String>();
-        JSONArray resourcesURLArr = (JSONArray) response.get("entry");
-        for (Object o : resourcesURLArr) {
-            JSONObject jso = (JSONObject) o;
-            JSONObject jso2 = (JSONObject) jso.get("response");
-            resultURLArr.add(serverURL + "/" + jso2.get("location"));
-        }
 
-        try {
-            if(!fhirResourcesValidationUtils.validateData(resultURLArr, hgscReport, client, orgName, loincCodeMap)) {
-                logger.error("Failed to validate FHIR resources data.");
+        //Upload bundle to S3 for NU only
+        if(orgName.equals("NU")) {
+            String bundleString = ctx.newJsonParser().encodeResourceToString(bundle);
+            String key_name = key;
+            logger.info("Uploading bundle " + key_name + " to S3 bucket\n");
+
+            final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
+            String s3bucket = fileUtils.loadPropertyValue("application.properties", "s3.bucketname");
+
+            try {
+                s3.putObject(s3bucket + "/bundle", key_name, bundleString);
+                logger.info("Completed uploading bundle " + key_name + " to S3 bucket for NU\n");
+            } catch (AmazonServiceException e) {
+                logger.error("PutS3Object for Fhir bundle Failed:" + e.getMessage());
+            }
+        }else if(orgName.equals("JHU")){
+            //Check security for jpaserver
+            String hgscFhirServerUsername = fileUtils.loadPropertyValue("application.properties", "jpaserver.username");
+            String hgscFhirServerPassword = fileUtils.loadPropertyValue("application.properties", "jpaserver.password");
+            IClientInterceptor authInterceptor = new BasicAuthInterceptor(hgscFhirServerUsername, hgscFhirServerPassword);
+            IGenericClient client = ctx.newRestfulGenericClient(serverURL);
+            client.registerInterceptor(authInterceptor);
+
+            //Send bundle to jpaserver
+            Bundle resp = client.transaction().withBundle(bundle).execute();
+
+            //Convert bundle resp to actual resource URL and send as htmlResponse
+            JSONObject response = null;
+            try {
+                response = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(resp));
+                logger.info("Create Bundle:" + response);
+            } catch (ParseException e) {
+                logger.error("Failed to convert bundle result to JSON response.", e);
+                return null;
+            }
+
+            JSONArray resourcesURLArr = (JSONArray) response.get("entry");
+            for (Object o : resourcesURLArr) {
+                JSONObject jso = (JSONObject) o;
+                JSONObject jso2 = (JSONObject) jso.get("response");
+                resultURLArr.add(serverURL + "/" + jso2.get("location"));
+            }
+
+            try {
+                if(!fhirResourcesValidationUtils.validateData(resultURLArr, hgscReport, client, orgName, loincCodeMap)) {
+                    logger.error("Failed to validate FHIR resources data.");
+                    return null;
+                }else{
+                    logger.info("Completed validating FHIR resources data.");
+                }
+            } catch (java.text.ParseException e) {
+                logger.error("Failed to validate FHIR resources data.", e);
+                return null;
+            }
+
+            //POST to JHU server
+            JHUPostUtil jhuPostUtil = new JHUPostUtil();
+            String jhuToken = jhuPostUtil.postForJHUToken();
+            if(jhuToken == null || jhuToken.equals("")) {
+                logger.error("Unable to get token from the JHU server.");
+                return null;
+            }
+
+            JSONObject jhuBundle = null;
+            //Send Bundle as BATCH for JHU
+            bundle.setType(Bundle.BundleType.BATCH);
+            try {
+                jhuBundle = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(bundle));
+            } catch (ParseException e) {
+                logger.error("Failed to convert bundle resources to JSON format for POST request to JHU.", e);
+                return null;
+            }
+
+            if(!jhuPostUtil.postForJHU(jhuBundle.toJSONString(), jhuToken)) {
+                logger.error("Failed to Post Fhir resources to the JHU server.");
                 return null;
             }else{
-                logger.info("Completed validating FHIR resources data.");
+                logger.info("Completed Posting Fhir resources to the JHU server for the eMerge JSON file:" + key);
             }
-        } catch (java.text.ParseException e) {
-            logger.error("Failed to validate FHIR resources data.", e);
-            return null;
-        }
-
-        //POST to JHU server
-        JHUPostUtil jhuPostUtil = new JHUPostUtil();
-        String jhuToken = jhuPostUtil.postForJHUToken();
-        if(jhuToken == null || jhuToken.equals("")) {
-            logger.error("Unable to get token from the JHU server.");
-            return null;
-        }
-
-        JSONObject jhuBundle = null;
-        //Send Bundle as BATCH for JHU
-        bundle.setType(Bundle.BundleType.BATCH);
-        try {
-            jhuBundle = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(bundle));
-        } catch (ParseException e) {
-            logger.error("Failed to convert bundle resources to JSON format for POST request to JHU.", e);
-            return null;
-        }
-
-        if(!jhuPostUtil.postForJHU(jhuBundle.toJSONString(), jhuToken)) {
-            logger.error("Failed to Post Fhir resources to the JHU server.");
-            return null;
         }
 
         return resultURLArr;
