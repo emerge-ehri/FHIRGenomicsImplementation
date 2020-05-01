@@ -40,9 +40,7 @@ public class FHIRClientS3 {
 
         HashMap<String, HashMap<String, String>> loincCodeMap = new LoincCodeUtil().loadLoincCodeToMap();
         ArrayList<String> resultList = fhirClientS3.createFhirResourcesFromS3(args[0], loincCodeMap);
-        if(args[0].equals("JHU")) {
-            fhirClientS3.outputFile(resultList, args[0]);
-        }
+        fhirClientS3.outputFile(resultList, args[0]);
     }
 
     private ArrayList<String> createFhirResourcesFromS3(String orgName, HashMap<String, HashMap<String, String>> loincCodeMap) {
@@ -716,7 +714,45 @@ public class FHIRClientS3 {
                 //.setIfNoneExist("identifier=" + diagnosticReport.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
+        //Check security for jpaserver
+        String hgscFhirServerUsername = fileUtils.loadPropertyValue("application.properties", "jpaserver.username");
+        String hgscFhirServerPassword = fileUtils.loadPropertyValue("application.properties", "jpaserver.password");
+        IClientInterceptor authInterceptor = new BasicAuthInterceptor(hgscFhirServerUsername, hgscFhirServerPassword);
+        IGenericClient client = ctx.newRestfulGenericClient(serverURL);
+        client.registerInterceptor(authInterceptor);
+
+        //Send bundle to jpaserver
+        Bundle resp = client.transaction().withBundle(bundle).execute();
+
+        //Convert bundle resp to actual resource URL and send as htmlResponse
+        JSONObject response = null;
+        try {
+            response = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(resp));
+            logger.info("Create Bundle:" + response);
+        } catch (ParseException e) {
+            logger.error("Failed to convert bundle result to JSON response.", e);
+            return null;
+        }
+
         ArrayList<String> resultURLArr = new ArrayList<String>();
+        JSONArray resourcesURLArr = (JSONArray) response.get("entry");
+        for (Object o : resourcesURLArr) {
+            JSONObject jso = (JSONObject) o;
+            JSONObject jso2 = (JSONObject) jso.get("response");
+            resultURLArr.add(serverURL + "/" + jso2.get("location"));
+        }
+
+        try {
+            if(!fhirResourcesValidationUtils.validateData(resultURLArr, hgscReport, client, orgName, loincCodeMap)) {
+                logger.error("Failed to validate FHIR resources data.");
+                return null;
+            }else{
+                logger.info("Completed validating FHIR resources data.");
+            }
+        } catch (java.text.ParseException e) {
+            logger.error("Failed to validate FHIR resources data.", e);
+            return null;
+        }
 
         //Upload bundle to S3 for NU only
         if(orgName.equals("NU")) {
@@ -733,47 +769,10 @@ public class FHIRClientS3 {
             } catch (AmazonServiceException e) {
                 logger.error("PutS3Object for Fhir bundle Failed:" + e.getMessage());
             }
-        }else if(orgName.equals("JHU")){
-            //Check security for jpaserver
-            String hgscFhirServerUsername = fileUtils.loadPropertyValue("application.properties", "jpaserver.username");
-            String hgscFhirServerPassword = fileUtils.loadPropertyValue("application.properties", "jpaserver.password");
-            IClientInterceptor authInterceptor = new BasicAuthInterceptor(hgscFhirServerUsername, hgscFhirServerPassword);
-            IGenericClient client = ctx.newRestfulGenericClient(serverURL);
-            client.registerInterceptor(authInterceptor);
+        }
 
-            //Send bundle to jpaserver
-            Bundle resp = client.transaction().withBundle(bundle).execute();
-
-            //Convert bundle resp to actual resource URL and send as htmlResponse
-            JSONObject response = null;
-            try {
-                response = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(resp));
-                logger.info("Create Bundle:" + response);
-            } catch (ParseException e) {
-                logger.error("Failed to convert bundle result to JSON response.", e);
-                return null;
-            }
-
-            JSONArray resourcesURLArr = (JSONArray) response.get("entry");
-            for (Object o : resourcesURLArr) {
-                JSONObject jso = (JSONObject) o;
-                JSONObject jso2 = (JSONObject) jso.get("response");
-                resultURLArr.add(serverURL + "/" + jso2.get("location"));
-            }
-
-            try {
-                if(!fhirResourcesValidationUtils.validateData(resultURLArr, hgscReport, client, orgName, loincCodeMap)) {
-                    logger.error("Failed to validate FHIR resources data.");
-                    return null;
-                }else{
-                    logger.info("Completed validating FHIR resources data.");
-                }
-            } catch (java.text.ParseException e) {
-                logger.error("Failed to validate FHIR resources data.", e);
-                return null;
-            }
-
-            //POST to JHU server
+        //POST to JHU server
+        if(orgName.equals("JHU")) {
             JHUPostUtil jhuPostUtil = new JHUPostUtil();
             String jhuToken = jhuPostUtil.postForJHUToken();
             if(jhuToken == null || jhuToken.equals("")) {
