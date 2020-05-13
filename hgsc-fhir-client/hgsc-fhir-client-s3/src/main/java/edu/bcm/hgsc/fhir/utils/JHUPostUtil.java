@@ -70,18 +70,18 @@ public class JHUPostUtil {
                 .header("Authorization", "Bearer " + jhuToken)
                 .post(ClientResponse.class, bundle);
 
+        byte[] responseByteArr = fileUtils.generateByteArray(response.getEntityInputStream());
+
         if(response.getStatus() != 200){
-            logger.error("Failed to Post Fhir resources to the JHU server.");
+            logger.error("Failed to Post Fhir resources to the JHU server. Response code:" + response.getStatus() + "Error:" + new String(responseByteArr, StandardCharsets.UTF_8));
             return false;
         }
-
-        byte[] responseByteArr = fileUtils.generateByteArray(response.getEntityInputStream());
 
         JSONObject jsonResp = null;
         try {
             jsonResp = (JSONObject) new JSONParser().parse(new String(responseByteArr, StandardCharsets.UTF_8));
         } catch (ParseException e) {
-            logger.error("Failed to Parse JHU token.", e);
+            logger.error("Failed to Parse JHU response.", e);
         }
 
         JSONArray entryArr = (JSONArray) jsonResp.get("entry");
