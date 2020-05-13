@@ -61,10 +61,11 @@ public class OrganizationValueMapper {
         //Active
         organizationCHP.setActive(true);
         //Name
-        organizationCHP.setName("Children's Hospital of Philadelphia");
+        organizationCHP.setName("Northwestern University");
         //Address
-        organizationCHP.addAddress(new Address().addLine("3615 Civic Center Blvd.").addLine("Abramson Research Center Suite 1014")
-                .setCity("Philadelphia").setState("PA").setPostalCode("19104").setCountry("USA"));
+        if (hgscReport.getOrderingPhysicianAddress() != null && !hgscReport.getOrderingPhysicianAddress().equals("")) {
+            organizationCHP.addAddress(new Address().setText(hgscReport.getOrderingPhysicianAddress()));
+        }
 
         return organizationCHP;
     }

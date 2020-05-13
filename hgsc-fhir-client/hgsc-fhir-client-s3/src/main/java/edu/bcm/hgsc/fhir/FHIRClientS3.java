@@ -224,6 +224,12 @@ public class FHIRClientS3 {
         obsOverall.setSpecimen(new Reference(specimen.getId()));
         obsOverall.addPerformer(new Reference(organizationHGSC.getId()));
 
+        if(orgName.equals("JHU")) {
+            specimen.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getPatientID() + "--specimen"));
+            serviceRequest.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getPatientID() + "--serviceRequest"));
+            obsOverall.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getReportIdentifier() + "--overallInterpretation"));
+        }
+
         if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")
                 && hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
             for(Variant v : hgscReport.getVariants()) {
@@ -234,6 +240,10 @@ public class FHIRClientS3 {
                 snpVariant.setSpecimen(new Reference(specimen.getId()));
                 snpVariant.addPerformer(new Reference(organizationHGSC.getId()));
                 snpVariant.addNote(new Annotation().setAuthor(new Reference(organizationHGSC.getId())).setText(v.getNotes()));
+
+                if(orgName.equals("JHU")) {
+                    snpVariant.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getReportIdentifier() + "--variant--" + v.getExternalId().replaceAll(",", "")));
+                }
 
 //                dxCNVVariants.addBasedOn(new Reference(serviceRequest.getId()));
 //                dxCNVVariants.setSubject(new Reference(patient.getId()));
@@ -248,6 +258,10 @@ public class FHIRClientS3 {
                 inhDisPath.addPerformer(new Reference(organizationHGSC.getId()));
                 inhDisPath.addNote(new Annotation().setText(v.getNotes()));
                 inhDisPath.setSpecimen(new Reference(specimen.getId()));
+
+                if(orgName.equals("JHU")) {
+                    inhDisPath.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getReportIdentifier() + "--inheritedDiseasePathogenicity--" + v.getExternalId().replaceAll(",", "")));
+                }
 
                 inhDisPath.addDerivedFrom(new Reference(snpVariant.getId()));
                 obsOverall.addDerivedFrom(new Reference(inhDisPath.getId()));
@@ -434,7 +448,7 @@ public class FHIRClientS3 {
                 .setResource(patient)
                 .getRequest()
                 .setUrl("Patient")
-                //.setIfNoneExist("identifier=" + patient.getIdentifier().get(0).getValue())
+                .setIfNoneExist("identifier=" + patient.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -442,7 +456,7 @@ public class FHIRClientS3 {
                 .setResource(specimen)
                 .getRequest()
                 .setUrl("Specimen")
-                //.setIfNoneExist("identifier=" + specimen.getIdentifier().get(0).getValue())
+                .setIfNoneExist("identifier=" + specimen.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -450,15 +464,25 @@ public class FHIRClientS3 {
                 .setResource(serviceRequest)
                 .getRequest()
                 .setUrl("ServiceRequest")
-                //.setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
+                .setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
-        bundle.addEntry()
-                .setFullUrl(obsOverall.getId())
-                .setResource(obsOverall)
-                .getRequest()
-                .setUrl("Observation")
-                .setMethod(Bundle.HTTPVerb.POST);
+        if(orgName.equals("JHU")) {
+            bundle.addEntry()
+                    .setFullUrl(obsOverall.getId())
+                    .setResource(obsOverall)
+                    .getRequest()
+                    .setUrl("Observation")
+                    .setIfNoneExist("identifier=" + obsOverall.getIdentifier().get(0).getValue())
+                    .setMethod(Bundle.HTTPVerb.POST);
+        }else{
+            bundle.addEntry()
+                    .setFullUrl(obsOverall.getId())
+                    .setResource(obsOverall)
+                    .getRequest()
+                    .setUrl("Observation")
+                    .setMethod(Bundle.HTTPVerb.POST);
+        }
 
 //        bundle.addEntry()
 //                .setFullUrl(dxCNVVariants.getId())
@@ -478,18 +502,35 @@ public class FHIRClientS3 {
                 inhDP.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                         .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(inhDP))));
 
-                bundle.addEntry()
-                        .setFullUrl(snpV.getId())
-                        .setResource(snpV)
-                        .getRequest()
-                        .setUrl("Observation")
-                        .setMethod(Bundle.HTTPVerb.POST);
-                bundle.addEntry()
-                        .setFullUrl(inhDP.getId())
-                        .setResource(inhDP)
-                        .getRequest()
-                        .setUrl("Observation")
-                        .setMethod(Bundle.HTTPVerb.POST);
+                if(orgName.equals("JHU")) {
+                    bundle.addEntry()
+                            .setFullUrl(snpV.getId())
+                            .setResource(snpV)
+                            .getRequest()
+                            .setUrl("Observation")
+                            .setIfNoneExist("identifier=" + snpV.getIdentifier().get(0).getValue())
+                            .setMethod(Bundle.HTTPVerb.POST);
+                    bundle.addEntry()
+                            .setFullUrl(inhDP.getId())
+                            .setResource(inhDP)
+                            .getRequest()
+                            .setUrl("Observation")
+                            .setIfNoneExist("identifier=" + inhDP.getIdentifier().get(0).getValue())
+                            .setMethod(Bundle.HTTPVerb.POST);
+                }else{
+                    bundle.addEntry()
+                            .setFullUrl(snpV.getId())
+                            .setResource(snpV)
+                            .getRequest()
+                            .setUrl("Observation")
+                            .setMethod(Bundle.HTTPVerb.POST);
+                    bundle.addEntry()
+                            .setFullUrl(inhDP.getId())
+                            .setResource(inhDP)
+                            .getRequest()
+                            .setUrl("Observation")
+                            .setMethod(Bundle.HTTPVerb.POST);
+                }
             }
         }
 
@@ -611,7 +652,7 @@ public class FHIRClientS3 {
                 .setResource(geneticistOne)
                 .getRequest()
                 .setUrl("Practitioner")
-                //.setIfNoneExist("identifier=" + geneticistOne.getIdentifier().get(0).getValue())
+                .setIfNoneExist("identifier=" + geneticistOne.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -619,7 +660,7 @@ public class FHIRClientS3 {
                 .setResource(geneticistTwo)
                 .getRequest()
                 .setUrl("Practitioner")
-                //.setIfNoneExist("identifier=" + geneticistTwo.getIdentifier().get(0).getValue())
+                .setIfNoneExist("identifier=" + geneticistTwo.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -627,7 +668,7 @@ public class FHIRClientS3 {
                 .setResource(organizationHGSC)
                 .getRequest()
                 .setUrl("Organization")
-                //.setIfNoneExist("identifier=" + organizationHGSC.getIdentifier().get(0).getValue())
+                .setIfNoneExist("identifier=" + organizationHGSC.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         bundle.addEntry()
@@ -711,7 +752,7 @@ public class FHIRClientS3 {
                 .setResource(diagnosticReport)
                 .getRequest()
                 .setUrl("DiagnosticReport")
-                //.setIfNoneExist("identifier=" + diagnosticReport.getIdentifier().get(0).getValue())
+                .setIfNoneExist("identifier=" + diagnosticReport.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
         //Check security for jpaserver
@@ -782,7 +823,7 @@ public class FHIRClientS3 {
 
             JSONObject jhuBundle = null;
             //Send Bundle as BATCH for JHU
-            bundle.setType(Bundle.BundleType.BATCH);
+            //bundle.setType(Bundle.BundleType.BATCH);
             try {
                 jhuBundle = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(bundle));
             } catch (ParseException e) {

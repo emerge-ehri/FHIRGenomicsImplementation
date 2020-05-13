@@ -48,8 +48,8 @@ public class PractitionerValueMapper {
                     .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                             .setCode("NPI").setDisplay("National provider identifier"))));
             //Name
-            geneticistOne.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily(practitionerDatum.getLastName() + " " + practitionerDatum.getMiddleName())
-                    .addGiven(practitionerDatum.getFirstName())
+            geneticistOne.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily(practitionerDatum.getLastName())
+                    .addGiven(practitionerDatum.getFirstName() + " " + practitionerDatum.getMiddleName())
                     .addSuffix(practitionerDatum.getSuffix()));
             //Qualification
             geneticistOne.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept().addCoding(new Coding()
@@ -81,8 +81,8 @@ public class PractitionerValueMapper {
                     .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                             .setCode("NPI").setDisplay("National provider identifier"))));
             //Name
-            geneticistTwo.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily(practitionerDatum.getLastName() + " " + practitionerDatum.getMiddleName())
-                    .addGiven(practitionerDatum.getFirstName())
+            geneticistTwo.addName(new HumanName().setUse(HumanName.NameUse.USUAL).setFamily(practitionerDatum.getLastName())
+                    .addGiven(practitionerDatum.getFirstName() + " " + practitionerDatum.getMiddleName())
                     .addSuffix(practitionerDatum.getSuffix()));
             //Qualification
             geneticistTwo.addQualification(new Practitioner.PractitionerQualificationComponent().setCode(new CodeableConcept().addCoding(new Coding()
