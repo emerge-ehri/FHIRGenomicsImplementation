@@ -26,7 +26,7 @@ public class ObsInhDisPathsValidator {
 
         boolean validateSummaryTextResult = true;
         if(v.getVariantInterpretation() != null && !v.getVariantInterpretation().equals("")) {
-            validateSummaryTextResult = inhDP.getExtensionByUrl("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text")
+            validateSummaryTextResult = inhDP.getExtensionByUrl("http://namingsystem.org/fhir/StructureDefinition/interpretation-summary-text")
                     .getValue().toString().equals(v.getVariantInterpretation());
         }
 

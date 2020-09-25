@@ -1,0 +1,338 @@
+{
+  "prsRecommendation": "",
+  "lpaFinding": "",
+  "pgxData": [
+    {
+      "interpretation": "This individual is heterozygous for the low function allele in the CYP2C9 gene. Based on the genotype result, this patient is predicted to have intermediate CYP2C9 function.",
+      "hgncID": "HGNC:2623",
+      "summary": "This individual is heterozygous for the low function allele in the CYP2C9 gene. Based on the genotype result, this patient is predicted to have intermediate CYP2C9 function.",
+      "phenotype": "Intermediate metabolizer",
+      "recommendation": "",
+      "geneSymbol": "CYP2C9",
+      "pgxDrugRecommendation": [
+        {
+          "id": "C0043031",
+          "drug": "warfarin",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-warfarin-and-cyp2c9-and-vkorc1/"
+        }
+      ],
+      "diplotype": "*1/*2"
+    },
+    {
+      "interpretation": "This individual is homozygous for the rs12979860 C/C allele in the IFNL3 gene. This variant is the strongest baseline predictor of response to peginterferon alfa and ribavirin therapy in previously untreated patients and can be used by patients and clinicians as part of the shared decision-making process for initiating treatment for hepatitis C virus infection. Based on the genotype result, this patient is predicted to have an increased likelihood of response (higher sustained virologic response rate) to peginterferon alfa and ribavirin therapy as compared with patients with unfavorable response genotype. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-peg-interferon-alpha-based-regimens-and-ifnl3/.",
+      "hgncID": "HGNC:18365",
+      "summary": "This individual is homozygous for the rs12979860 C/C allele in the IFNL3 gene. This variant is the strongest baseline predictor of response to peginterferon alfa and ribavirin therapy in previously untreated patients and can be used by patients and clinicians as part of the shared decision-making process for initiating treatment for hepatitis C virus infection. Based on the genotype result, this patient is predicted to have an increased likelihood of response (higher sustained virologic response rate) to peginterferon alfa and ribavirin therapy as compared with patients with unfavorable response genotype. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-peg-interferon-alpha-based-regimens-and-ifnl3/.",
+      "phenotype": "Favorable response genotype",
+      "recommendation": "",
+      "geneSymbol": "IFNL3",
+      "pgxDrugRecommendation": [
+        {
+          "id": "C0391001",
+          "drug": "peginterferon alfa-2a",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-peg-interferon-alpha-based-regimens-and-ifnl3/"
+        },
+        {
+          "id": "C0796545",
+          "drug": "peginterferon alfa-2b",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-peg-interferon-alpha-based-regimens-and-ifnl3/"
+        },
+        {
+          "id": "C0035525",
+          "drug": "ribavirin",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-peg-interferon-alpha-based-regimens-and-ifnl3/"
+        }
+      ],
+      "diplotype": "C/C"
+    },
+    {
+      "interpretation": "This individual is homozygous for the functional allele of the DPYD gene.  This genotype information can be used by patients and clinicians as part of the shared decision-making process for fluoropyrimidines (capecitabine, fluorouracil, tegafur).  Based on the genotype result, this patient is predicted to have a normal DPD activity phenotype.  Individuals with this diplotype are expected to have \"normal\" risk for fluoropyrimidine toxicity. Recommendations include the use of label recommended dosage and administration. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-fluoropyrimidines-and-dpyd/.",
+      "hgncID": "HGNC:3012",
+      "summary": "This individual is homozygous for the functional allele of the DPYD gene.  This genotype information can be used by patients and clinicians as part of the shared decision-making process for fluoropyrimidines (capecitabine, fluorouracil, tegafur).  Based on the genotype result, this patient is predicted to have a normal DPD activity phenotype.  Individuals with this diplotype are expected to have \"normal\" risk for fluoropyrimidine toxicity. Recommendations include the use of label recommended dosage and administration. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-fluoropyrimidines-and-dpyd/.",
+      "phenotype": "Normal metabolizer",
+      "recommendation": "",
+      "geneSymbol": "DPYD",
+      "pgxDrugRecommendation": [
+        {
+          "id": "C0671970",
+          "drug": "capecitabine",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-fluoropyrimidines-and-dpyd/"
+        },
+        {
+          "id": "C0016360",
+          "drug": "fluorouracil",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-fluoropyrimidines-and-dpyd/"
+        },
+        {
+          "id": "C0016778",
+          "drug": "tegafur",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-fluoropyrimidines-and-dpyd/"
+        }
+      ],
+      "diplotype": "*1/*1"
+    },
+    {
+      "interpretation": "This individual is homozygous for the normal high activity allele of the TPMT gene.  Decreased TPMT gene activity is associated with toxicity and myelosuppression in response to thiopurines, and this genotype information can be used by patients and clinicians as part of the shared decision-making process for initiating treatment.  Based on the genotype result, this patient is predicted to have normal TPMT function. Individuals with this diplotype are expected to have a normal response to mercaptopurine, azathioprine and thioguanine. A normal dose of thiopurine and adjustment following the disease-specific guidelines is recommended. Refer to current guidelines for dosage and recommendations for each specific thiopurine drug at https://cpicpgx.org/guidelines/guideline-for-thiopurines-and-tpmt/.",
+      "hgncID": "HGNC:12014",
+      "summary": "This individual is homozygous for the normal high activity allele of the TPMT gene.  Decreased TPMT gene activity is associated with toxicity and myelosuppression in response to thiopurines, and this genotype information can be used by patients and clinicians as part of the shared decision-making process for initiating treatment.  Based on the genotype result, this patient is predicted to have normal TPMT function. Individuals with this diplotype are expected to have a normal response to mercaptopurine, azathioprine and thioguanine. A normal dose of thiopurine and adjustment following the disease-specific guidelines is recommended. Refer to current guidelines for dosage and recommendations for each specific thiopurine drug at https://cpicpgx.org/guidelines/guideline-for-thiopurines-and-tpmt/.",
+      "phenotype": "High activity",
+      "recommendation": "",
+      "geneSymbol": "TPMT",
+      "pgxDrugRecommendation": [
+        {
+          "id": "C0004482",
+          "drug": "azathioprine",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-thiopurines-and-tpmt/"
+        },
+        {
+          "id": "C0000618",
+          "drug": "mercaptopurine",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-thiopurines-and-tpmt/"
+        },
+        {
+          "id": "C0039902",
+          "drug": "thioguanine",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-thiopurines-and-tpmt/"
+        }
+      ],
+      "diplotype": "*1/*1"
+    },
+    {
+      "interpretation": "This individual is also heterozygous for the variant allele for the VKORC1 gene. Expression level of the VKORC1 gene is associated with warfarin sensitivity. Based on the genotype result, this patient is predicted to have medium sensitivity to warfarin.",
+      "hgncID": "HGNC:23663",
+      "summary": "This individual is also heterozygous for the variant allele for the VKORC1 gene. Expression level of the VKORC1 gene is associated with warfarin sensitivity. Based on the genotype result, this patient is predicted to have medium sensitivity to warfarin.",
+      "phenotype": "Medium sensitivity to Warfarin",
+      "recommendation": "",
+      "geneSymbol": "VKORC1",
+      "pgxDrugRecommendation": [
+        {
+          "id": "C0043031",
+          "drug": "warfarin",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-warfarin-and-cyp2c9-and-vkorc1/"
+        }
+      ],
+      "diplotype": "C/T"
+    },
+    {
+      "interpretation": "This individual is homozygous for the rs4149056 T/T allele in the SLCO1B1 gene. This genotype information can be used by patients and clinicians as part of the shared decision-making process for simvastatin and other drugs affected by SLCO1B1. Based on the genotype result, this patient is predicted to have normal SLCO1B1 function. This means that there is no reason to adjust the dose of most medications that are affected by SLCO1B1 (including simvastatin) on the basis of SLCO1B1 genetic status. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-simvastatin-and-slco1b1/.",
+      "hgncID": "HGNC:10959",
+      "summary": "This individual is homozygous for the rs4149056 T/T allele in the SLCO1B1 gene. This genotype information can be used by patients and clinicians as part of the shared decision-making process for simvastatin and other drugs affected by SLCO1B1. Based on the genotype result, this patient is predicted to have normal SLCO1B1 function. This means that there is no reason to adjust the dose of most medications that are affected by SLCO1B1 (including simvastatin) on the basis of SLCO1B1 genetic status. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-simvastatin-and-slco1b1/.",
+      "phenotype": "Normal function",
+      "recommendation": "",
+      "geneSymbol": "SLCO1B1",
+      "pgxDrugRecommendation": [
+        {
+          "id": "C0074554",
+          "drug": "simvastatin",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-simvastatin-and-slco1b1/"
+        }
+      ],
+      "diplotype": "T/T"
+    },
+    {
+      "interpretation": "This individual is heterozygous for the non-functional allele of the CYP2C19 gene. Based on the genotype result, this patient is predicted to have a CYP2C19 intermediate metabolizer phenotype. This genotype information can be used by patients and clinicians as part of the shared decision-making process for several drugs metabolized by CYP2C19 including clopidogrel, voriconazole, amitriptyline, citalopram and escitalopram. For clopidogrel, individuals with this diplotype are expected to have reduced platelet inhibition, increased residual platelet aggregation and increased risk for adverse cardiovascular events in response to clopidogrel. Alternative antiplatelet therapy (if no contraindication) is recommended. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-clopidogrel-and-cyp2c19/. For voriconazole, higher dose-adjusted trough concentrations of voriconazole compared to normal metabolizers is expected in individuals with this genotype. Initiate therapy with recommended standard of care dosing. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-voriconazole-and-cyp2c19/. For citalopram and escitalopram, initiate therapy with recommended starting dose. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-selective-serotonin-reuptake-inhibitors-and-cyp2d6-and-cyp2c19/. For amitriptyline, initiate therapy with recommended starting dose. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-tricyclic-antidepressants-and-cyp2d6-and-cyp2c19/. For citalopram, escitalopram and amitriptyline, if CYP2D6 genotyping is available, refer to the current guidelines for dosing recommendations.",
+      "hgncID": "HGNC:2621",
+      "summary": "This individual is heterozygous for the non-functional allele of the CYP2C19 gene. Based on the genotype result, this patient is predicted to have a CYP2C19 intermediate metabolizer phenotype. This genotype information can be used by patients and clinicians as part of the shared decision-making process for several drugs metabolized by CYP2C19 including clopidogrel, voriconazole, amitriptyline, citalopram and escitalopram. For clopidogrel, individuals with this diplotype are expected to have reduced platelet inhibition, increased residual platelet aggregation and increased risk for adverse cardiovascular events in response to clopidogrel. Alternative antiplatelet therapy (if no contraindication) is recommended. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-clopidogrel-and-cyp2c19/. For voriconazole, higher dose-adjusted trough concentrations of voriconazole compared to normal metabolizers is expected in individuals with this genotype. Initiate therapy with recommended standard of care dosing. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-voriconazole-and-cyp2c19/. For citalopram and escitalopram, initiate therapy with recommended starting dose. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-selective-serotonin-reuptake-inhibitors-and-cyp2d6-and-cyp2c19/. For amitriptyline, initiate therapy with recommended starting dose. Refer to current guidelines for dosage and recommendations at https://cpicpgx.org/guidelines/guideline-for-tricyclic-antidepressants-and-cyp2d6-and-cyp2c19/. For citalopram, escitalopram and amitriptyline, if CYP2D6 genotyping is available, refer to the current guidelines for dosing recommendations.",
+      "phenotype": "Intermediate metabolizer",
+      "recommendation": "",
+      "geneSymbol": "CYP2C19",
+      "pgxDrugRecommendation": [
+        {
+          "id": "C0070166",
+          "drug": "clopidogrel",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-clopidogrel-and-cyp2c19/"
+        },
+        {
+          "id": "C0393080",
+          "drug": "voriconazole",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-voriconazole-and-cyp2c19/"
+        },
+        {
+          "id": "C0008845",
+          "drug": "citalopram",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-selective-serotonin-reuptake-inhibitors-and-cyp2d6-and-cyp2c19/"
+        },
+        {
+          "id": "C1099456",
+          "drug": "escitalopram",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-selective-serotonin-reuptake-inhibitors-and-cyp2d6-and-cyp2c19/"
+        },
+        {
+          "id": "C0002600",
+          "drug": "amitriptyline",
+          "recommendation": "https://cpicpgx.org/guidelines/guideline-for-tricyclic-antidepressants-and-cyp2d6-and-cyp2c19/"
+        }
+      ],
+      "diplotype": "*1/*2"
+    }
+  ],
+  "practitionerData": [
+    {
+      "city": "Houston",
+      "NPI": "10000001",
+      "suffix": "M.D., FACMG",
+      "firstName": "John",
+      "middleName": "R",
+      "lastName": "Doe",
+      "state": "TX",
+      "role": "Assistant Laboratory Director",
+      "qualification": [
+        "M.D.",
+        "ABMGG Certified Molecular Geneticist"
+      ],
+      "address": "1111 TestAddress St",
+      "postalCode": "77030",
+      "country": "USA"
+    },
+    {
+      "city": "Houston",
+      "NPI": "10000002",
+      "suffix": "M.D., FACMG",
+      "firstName": "Jane",
+      "middleName": "M",
+      "lastName": "Doe",
+      "state": "TX",
+      "role": "Medical Director",
+      "qualification": [
+        "M.D.",
+        "ABMGG Certified Molecular Geneticist"
+      ],
+      "address": "1111 TestAddress St",
+      "postalCode": "77030",
+      "country": "USA"
+    }
+  ],
+  "localID": "",
+  "panelRecommendation": "No pathogenic or likely pathogenic variants were found.",
+  "patientName": "",
+  "diseases": [],
+  "lpaSummary": "",
+  "geneCoverage": [
+    {
+      "gene": "APOB",
+      "coverage": "99.67"
+    },
+    {
+      "gene": "CACNA1B",
+      "coverage": "96.75"
+    },
+    {
+      "gene": "COL5A1",
+      "coverage": "98.84"
+    },
+    {
+      "gene": "KCNQ1",
+      "coverage": "97.12"
+    },
+    {
+      "gene": "NTRK1",
+      "coverage": "99.92"
+    },
+    {
+      "gene": "RYR1",
+      "coverage": "98.59"
+    },
+    {
+      "gene": "TGFBR1",
+      "coverage": "93.56"
+    }
+  ],
+  "familyID": "NA",
+  "variants": [],
+  "reportDate": "",
+  "reportStatus": "Final",
+  "noReportableVariantsText": "No variants that meet reporting criteria were identified in this patient's sample.",
+  "testName": "eMERGE-Seq Panel Sequencing Report",
+  "phenotypeTerms": "",
+  "concentation": "50",
+  "indicationForTesting": "Not selected for trait",
+  "vipFile": "2020-04-07-14-15-09.vip",
+  "orderingPhysicianNPI": "",
+  "sex": "Male",
+  "pgxDescription": "Pharmacogenomics variants are returned for the following genes: CYP2C19, DPYD, IFNL3, SLCO1B1, TPMT, CYP2C9/VKORC1. Star alleles are determined based on the variants detected by this assay. Star alleles may not be accurately defined due to the limitations of this assay which include: 1) The presence of additional variants defining functional and non functional alleles in a patient, not detected by this assay, and 2) the lack of ability to determine the phase of the variants when a star allele is defined by multiple variants. Additionally, undetected genetic and/or non genetic factors such as drug-drug interactions, may also impact the phenotype. This pharmacogenomic report is limited to CPIC level A alleles and drug recommendations. Additional (level B and lower) drugs may be metabolized by these reported enzymes; and additional enzymes, not reported here, may affect the metabolism of a reported drug. Refer to the current recommendation for dosage guidelines. See Methodology for details.",
+  "caseType": "CLINICAL",
+  "sampleReceivedDate": "",
+  "comments": "",
+  "dateOfBirth": "",
+  "race": "White",
+  "familyRelationship": "NA",
+  "totalDNA": "5",
+  "panelSummary": "",
+  "patientFirstName": "",
+  "barcode": "2013300011",
+  "reportIdentifier": "1500009997.18",
+  "clinicalNotes": "",
+  "overallInterpretationText": "No pathogenic or likely pathogenic variants were found.",
+  "testParams": "",
+  "vusDisclaimer": "",
+  "pgxSummaryRecommendation": [],
+  "deidentified": true,
+  "onDate": "04/17/2020",
+  "rackLocation": "A2",
+  "patientSampleID": "",
+  "overallInterpretation": "Negative",
+  "orderingPhysicianAddress": "",
+  "dnaVariationCode": "",
+  "clinicalCorrelation": "",
+  "references": [
+    "Illumina, Inc. (2011) Multiplexing Sample Preparation Guide (Part # 1005361 Rev. D). 2011.",
+    "Roche NimbleGen, Inc. (2010) NimbleGen SeqCap EZ Exome Library SR User's Guide (Version 2.2).",
+    "Liang-Chu MM, Yu M, Haverty PM, Koeman J, Ziegle J, Lee M, Bourgon R, Neve RM. Human biosample authentication using the high-throughput, cost-effective SNPtrace(TM) system. PLoS One. 2015 Feb 25;10(2):e0116218.",
+    "Reid JG, Carroll A, Veeraraghavan N, Dahdouli M, Sundquist A, English A, Bainbridge M, White S, Salerno W, Buhay C, Yu F, Muzny D, Daly R, Duyk G, Gibbs RA, Boerwinkle E. 2014. Launching genomics into the cloud: deployment of Mercury, a next generation sequence analysis pipeline. BMC bioinformatics, 15(1), p.1. PMID: 24475911.",
+    "Li H. and Durbin R. (2009) Fast and accurate short read alignment with Burrows-Wheeler Transform. Bioinformatics, 25:1754-60. PMID:19451168.",
+    "Richards S, Aziz N, Bale S, Bick D, Das S, Gastier-Foster J, Grody WW, Hegde M, Lyon E, Spector E, Voelkerding K, Rehm HL; ACMG Laboratory Quality Assurance Committee. Standards and guidelines for the interpretation of sequence variants: a joint consensus recommendation of the American College of Medical Genetics and Genomics and the Association for Molecular Pathology. Genetics in Medicine (2015) 17, 405-423. PMID: 25741868."
+  ],
+  "testInfoSummary": "This test interrogates the protein-coding and exon-splicing regions of 109 genes as well as 1551 single-nucleotide polymorphisms that may impact human health and disease. Clinical interpretation and reporting are provided for pathogenic and likely pathogenic variants for genes and single nucleotide polymorphisms as described in the methodology section.",
+  "sampleCollectionSource": "Blood",
+  "prsFinding": "",
+  "addendums": [],
+  "neptuneVersion": "$VERSION",
+  "lpaRecommendation": "",
+  "specimenType": "DNA, Isolated",
+  "genomicSource": "Germline",
+  "testCode": "52_eMERGE-Seq",
+  "isPreliminary": false,
+  "diseaseStatus": "Unknown",
+  "language": "en-US",
+  "prsRecommendationDetail": "",
+  "pgxFinding": "",
+  "initialVolume": "100",
+  "patientLastName": "",
+  "siteMethodology": [
+    "Clinical interpretation and reporting are provided for pathogenic and likely pathogenic variants as requested by XXXXX Organization for the following 68 medically actionable genes: ACTA2, ACTC1, APC, APOB, BMPR1A, BRCA1, BRCA2, CACNA1A, CACNA1S, COL3A1, COL5A1, DSC2, DSG2, DSP, FBN1, GLA, HNF1A, HNF1B, KCNE1, KCNH2, KCNJ2, KCNQ1, LDLR, LMNA, MEN1, MLH1, MSH2, MSH6, MUTYH, MYBPC3, MYH11, MYH7, MYL2, MYL3, MYLK, NF2, OTC, PALB2, PCSK9, PKP2, PMS2, POLD1, POLE, PRKAG2, PTEN, RB1, RET, RYR1, RYR2, SCN5A, SDHAF2, SDHB, SDHC, SDHD, SMAD3, SMAD4, STK11, TGFBR1, TGFBR2, TMEM43, TNNI3, TNNT2, TP53, TPM1, TSC1, TSC2, VHL, WT1, the following non medically actionable genes: ANK2, ATM, ATP1A2, BMPR2, CACNA1C, CFH, CFTR, CHEK2, FLG, MC4R, MTHFR, NTRK1, SCN1A, SCN9A, SERPINA1, SLC2A10, TCF4, TCIRG1, TTR, TYK2, UMOD, VDR, the following medically actionable SNPs: rs77931234, rs387906225, rs79761867, rs386834233, rs113993962, rs397509431, rs6467, rs6025, rs80338898, rs1801175, rs1800562, rs28940579, rs61752717, rs193922376; and non medically actionable SNPs: rs151344623, rs76151636, rs111033258, rs786205104, rs786205103, rs147394623, rs121964990, rs121965064, rs121965063, rs104886456, rs201227603, rs74315447, rs61755320, rs724159981. For autosomal recessive disorders, only homozygous or biallelic variants will be returned. Variants in exon 3 of the FLG gene are not reported."
+  ],
+  "polygenicRiskScore": "",
+  "patientID": "6b6de6bd-1290-4ba1-8c08-b0e9ba45b2be",
+  "sampleCollectedDate": "",
+  "familyScreening": "",
+  "panelManagementRecommendation": "",
+  "sangerSiteNote": "",
+  "ethnicity": "Not Hispanic or Latino",
+  "labStatus": "COMPLETE",
+  "lpaRecommendationDetail": "",
+  "panelFinding": "NEGATIVE",
+  "geneCoverageText": "All genes have 100% of targeted bases sequenced to redundant coverage of 20x or greater with the following exceptions: APOB (99.67%), CACNA1B (96.75%), COL5A1 (98.84%), KCNQ1 (97.12%), NTRK1 (99.92%), RYR1 (98.59%), TGFBR1 (93.56%). Further information, including specific coverage for this patient's sample, is available in the ExCID report.",
+  "genomicCoordinateSystem": "1-based character counting",
+  "methodology": [
+    "1. eMERGE-Seq Version 2 NGS Panel: for the paired-end pre-capture library procedure, genome DNA is fragmented by sonicating genome DNA and ligating to the Illumina multiplexing PE adapters (reference 1).  The adapter-ligated DNA is then PCR amplified using primers with sequencing barcodes (indexes). For target enrichment capture procedure, the pre-capture library is enriched by hybridizing to biotin labeled in-solution probes&nbsp;(reference 2) at&nbsp; 56&deg;C for 16 - 19 hours.&nbsp; For massively parallel sequencing, the post-capture library DNA is subjected to sequence analysis on Illumina HiSeq platform for 100 bp paired-end reads. The following quality control metrics of the sequencing data are generally achieved: &gt;70% of reads aligned to target, &gt;99% target base covered at &gt;20X, &gt;98% target base covered at &gt;40X, average coverage of target bases &gt;200X. SNP concordance to SNPTrace genotype array: &gt;99%. This test may not provide detection of certain genes or portions of certain genes due to local sequence characteristics or the presence of closely related pseudogenes. Gross deletions or duplications, changes from repetitive sequences may not be accurately identified by this methodology. Genomic rearrangements cannot be detected by this assay.",
+    "2. As a quality control measure, the individual's DNA is also analyzed by a SNP-array (Fluidigm SNPTrace panel (reference 3) ). The SNP data are compared with the NGS panel data to ensure correct sample identification and to assess sequencing quality.",
+    "3. Data are analyzed by the Mercury 3.4 (reference 4) pipeline. The output data from Illumina HiSeq are converted from bcl file to FastQ file by Illumina bcl2fastq 1.8.3 software, and mapped to the hg19 human genome reference by the BWA program (reference 5). The variant calls are performed using Atlas-SNP and Atlas-indel developed in-house by BCM HGSC. Copy number variants were detected using Atlas-pcnv v0, developed in-house by the BCM HGSC. Variant annotations are performed using the Cassandra tool, developed in-house.  Neptune version $VERSION was used to match variants against curated variants in the VIP database version [2020-04-17-14-15-09.vip] and generate this report.**",
+    "4. The variants were interpreted according to ACMG guidelines (reference 6) and patient phenotypes.  Synonymous variants, intronic variants not affecting splicing site, and common benign variants are excluded from interpretation unless they were previously reported as pathogenic variants. Reviewed variants are added to the VIP database for inclusion on future reports.  It should be noted that the interpretation of the data is based on our current understanding of genes and variants at the time of reporting.",
+    "Clinical interpretation and reporting are provided for pathogenic and likely pathogenic variants as requested by XXXXX Organization for the following 68 medically actionable genes: ACTA2, ACTC1, APC, APOB, BMPR1A, BRCA1, BRCA2, CACNA1A, CACNA1S, COL3A1, COL5A1, DSC2, DSG2, DSP, FBN1, GLA, HNF1A, HNF1B, KCNE1, KCNH2, KCNJ2, KCNQ1, LDLR, LMNA, MEN1, MLH1, MSH2, MSH6, MUTYH, MYBPC3, MYH11, MYH7, MYL2, MYL3, MYLK, NF2, OTC, PALB2, PCSK9, PKP2, PMS2, POLD1, POLE, PRKAG2, PTEN, RB1, RET, RYR1, RYR2, SCN5A, SDHAF2, SDHB, SDHC, SDHD, SMAD3, SMAD4, STK11, TGFBR1, TGFBR2, TMEM43, TNNI3, TNNT2, TP53, TPM1, TSC1, TSC2, VHL, WT1, the following non medically actionable genes: ANK2, ATM, ATP1A2, BMPR2, CACNA1C, CFH, CFTR, CHEK2, FLG, MC4R, MTHFR, NTRK1, SCN1A, SCN9A, SERPINA1, SLC2A10, TCF4, TCIRG1, TTR, TYK2, UMOD, VDR, the following medically actionable SNPs: rs77931234, rs387906225, rs79761867, rs386834233, rs113993962, rs397509431, rs6467, rs6025, rs80338898, rs1801175, rs1800562, rs28940579, rs61752717, rs193922376; and non medically actionable SNPs: rs151344623, rs76151636, rs111033258, rs786205104, rs786205103, rs147394623, rs121964990, rs121965064, rs121965063, rs104886456, rs201227603, rs74315447, rs61755320, rs724159981. For autosomal recessive disorders, only homozygous or biallelic variants will be returned. Variants in exon 3 of the FLG gene are not reported.",
+    "5. Variants related to patient phenotypes are confirmed by Sanger sequencing if the variant has been observed and confirmed fewer than 5 times by our laboratory or the Baylor Genetics Laboratory. Sanger confirmation is noted in the 'Notes' section of the tables if performed.",
+    "** The VIP variant database was developed in conjunction with Baylor Genetics and the Partners Healthcare Laboratory for Molecular Medicine."
+  ],
+  "jsonCreatedDate": "",
+  "testInfoDetail": "This test interrogates the protein-coding and exon-splicing regions of 109 genes as well as 1551 single-nucleotide polymorphisms that may impact human health and disease. Clinical interpretation and reporting are provided for pathogenic and likely pathogenic variants for genes and single nucleotide polymorphisms as described in the methodology section.",
+  "cnvsFailed": false,
+  "humanReferenceSequenceAssemblyVersion": "GRCh37",
+  "lpaDisclaimer": "",
+  "prsDisclaimer": "",
+  "orderingPhysicianName": "",
+  "pgxDisclaimer": "The CPIC Warfarin dosing guidelines including VKORC1 -1639G>A and CYP2C9 *2 and *3 genotype information are graded as strong for non-African populations only and are included on the FDA-approved drug label for warfarin. For individuals of African ancestry, usage of a clinical dosing algorithm or standard dose approach, is generally recommended. Resources such as WarfarinDosing.org and the International Warfarin Pharmacogenetics Consortium (IWPC) dosing algorithm are available and consider genotype, racial, and other clinical information in dosing recommendations.",
+  "clinicalSite": "SAMPLE-CGM",
+  "footer": "This test was developed and its performance determined by this laboratory. It has not been cleared or approved by U.S. Food and Drug Administration. Since FDA is not required for clinical use of this test, this laboratory has established and validated the test's accuracy and precision, pursuant to the requirement of CLIA '88. This laboratory is licensed and/or accredited under CLIA and CAP (CAP# 8004250 / CLIA# 45D2027450).",
+  "prsSummary": "",
+  "age": "52",
+  "panelRecommendationDetail": "No pathogenic or likely pathogenic variants were found.",
+  "patientMiddleInitial": ""
+}

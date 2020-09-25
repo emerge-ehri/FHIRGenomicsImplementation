@@ -26,7 +26,7 @@ public class PatientValueMapper {
         //The code PI creates warnings during validation but until the HL7 Vocabulary group resolves this, we will be ignoring the warnings.
         if (mappingConfig.containsKey("HgscReport.patientID")) {
             if(hgscReport.getPatientID() != null && !hgscReport.getPatientID().equals("")) {
-                patient.addIdentifier(new Identifier().setSystem("https://emerge.mc.vanderbilt.edu/").setValue(hgscReport.getPatientID())
+                patient.addIdentifier(new Identifier().setSystem("http://namingsystem.org/").setValue(hgscReport.getPatientID())
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                                 .setCode("PI").setDisplay("Patient internal identifier"))));
             }
@@ -111,7 +111,7 @@ public class PatientValueMapper {
 
         if (mappingConfig.containsKey("HgscReport.dateOfBirth")) {
             if(hgscReport.getDateOfBirth() != null && !hgscReport.getDateOfBirth().equals("")) {
-                Extension ext4 = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/patient-age", new IntegerType(calAge(hgscReport.getDateOfBirth(), sdf)));
+                Extension ext4 = new Extension("http://namingsystem.org/fhir/StructureDefinition/patient-age", new IntegerType(calAge(hgscReport.getDateOfBirth(), sdf)));
                 patient.addExtension(ext4);
             }
         }

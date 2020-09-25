@@ -48,7 +48,7 @@ public class ObsOverallValueMapper {
 
         //extensions
         if(hgscReport.getPanelSummary() != null && !hgscReport.getPanelSummary().equals("")) {
-            Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
+            Extension ext = new Extension("http://namingsystem.org/fhir/StructureDefinition/interpretation-summary-text",
                     new StringType(hgscReport.getPanelSummary()));
             obsOverall.addExtension(ext);
         }

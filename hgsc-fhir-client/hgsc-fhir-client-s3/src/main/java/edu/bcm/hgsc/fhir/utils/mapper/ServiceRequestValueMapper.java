@@ -23,7 +23,7 @@ public class ServiceRequestValueMapper {
         //Identifier
         if (mappingConfig.containsKey("HgscReport.patientSampleID")) {
             if(hgscReport.getPatientSampleID() != null && !hgscReport.getPatientSampleID().equals("")) {
-                serviceRequest.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getPatientSampleID())
+                serviceRequest.addIdentifier(new Identifier().setSystem("http://namingsystem.org/").setValue(hgscReport.getPatientSampleID())
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                                 .setCode("ACSN").setDisplay("Accession ID"))));
             }
@@ -38,7 +38,7 @@ public class ServiceRequestValueMapper {
         //Code
         if (mappingConfig.containsKey("HgscReport.testname")) {
             if(hgscReport.getTestName() != null && !hgscReport.getTestName().equals("")) {
-                serviceRequest.setCode(new CodeableConcept().addCoding(new Coding().setSystem("https://hgsc.bcm.edu/lab-test-codes/")
+                serviceRequest.setCode(new CodeableConcept().addCoding(new Coding().setSystem("http://namingsystem.org/lab-test-codes/")
                         .setCode("emerge-seq-ngs-pnl").setDisplay("eMERGE-Seq NGS Panel")).setText(hgscReport.getTestName()));
             }
         }
@@ -54,7 +54,7 @@ public class ServiceRequestValueMapper {
         //ReasonCode
         if (mappingConfig.containsKey("HgscReport.indicationForTesting")) {
             if(hgscReport.getIndicationForTesting() != null && !hgscReport.getIndicationForTesting().equals("")) {
-                serviceRequest.addReasonCode(new CodeableConcept().addCoding(new Coding().setSystem("https://emerge.geneinsight.com")
+                serviceRequest.addReasonCode(new CodeableConcept().addCoding(new Coding().setSystem("http://namingsystem.org")
                         .setCode("10093-7").setDisplay(hgscReport.getIndicationForTesting())));
             }
         }

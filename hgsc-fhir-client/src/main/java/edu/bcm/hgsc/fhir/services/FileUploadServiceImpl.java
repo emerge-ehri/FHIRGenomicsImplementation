@@ -38,6 +38,13 @@ public class FileUploadServiceImpl {
         HgscReport report = new JsonMappingUtil().readHgscReportJson(bytes);
 
         //Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "", "");
+
+
+
+
+
+
+
         Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "Reports//feilocaldev/fhir-eMerge-Test.pdf", "Reports//feilocaldev/fhir-eMerge-Test.csv");
         return createBundle(fhirResources, report);
     }
@@ -80,9 +87,6 @@ public class FileUploadServiceImpl {
 
         Observation obsOverall = (Observation) fhirResources.get("ObsOverall");
         obsOverall.setId(IdDt.newRandomUuid());
-
-//        Observation dxCNVVariants = (Observation) fhirResources.get("DxCNVVariants");
-//        dxCNVVariants.setId(IdDt.newRandomUuid());
 
         HashMap<String, Observation> dxSNPINDELVariants = (HashMap<String, Observation>) fhirResources.get("DxSNPINDELVariants");
 
@@ -173,13 +177,6 @@ public class FileUploadServiceImpl {
         obsOverall.setSpecimen(new Reference(specimen.getId()));
         obsOverall.addPerformer(new Reference(organizationHGSC.getId()));
 
-        String orgName = "JHU";
-        if(orgName.equals("JHU")) {
-            specimen.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getPatientID() + "--specimen"));
-            serviceRequest.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getPatientID() + "--serviceRequest"));
-            obsOverall.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getReportIdentifier() + "--overallInterpretation"));
-        }
-
         if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")
                 && hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
             for(Variant v : hgscReport.getVariants()) {
@@ -191,16 +188,6 @@ public class FileUploadServiceImpl {
                 snpVariant.addPerformer(new Reference(organizationHGSC.getId()));
                 snpVariant.addNote(new Annotation().setAuthor(new Reference(organizationHGSC.getId())).setText(v.getNotes()));
 
-                if(orgName.equals("JHU")) {
-                    snpVariant.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getReportIdentifier() + "--variant--" + v.getExternalId().replaceAll(",", "")));
-                }
-
-//                dxCNVVariants.addBasedOn(new Reference(serviceRequest.getId()));
-//                dxCNVVariants.setSubject(new Reference(patient.getId()));
-//                dxCNVVariants.setSpecimen(new Reference(specimen.getId()));
-//                dxCNVVariants.addPerformer(new Reference(organization.getId()));
-//                dxCNVVariants.addNote(new Annotation().setAuthor(new Reference(organizationHGSC.getId())).setText(v.getNotes()));
-
                 Observation inhDisPath = obsInhDisPaths.get(v.getExternalId());
                 inhDisPath.setId(IdDt.newRandomUuid());
                 inhDisPath.addBasedOn(new Reference(serviceRequest.getId()));
@@ -208,10 +195,6 @@ public class FileUploadServiceImpl {
                 inhDisPath.addPerformer(new Reference(organizationHGSC.getId()));
                 inhDisPath.addNote(new Annotation().setText(v.getNotes()));
                 inhDisPath.setSpecimen(new Reference(specimen.getId()));
-
-                if(orgName.equals("JHU")) {
-                    inhDisPath.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getReportIdentifier() + "--inheritedDiseasePathogenicity--" + v.getExternalId().replaceAll(",", "")));
-                }
 
                 inhDisPath.addDerivedFrom(new Reference(snpVariant.getId()));
                 obsOverall.addDerivedFrom(new Reference(inhDisPath.getId()));
@@ -289,11 +272,8 @@ public class FileUploadServiceImpl {
                 .addHasMember(new Reference(pgxResult_6001.getId()));
 
         dxPanel.addHasMember(new Reference(obsOverall.getId()));
-                //.addHasMember(new Reference(dxCNVVariants.getId()));
 
-        if(orgName.equals("NU")) {
-            serviceRequest.setRequester(new Reference(practitionerRole.getId()));
-        }
+        serviceRequest.setRequester(new Reference(practitionerRole.getId()));
 
         DiagnosticReport diagnosticReport = (DiagnosticReport)fhirResources.get("DiagnosticReport");
         diagnosticReport.addBasedOn(new Reference(serviceRequest.getId()));
@@ -322,18 +302,15 @@ public class FileUploadServiceImpl {
         serviceRequest.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(serviceRequest))));
 
-        //hard code organization narrative
         organizationHGSC.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-        .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>id</b>: Human Genome Sequencing Center Clinical Laboratory</p><p>One Baylor Plaza • Houston • TX 77030</p><p>Phone: 713.798.6539 • Fax: 713.798.5741 • www.hgsc.bcm.edu • email: questions@hgsc.bcm.edu</p><p>CAP# 8004250 / CLIA# 45D2027450</p></div>")));
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organizationHGSC))));
         organizationBCM.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>id</b>: Baylor College of Medicine</p><p>One Baylor Plaza • Houston • TX 77030</p><p>Phone: (713) 798-4951 • https://www.bcm.edu/ </p></div>")));
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organizationBCM))));
         organizationCHP.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                .setDiv(new XhtmlNode().setValue("<div><p><b>Generated Narrative with Details</b></p><p><b>id</b>: Children's Hospital of Philadelphia</p><p>3401 Civic Center Blvd, Philadelphia, PA 19104</p></div>")));
+                .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(organizationCHP))));
 
         obsOverall.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsOverall))));
-        //dxCNVVariants.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
-                //.setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(dxCNVVariants))));
 
         obsReportComment.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                 .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obsReportComment))));
@@ -417,29 +394,12 @@ public class FileUploadServiceImpl {
                 .setIfNoneExist("identifier=" + serviceRequest.getIdentifier().get(0).getValue())
                 .setMethod(Bundle.HTTPVerb.POST);
 
-        if(orgName.equals("JHU")) {
-            bundle.addEntry()
-                    .setFullUrl(obsOverall.getId())
-                    .setResource(obsOverall)
-                    .getRequest()
-                    .setUrl("Observation")
-                    .setIfNoneExist("identifier=" + obsOverall.getIdentifier().get(0).getValue())
-                    .setMethod(Bundle.HTTPVerb.POST);
-        }else{
-            bundle.addEntry()
-                    .setFullUrl(obsOverall.getId())
-                    .setResource(obsOverall)
-                    .getRequest()
-                    .setUrl("Observation")
-                    .setMethod(Bundle.HTTPVerb.POST);
-        }
-
-//        bundle.addEntry()
-//                .setFullUrl(dxCNVVariants.getId())
-//                .setResource(dxCNVVariants)
-//                .getRequest()
-//                .setUrl("Observation")
-//                .setMethod(Bundle.HTTPVerb.POST);
+        bundle.addEntry()
+                .setFullUrl(obsOverall.getId())
+                .setResource(obsOverall)
+                .getRequest()
+                .setUrl("Observation")
+                .setMethod(Bundle.HTTPVerb.POST);
 
         if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")
                 && hgscReport.getVariants() != null && hgscReport.getVariants().size() > 0) {
@@ -452,35 +412,18 @@ public class FileUploadServiceImpl {
                 inhDP.setText(new Narrative().setStatus(Narrative.NarrativeStatus.GENERATED)
                         .setDiv(new XhtmlNode().setValue(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(inhDP))));
 
-                if(orgName.equals("JHU")) {
-                    bundle.addEntry()
-                            .setFullUrl(snpV.getId())
-                            .setResource(snpV)
-                            .getRequest()
-                            .setUrl("Observation")
-                            .setIfNoneExist("identifier=" + snpV.getIdentifier().get(0).getValue())
-                            .setMethod(Bundle.HTTPVerb.POST);
-                    bundle.addEntry()
-                            .setFullUrl(inhDP.getId())
-                            .setResource(inhDP)
-                            .getRequest()
-                            .setUrl("Observation")
-                            .setIfNoneExist("identifier=" + inhDP.getIdentifier().get(0).getValue())
-                            .setMethod(Bundle.HTTPVerb.POST);
-                }else{
-                    bundle.addEntry()
-                            .setFullUrl(snpV.getId())
-                            .setResource(snpV)
-                            .getRequest()
-                            .setUrl("Observation")
-                            .setMethod(Bundle.HTTPVerb.POST);
-                    bundle.addEntry()
-                            .setFullUrl(inhDP.getId())
-                            .setResource(inhDP)
-                            .getRequest()
-                            .setUrl("Observation")
-                            .setMethod(Bundle.HTTPVerb.POST);
-                }
+                bundle.addEntry()
+                        .setFullUrl(snpV.getId())
+                        .setResource(snpV)
+                        .getRequest()
+                        .setUrl("Observation")
+                        .setMethod(Bundle.HTTPVerb.POST);
+                bundle.addEntry()
+                        .setFullUrl(inhDP.getId())
+                        .setResource(inhDP)
+                        .getRequest()
+                        .setUrl("Observation")
+                        .setMethod(Bundle.HTTPVerb.POST);
             }
         }
 
@@ -642,27 +585,24 @@ public class FileUploadServiceImpl {
                 .setUrl("PractitionerRole")
                 .setMethod(Bundle.HTTPVerb.POST);
 
-        if(orgName.equals("NU")) {
-            bundle.addEntry()
-                    .setFullUrl(orderingPhysician.getId())
-                    .setResource(orderingPhysician)
-                    .getRequest()
-                    .setUrl("Practitioner")
-                    //.setIfNoneExist("identifier=" + orderingPhysician.getIdentifier().get(0).getValue())
-                    .setMethod(Bundle.HTTPVerb.POST);
-            bundle.addEntry()
-                    .setFullUrl(organizationCHP.getId())
-                    .setResource(organizationCHP)
-                    .getRequest()
-                    .setUrl("Organization")
-                    .setMethod(Bundle.HTTPVerb.POST);
-            bundle.addEntry()
-                    .setFullUrl(practitionerRole.getId())
-                    .setResource(practitionerRole)
-                    .getRequest()
-                    .setUrl("PractitionerRole")
-                    .setMethod(Bundle.HTTPVerb.POST);
-        }
+        bundle.addEntry()
+                .setFullUrl(orderingPhysician.getId())
+                .setResource(orderingPhysician)
+                .getRequest()
+                .setUrl("Practitioner")
+                .setMethod(Bundle.HTTPVerb.POST);
+        bundle.addEntry()
+                .setFullUrl(organizationCHP.getId())
+                .setResource(organizationCHP)
+                .getRequest()
+                .setUrl("Organization")
+                .setMethod(Bundle.HTTPVerb.POST);
+        bundle.addEntry()
+                .setFullUrl(practitionerRole.getId())
+                .setResource(practitionerRole)
+                .getRequest()
+                .setUrl("PractitionerRole")
+                .setMethod(Bundle.HTTPVerb.POST);
 
         if(hgscReport.getOverallInterpretation().toLowerCase().equals("positive")) {
             bundle.addEntry()
@@ -742,29 +682,6 @@ public class FileUploadServiceImpl {
             }
         } catch (java.text.ParseException e) {
             logger.error("Failed to validate FHIR resources data.", e);
-            return null;
-        }
-
-        //POST to JHU server
-        JHUPostUtil jhuPostUtil = new JHUPostUtil();
-        String jhuToken = jhuPostUtil.postForJHUToken();
-        if(jhuToken == null || jhuToken.equals("")) {
-            logger.error("Unable to get token from the JHU server.");
-            return null;
-        }
-
-        JSONObject jhuBundle = null;
-        //Send Bundle as BATCH for JHU
-        //bundle.setType(Bundle.BundleType.BATCH);
-        try {
-            jhuBundle = (JSONObject) new JSONParser().parse(ctx.newJsonParser().encodeResourceToString(bundle));
-        } catch (ParseException e) {
-            logger.error("Failed to convert bundle resources to JSON format for POST request to JHU.", e);
-            return null;
-        }
-
-        if(!jhuPostUtil.postForJHU(jhuBundle.toJSONString(), jhuToken)) {
-            logger.error("Failed to Post Fhir resources to the JHU server.");
             return null;
         }
 

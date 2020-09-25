@@ -15,7 +15,7 @@ public class ObsOverallValidator {
 
         boolean validatePanelSummaryResult = true;
         if(hgscReport.getPanelSummary() != null && !hgscReport.getPanelSummary().equals("")) {
-            validatePanelSummaryResult = obsOverall.getExtensionByUrl("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text").getValue().toString().equals(hgscReport.getPanelSummary());
+            validatePanelSummaryResult = obsOverall.getExtensionByUrl("http://namingsystem.org/fhir/StructureDefinition/interpretation-summary-text").getValue().toString().equals(hgscReport.getPanelSummary());
         }
 
         boolean validateValueCodeableConceptResult = true;

@@ -23,7 +23,7 @@ public class DiagnosticReportValueMapper {
         //Identifier
         if (mappingConfig.containsKey("HgscReport.reportIdentifier")) {
             if(hgscReport.getReportIdentifier() != null && !hgscReport.getReportIdentifier().equals("")) {
-                diagnosticReport.addIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getReportIdentifier())
+                diagnosticReport.addIdentifier(new Identifier().setSystem("http://namingsystem.org/").setValue(hgscReport.getReportIdentifier())
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                                 .setCode("FILL").setDisplay("Filler Identifier"))));
             }
@@ -49,7 +49,7 @@ public class DiagnosticReportValueMapper {
             }
         }
 
-        Extension ext3 = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/test-disclaimer",
+        Extension ext3 = new Extension("http://namingsystem.org/fhir/StructureDefinition/test-disclaimer",
                 new StringType(hgscReport.getFooter()));
         diagnosticReport.addExtension(ext3);
 

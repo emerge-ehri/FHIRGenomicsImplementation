@@ -18,7 +18,7 @@ public class PlanDefinitionValueMapper {
         //Identifier
         if (mappingConfig.containsKey("HgscReport.testName")) {
             if(hgscReport.getTestName() != null && !hgscReport.getTestName().equals("")) {
-                planDefinition.addIdentifier(new Identifier().setSystem("https://hgsc.bcm.edu/lab-test-codes/").setValue(hgscReport.getTestName())
+                planDefinition.addIdentifier(new Identifier().setSystem("http://namingsystem.org/lab-test-codes/").setValue(hgscReport.getTestName())
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                                 .setCode("FILL").setDisplay("Filler Identifier"))));
             }

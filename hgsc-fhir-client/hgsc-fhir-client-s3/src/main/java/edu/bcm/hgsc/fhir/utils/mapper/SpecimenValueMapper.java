@@ -21,11 +21,11 @@ public class SpecimenValueMapper {
         //The code SID creates warnings during validation but until the HL7 Vocabulary group resolves this, we will be ignoring the warnings.
         if (mappingConfig.containsKey("HgscReport.patientSampleID")) {
             if(hgscReport.getPatientSampleID() != null && !hgscReport.getPatientSampleID().equals("")) {
-                specimen.addIdentifier(new Identifier().setSystem("https://emerge.mc.vanderbilt.edu/").setValue(hgscReport.getPatientSampleID())
+                specimen.addIdentifier(new Identifier().setSystem("http://namingsystem.org/").setValue(hgscReport.getPatientSampleID())
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                                 .setCode("SID").setDisplay("Specimen ID"))));
                 //AccessionIdentifier
-                specimen.setAccessionIdentifier(new Identifier().setSystem("https://emerge.hgsc.bcm.edu/").setValue(hgscReport.getPatientSampleID())
+                specimen.setAccessionIdentifier(new Identifier().setSystem("http://namingsystem.org/").setValue(hgscReport.getPatientSampleID())
                         .setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203")
                                 .setCode("ACSN").setDisplay("Accession ID"))));
             }

@@ -25,13 +25,11 @@ public class DiagnosticReportValidator {
 
         boolean validateExcidResult = true;
         boolean validatePDFResult = true;
-        if(orgName.equals("NU")) {
-            RelatedArtifact relatedArtifact = (RelatedArtifact)(diagnosticReport.getExtensionByUrl("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/relatedArtifact").getValue());
-            validateExcidResult = (relatedArtifact.getDocument().getData() != null && relatedArtifact.getDocument().getData().length != 0);
+        RelatedArtifact relatedArtifact = (RelatedArtifact)(diagnosticReport.getExtensionByUrl("http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/relatedArtifact").getValue());
+        validateExcidResult = (relatedArtifact.getDocument().getData() != null && relatedArtifact.getDocument().getData().length != 0);
 
-            byte[] pdfByteArray = diagnosticReport.getPresentedFormFirstRep().getData();
-            validatePDFResult = (pdfByteArray != null && pdfByteArray.length != 0);
-        }
+        byte[] pdfByteArray = diagnosticReport.getPresentedFormFirstRep().getData();
+        validatePDFResult = (pdfByteArray != null && pdfByteArray.length != 0);
 
         boolean validatePatientRefResult = resultURLArr.get(0).contains(diagnosticReport.getSubject().getReference());
 

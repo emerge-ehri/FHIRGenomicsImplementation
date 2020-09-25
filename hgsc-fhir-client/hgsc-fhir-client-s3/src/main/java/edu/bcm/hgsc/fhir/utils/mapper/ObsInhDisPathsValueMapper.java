@@ -67,7 +67,7 @@ public class ObsInhDisPathsValueMapper {
 
                 //extensions
                 if(v.getVariantInterpretation() != null && !v.getVariantInterpretation().equals("")) {
-                    Extension ext = new Extension("https://emerge.hgsc.bcm.edu/fhir/StructureDefinition/interpretation-summary-text",
+                    Extension ext = new Extension("http://namingsystem.org/fhir/StructureDefinition/interpretation-summary-text",
                             new StringType(v.getVariantInterpretation()));
                     temp.addExtension(ext);
                 }
