@@ -36,16 +36,8 @@ public class FileUploadServiceImpl {
 
         byte[] bytes = fileUtils.readBytesFromFile(file);
         HgscReport report = new JsonMappingUtil().readHgscReportJson(bytes);
+        Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "", "");
 
-        //Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "", "");
-
-
-
-
-
-
-
-        Map<String, Object> fhirResources = this.createIndividualFhirResources(report, "Reports//feilocaldev/fhir-eMerge-Test.pdf", "Reports//feilocaldev/fhir-eMerge-Test.csv");
         return createBundle(fhirResources, report);
     }
 

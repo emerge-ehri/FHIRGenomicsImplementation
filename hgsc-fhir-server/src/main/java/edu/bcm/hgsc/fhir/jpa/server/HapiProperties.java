@@ -80,18 +80,9 @@ public class HapiProperties {
     public static Properties getProperties() {
         if (properties == null) {
             // Load the configurable properties file
-            try {
-                String propertyHome = System.getenv("CATALINA_HOME");
-
-                if(propertyHome == null) {
-                    propertyHome = System.getProperty(HAPI_PROPERTIES);
-                }
-
-                String filePath = propertyHome+"/webapps/properties/hapi.properties";
-                
-                InputStream input = new FileInputStream(filePath);
+            try (InputStream in = HapiProperties.class.getClassLoader().getResourceAsStream(HAPI_PROPERTIES)) {
                 HapiProperties.properties = new Properties();
-                HapiProperties.properties.load(input);
+                HapiProperties.properties.load(in);
             }
             catch (Exception e) {
                 throw new ConfigurationException("Could not load HAPI properties", e);
