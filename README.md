@@ -6,14 +6,11 @@ This program demonstrates the ability to read proprietary BCM-HGSC genetic resul
 
 ## Setup & Running
 
-For hgsc-fhir-client:
-
+hgsc-fhir-client:
 Execute "mvn clean install" to build a war file then deploy to a server (e.g. Tomcat)
 
-For hgsc-fhir-client-s3:
-
+hgsc-fhir-client-s3:
 Execute "mvn clean install" to build a jar file then run on an EC2 instance
 
-For hgsc-fhir-server:
-
+hgsc-fhir-server:
 Execute "mvn jetty:run"
