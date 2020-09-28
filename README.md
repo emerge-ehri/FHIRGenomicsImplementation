@@ -14,3 +14,7 @@ Execute "mvn clean install" to build a jar file then run on an EC2 instance
 
 hgsc-fhir-server:
 Execute "mvn jetty:run"
+
+## Sample JSON files
+
+Two sample JSON files located in /FHIRGenomicsImplementation/hgsc-fhir-client/sampleJsonFiles/
