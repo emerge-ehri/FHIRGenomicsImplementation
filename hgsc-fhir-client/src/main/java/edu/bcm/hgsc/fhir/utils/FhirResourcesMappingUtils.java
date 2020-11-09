@@ -59,10 +59,6 @@ public class FhirResourcesMappingUtils {
                         Observation obsOverall = new ObsOverallValueMapper().obsOverallValueMapping(mappingConfig, hgscReport, sdf, loincCodeMap);
                         results.put("ObsOverall", obsOverall);
                         break;
-                    case "DxCNVVariants":
-                        Observation dxCNVVariants = new DxCNVVariantsValueMapper().dxCNVVariantsValueMapping(mappingConfig, hgscReport, sdf);
-                        results.put("DxCNVVariants", dxCNVVariants);
-                        break;
                     case "DxSNPINDELVariants":
                         HashMap<String, Observation> dxSNPINDELVariants = new DxSNPINDELVariantsValueMapper().dxSNPINDELVariantsValueMapping(mappingConfig, hgscReport, sdf, loincCodeMap);
                         results.put("DxSNPINDELVariants", dxSNPINDELVariants);

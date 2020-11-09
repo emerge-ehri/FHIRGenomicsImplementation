@@ -14,7 +14,7 @@ public class DiagnosticReportValidator {
 
     private static Logger logger = Logger.getLogger(DiagnosticReportValidator.class);
 
-    public boolean validateDiagnosticReportById(String resourceId, ArrayList<String> resultURLArr, HgscReport hgscReport, IGenericClient client, SimpleDateFormat sdf, SimpleDateFormat sdf2, String orgName) throws ParseException {
+    public boolean validateDiagnosticReportById(String resourceId, ArrayList<String> resultURLArr, HgscReport hgscReport, IGenericClient client, SimpleDateFormat sdf, SimpleDateFormat sdf2) throws ParseException {
 
         DiagnosticReport diagnosticReport = client.read().resource(DiagnosticReport.class).withId(resourceId).execute();
 

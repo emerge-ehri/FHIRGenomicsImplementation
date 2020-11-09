@@ -27,7 +27,7 @@ public class FhirResourcesValidationUtils {
     SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
     SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy");
 
-    public boolean validateData(ArrayList<String> resultURLArr, HgscReport hgscReport, IGenericClient client, String orgName, HashMap<String, HashMap<String, String>> loincCodeMap) throws ParseException {
+    public boolean validateData(ArrayList<String> resultURLArr, HgscReport hgscReport, IGenericClient client, HashMap<String, HashMap<String, String>> loincCodeMap) throws ParseException {
 
         if(!new PatientValidator().validatePatientById(resultURLArr.get(0).split("Patient/")[1].split("/_history")[0], hgscReport, client)) {
             logger.error("Failed to validate FHIR resources.");
@@ -145,7 +145,7 @@ public class FhirResourcesValidationUtils {
             return false;
         }
 
-        if(!new DiagnosticReportValidator().validateDiagnosticReportById(resultURLArr.get(resultURLArr.size() - 1).split("DiagnosticReport/")[1].split("/_history")[0], resultURLArr, hgscReport, client, sdf, sdf2, orgName)) {
+        if(!new DiagnosticReportValidator().validateDiagnosticReportById(resultURLArr.get(resultURLArr.size() - 1).split("DiagnosticReport/")[1].split("/_history")[0], resultURLArr, hgscReport, client, sdf, sdf2)) {
             logger.error("Failed to validate FHIR resources.");
             return false;
         }

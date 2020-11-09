@@ -666,7 +666,7 @@ public class FileUploadServiceImpl {
         }
 
         try {
-            if(!fhirResourcesValidationUtils.validateData(resultURLArr, hgscReport, client, orgName, loincCodeMap)) {
+            if(!fhirResourcesValidationUtils.validateData(resultURLArr, hgscReport, client, loincCodeMap)) {
                 logger.error("Failed to validate FHIR resources data.");
                 return null;
             }else{
