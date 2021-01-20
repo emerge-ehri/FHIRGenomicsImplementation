@@ -3,12 +3,13 @@ package edu.bcm.hgsc.fhir.utils.validator;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
-import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.Observation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DxSNPVariantsValidator {
 
-    private static Logger logger = Logger.getLogger(DxSNPVariantsValidator.class);
+    private static Logger logger = LoggerFactory.getLogger(DxSNPVariantsValidator.class);
 
     public boolean validateDxSNPVariantsById(String resourceId, HgscReport hgscReport, IGenericClient client, Variant v) {
 

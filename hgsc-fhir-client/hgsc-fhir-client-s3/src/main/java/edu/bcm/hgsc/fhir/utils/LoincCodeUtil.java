@@ -3,18 +3,19 @@ package edu.bcm.hgsc.fhir.utils;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Base64;
 import java.util.HashMap;
 
 public class LoincCodeUtil {
 
-    private static Logger logger = Logger.getLogger(LoincCodeUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(LoincCodeUtil.class);
 
     public HashMap<String, HashMap<String, String>> loadLoincCodeToMap() {
         HashMap<String, HashMap<String, String>> loincCodeMap = new HashMap<String, HashMap<String, String>>();

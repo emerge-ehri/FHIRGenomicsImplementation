@@ -5,14 +5,15 @@ import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.PgxDatum;
 import edu.bcm.hgsc.fhir.models.PgxDrugRec;
 import edu.bcm.hgsc.fhir.utils.mapper.PgxMedImplicationsValueMapper;
-import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
 public class PgxMedImplicationsValidator {
 
-    private static Logger logger = Logger.getLogger(PgxMedImplicationsValidator.class);
+    private static Logger logger = LoggerFactory.getLogger(PgxMedImplicationsValidator.class);
 
     PgxMedImplicationsValueMapper pgxMedValueMapper = new PgxMedImplicationsValueMapper();
 

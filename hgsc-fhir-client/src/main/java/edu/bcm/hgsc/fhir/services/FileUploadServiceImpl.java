@@ -8,13 +8,14 @@ import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
 import edu.bcm.hgsc.fhir.utils.*;
-import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 public class FileUploadServiceImpl {
 
-    private static Logger logger = Logger.getLogger(FileUploadServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(FileUploadServiceImpl.class);
 
     FileUtils fileUtils = new FileUtils();
 

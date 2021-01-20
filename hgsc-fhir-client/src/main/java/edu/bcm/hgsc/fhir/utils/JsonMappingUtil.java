@@ -2,11 +2,12 @@ package edu.bcm.hgsc.fhir.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.bcm.hgsc.fhir.models.HgscReport;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JsonMappingUtil {
 
-    private static Logger logger = Logger.getLogger(JsonMappingUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(JsonMappingUtil.class);
 
     public HgscReport readHgscReportJson(byte[] bytes) {
         ObjectMapper mapper = new ObjectMapper();

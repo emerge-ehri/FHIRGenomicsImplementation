@@ -4,12 +4,13 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.PgxDatum;
 import edu.bcm.hgsc.fhir.utils.mapper.PgxMedImplicationsValueMapper;
-import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.Observation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PgxgenotypesValidator {
 
-    private static Logger logger = Logger.getLogger(PgxgenotypesValidator.class);
+    private static Logger logger = LoggerFactory.getLogger(PgxgenotypesValidator.class);
 
     PgxMedImplicationsValueMapper pgxMedImplicationsValueMapper = new PgxMedImplicationsValueMapper();
 

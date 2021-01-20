@@ -4,12 +4,13 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import edu.bcm.hgsc.fhir.models.Disease;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
-import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ObsInhDisPathsValidator {
 
-    private static Logger logger = Logger.getLogger(ObsInhDisPathsValidator.class);
+    private static Logger logger = LoggerFactory.getLogger(ObsInhDisPathsValidator.class);
 
     public boolean validateObsInhDisPathById(String resourceId, HgscReport hgscReport, IGenericClient client, Variant v) {
 

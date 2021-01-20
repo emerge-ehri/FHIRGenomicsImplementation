@@ -2,12 +2,13 @@ package edu.bcm.hgsc.fhir.utils.validator;
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import edu.bcm.hgsc.fhir.models.HgscReport;
-import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ObsOverallValidator {
 
-    private static Logger logger = Logger.getLogger(ObsOverallValidator.class);
+    private static Logger logger = LoggerFactory.getLogger(ObsOverallValidator.class);
 
     public boolean validateObsOverallById(String resourceId, HgscReport hgscReport, IGenericClient client) {
 

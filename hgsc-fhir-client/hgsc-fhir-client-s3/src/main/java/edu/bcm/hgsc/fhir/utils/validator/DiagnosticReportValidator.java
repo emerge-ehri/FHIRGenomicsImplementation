@@ -2,9 +2,10 @@ package edu.bcm.hgsc.fhir.utils.validator;
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import edu.bcm.hgsc.fhir.models.HgscReport;
-import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.DiagnosticReport;
 import org.hl7.fhir.r4.model.RelatedArtifact;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 public class DiagnosticReportValidator {
 
-    private static Logger logger = Logger.getLogger(DiagnosticReportValidator.class);
+    private static Logger logger = LoggerFactory.getLogger(DiagnosticReportValidator.class);
 
     public boolean validateDiagnosticReportById(String resourceId, ArrayList<String> resultURLArr, HgscReport hgscReport, IGenericClient client, SimpleDateFormat sdf, SimpleDateFormat sdf2, String orgName) throws ParseException {
 

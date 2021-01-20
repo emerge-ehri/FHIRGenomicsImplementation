@@ -2,8 +2,9 @@ package edu.bcm.hgsc.fhir.utils;
 
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.utils.mapper.*;
-import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.text.ParseException;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 public class FhirResourcesMappingUtils {
 
-    private static Logger logger = Logger.getLogger(FhirResourcesMappingUtils.class);
+    private static Logger logger = LoggerFactory.getLogger(FhirResourcesMappingUtils.class);
 
     public Map<String, Object> mapping(HashMap<String, String> mappingConfig, HgscReport hgscReport, String pdfFileKey, String excidFileKey, HashMap<String, HashMap<String, String>> loincCodeMap) throws ParseException {
 

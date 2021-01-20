@@ -12,13 +12,14 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
 import edu.bcm.hgsc.fhir.utils.*;
-import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,7 +30,7 @@ import java.util.Map;
 
 public class FHIRClientS3 {
 
-    private static Logger logger = Logger.getLogger(FHIRClientS3.class);
+    private static Logger logger = LoggerFactory.getLogger(FHIRClientS3.class);
 
     FileUtils fileUtils = new FileUtils();
     FhirContext ctx = FhirContext.forR4();

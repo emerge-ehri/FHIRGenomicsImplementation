@@ -1,7 +1,8 @@
 package edu.bcm.hgsc.fhir;
 
 import edu.bcm.hgsc.fhir.services.FileUploadServiceImpl;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
         maxRequestSize = 1024 * 1024 * 10 * 5)
 public class FileUploadServlet extends HttpServlet {
 
-    private static Logger logger = Logger.getLogger(FileUploadServlet.class);
+    private static Logger logger = LoggerFactory.getLogger(FileUploadServlet.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

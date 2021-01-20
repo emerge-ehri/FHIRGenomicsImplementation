@@ -5,7 +5,8 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.Properties;
 
 public class FileUtils {
 
-   private static Logger logger = Logger.getLogger(FileUtils.class);
+   private static Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
    final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
 

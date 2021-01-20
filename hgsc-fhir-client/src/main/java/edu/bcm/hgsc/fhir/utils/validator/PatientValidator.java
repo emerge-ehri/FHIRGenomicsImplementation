@@ -2,12 +2,13 @@ package edu.bcm.hgsc.fhir.utils.validator;
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import edu.bcm.hgsc.fhir.models.HgscReport;
-import org.apache.log4j.Logger;
 import org.hl7.fhir.r4.model.Patient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PatientValidator {
 
-    private static Logger logger = Logger.getLogger(PatientValidator.class);
+    private static Logger logger = LoggerFactory.getLogger(PatientValidator.class);
 
     public boolean validatePatientById(String resourceId, HgscReport hgscReport, IGenericClient client) {
 

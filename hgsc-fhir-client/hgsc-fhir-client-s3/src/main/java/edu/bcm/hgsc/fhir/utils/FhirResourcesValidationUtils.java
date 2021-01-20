@@ -7,10 +7,11 @@ import com.sun.jersey.api.client.WebResource;
 import edu.bcm.hgsc.fhir.models.HgscReport;
 import edu.bcm.hgsc.fhir.models.Variant;
 import edu.bcm.hgsc.fhir.utils.validator.*;
-import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.MediaType;
 import java.text.ParseException;
@@ -22,7 +23,7 @@ import java.util.Locale;
 
 public class FhirResourcesValidationUtils {
 
-    private static Logger logger = Logger.getLogger(FhirResourcesValidationUtils.class);
+    private static Logger logger = LoggerFactory.getLogger(FhirResourcesValidationUtils.class);
 
     SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
     SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy");
